@@ -145,7 +145,7 @@ const Footer = () => {
             <div className="mt-6 p-4 bg-gradient-to-r from-cyan-900/20 to-green-900/20 border border-cyan-500/30 rounded-lg">
               <p className="text-cyan-400 text-xs font-semibold mb-1">Wubba Lubba Dub Dub!</p>
               <p className="text-gray-300 text-xs">
-                Фан-сайт Rick and Morty © 2024
+                Фан-сайт Rick and Morty © 2025
               </p>
             </div>
           </div>
@@ -154,10 +154,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-300 text-sm text-center md:text-left">
-              © 2024 Rick and Morty Fan Site. Создано с помощью{' '}
-              <a href="https://poehali.dev" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors">
-                poehali.dev
-              </a>
+              © 2025 Rick and Morty Fan Site. Все права защищены.
             </p>
             <div className="flex items-center gap-4 text-gray-300 text-sm">
               <span className="flex items-center gap-1">
@@ -165,8 +162,8 @@ const Footer = () => {
                 Сделано с любовью
               </span>
               <span className="flex items-center gap-1">
-                <Icon name="Zap" size={14} className="text-yellow-400" />
-                Powered by React
+                <Icon name="Rocket" size={14} className="text-cyan-400" />
+                Для фанатов сериала
               </span>
             </div>
           </div>

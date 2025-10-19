@@ -22,6 +22,7 @@ export interface TheoryFormData {
   fullText: string;
   evidence: string;
   counterArguments: string;
+  image?: string;
 }
 
 const TheoryForm = ({ onSubmit, editingTheory, onCancelEdit }: TheoryFormProps) => {
@@ -33,7 +34,8 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancelEdit }: TheoryFormProps) 
     summary: '',
     fullText: '',
     evidence: '',
-    counterArguments: ''
+    counterArguments: '',
+    image: ''
   });
 
   useEffect(() => {
@@ -53,7 +55,8 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancelEdit }: TheoryFormProps) 
       summary: '',
       fullText: '',
       evidence: '',
-      counterArguments: ''
+      counterArguments: '',
+      image: ''
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -67,7 +70,8 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancelEdit }: TheoryFormProps) 
       summary: '',
       fullText: '',
       evidence: '',
-      counterArguments: ''
+      counterArguments: '',
+      image: ''
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -144,6 +148,23 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancelEdit }: TheoryFormProps) 
               required
               className="bg-gray-900 border-gray-700 text-white"
             />
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              URL изображения
+            </label>
+            <Input
+              placeholder="https://example.com/image.jpg"
+              value={form.image || ''}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white"
+            />
+            {form.image && (
+              <div className="mt-2 rounded overflow-hidden">
+                <img src={form.image} alt="Preview" className="w-full h-32 object-cover" />
+              </div>
+            )}
           </div>
 
           <div>

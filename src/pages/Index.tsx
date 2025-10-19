@@ -6,21 +6,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
-import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import { generateSlug } from '@/utils/slugify';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
+const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
 
 const Index = () => {
   const navigate = useNavigate();
   const [selectedSeason, setSelectedSeason] = useState('all');
   const [episodes, setEpisodes] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [blogLoading, setBlogLoading] = useState(true);
 
   useEffect(() => {
     fetchEpisodes();
+    fetchBlogPosts();
   }, []);
 
   const fetchEpisodes = async () => {
@@ -32,6 +35,18 @@ const Index = () => {
       console.error('Error fetching episodes:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchBlogPosts = async () => {
+    try {
+      const response = await fetch(BLOG_API);
+      const data = await response.json();
+      setBlogPosts(data);
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+    } finally {
+      setBlogLoading(false);
     }
   };
 
@@ -227,30 +242,36 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {blogPostsPreview.map((post, index) => (
-              <Card 
-                key={post.id} 
-                className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                <div className="relative overflow-hidden aspect-video">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
-                </div>
-
-                <CardHeader className="flex-grow">
-                  <div className="flex gap-2 mb-3">
-                    {post.tags.map((tag, idx) => (
-                      <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 border-cyan-400/50 text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
+          {blogLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-cyan-400 text-xl">Загрузка статей...</div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {blogPostsPreview.map((post, index) => (
+                <Card 
+                  key={post.id} 
+                  className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col cursor-pointer"
+                  style={{ animationDelay: `${index * 0.15}s` }}
+                  onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
+                >
+                  <div className="relative overflow-hidden aspect-video">
+                    <img 
+                      src={post.image} 
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
                   </div>
+
+                  <CardHeader className="flex-grow">
+                    <div className="flex gap-2 mb-3">
+                      {post.tags && post.tags.map((tag, idx) => (
+                        <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 border-cyan-400/50 text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
                   <CardTitle className="text-xl text-white group-hover:text-cyan-400 transition-colors mb-2">
                     {post.title}
                   </CardTitle>
@@ -279,7 +300,6 @@ const Index = () => {
 
                   <Button 
                     className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
-                    onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
                   >
                     Читать полностью
                     <Icon name="ArrowRight" className="ml-2" size={16} />
@@ -287,7 +307,8 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
+            </div>
+          )}
 
           <div className="text-center mt-12">
             <Button 

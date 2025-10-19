@@ -270,14 +270,28 @@ const Theories = () => {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="grid md:grid-cols-2 gap-6">
           {filteredTheories.map((theory) => (
             <Card 
               key={theory.id} 
-              className="bg-gray-800/50 border-gray-700 hover:border-green-500/50 transition-all cursor-pointer"
+              className="bg-gray-800/50 border-gray-700 hover:border-green-500/50 transition-all cursor-pointer overflow-hidden flex flex-col"
               onClick={() => navigate(`/theory/${generateSlug(theory.id, theory.title)}`)}
             >
-              <CardHeader>
+              {theory.image && (
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={theory.image} 
+                    alt={theory.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                  <Badge className={`absolute top-4 right-4 ${getProbabilityColor(theory.probability)}`}>
+                    {getProbabilityText(theory.probability)}
+                  </Badge>
+                </div>
+              )}
+              
+              <CardHeader className="flex-grow">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1">
                     <CardTitle className="text-2xl text-white mb-2">{theory.title}</CardTitle>
@@ -292,9 +306,11 @@ const Theories = () => {
                       </span>
                     </CardDescription>
                   </div>
-                  <Badge className={getProbabilityColor(theory.probability)}>
-                    {getProbabilityText(theory.probability)}
-                  </Badge>
+                  {!theory.image && (
+                    <Badge className={getProbabilityColor(theory.probability)}>
+                      {getProbabilityText(theory.probability)}
+                    </Badge>
+                  )}
                 </div>
                 <p className="text-gray-300">{theory.summary}</p>
               </CardHeader>
