@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,13 @@ interface Episode {
 
 const Admin = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [navigate]);
   const [formData, setFormData] = useState({
     title: '',
     season: '',
@@ -86,14 +93,29 @@ const Admin = () => {
             На главную
           </Button>
           
-          <div className="flex items-center gap-4 mb-2">
-            <div className="bg-gradient-to-r from-cyan-500 to-green-500 p-3 rounded-lg">
-              <Icon name="Settings" size={32} className="text-white" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="bg-gradient-to-r from-cyan-500 to-green-500 p-3 rounded-lg">
+                <Icon name="Settings" size={32} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold text-white">Админ-панель</h1>
+                <p className="text-gray-400 mt-1">Управление эпизодами Rick and Morty</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-4xl font-bold text-white">Админ-панель</h1>
-              <p className="text-gray-400 mt-1">Управление эпизодами Rick and Morty</p>
-            </div>
+            
+            <Button 
+              onClick={() => {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('adminUser');
+                navigate('/login');
+              }}
+              variant="outline"
+              className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300"
+            >
+              <Icon name="LogOut" size={18} className="mr-2" />
+              Выйти
+            </Button>
           </div>
         </div>
 
