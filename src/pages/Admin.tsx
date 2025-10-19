@@ -14,6 +14,8 @@ import CharacterForm, { CharacterFormData } from '@/components/admin/CharacterFo
 import CharacterList, { Character } from '@/components/admin/CharacterList';
 import TheoryForm, { TheoryFormData } from '@/components/admin/TheoryForm';
 import TheoryList, { Theory } from '@/components/admin/TheoryList';
+import ArticleForm, { ArticleFormData } from '@/components/admin/ArticleForm';
+import ArticleList, { Article } from '@/components/admin/ArticleList';
 import PlaceholderTab from '@/components/admin/PlaceholderTab';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
@@ -33,6 +35,8 @@ const Admin = () => {
   const [editingTheory, setEditingTheory] = useState<Theory | null>(null);
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [editingBlogPost, setEditingBlogPost] = useState<any | null>(null);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [editingArticle, setEditingArticle] = useState<Article | null>(null);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -47,6 +51,7 @@ const Admin = () => {
     fetchCharacters();
     fetchTheories();
     fetchBlogPosts();
+    fetchArticles();
   }, []);
 
   const fetchBlogPosts = async () => {
@@ -271,6 +276,47 @@ const Admin = () => {
     }
   };
 
+  const fetchArticles = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=articles`);
+      const data = await response.json();
+      setArticles(data);
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  };
+
+  const handleArticleSubmit = async (formData: ArticleFormData, isEdit: boolean) => {
+    try {
+      const method = isEdit ? 'PUT' : 'POST';
+      const url = isEdit ? `${CONTENT_API}?type=articles&id=${formData.id}` : `${CONTENT_API}?type=articles`;
+      
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      fetchArticles();
+      setEditingArticle(null);
+      alert(isEdit ? 'Статья успешно обновлена!' : 'Статья успешно добавлена!');
+    } catch (error) {
+      console.error('Error saving article:', error);
+      alert('Ошибка при сохранении статьи');
+    }
+  };
+
+  const handleDeleteArticle = async (id: number) => {
+    if (confirm('Вы уверены, что хотите удалить эту статью?')) {
+      try {
+        await fetch(`${CONTENT_API}?type=articles&id=${id}`, { method: 'DELETE' });
+        fetchArticles();
+      } catch (error) {
+        console.error('Error deleting article:', error);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
@@ -312,14 +358,14 @@ const Admin = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-6 bg-gray-800 mb-8 gap-2">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-2 md:grid-cols-7 bg-gray-800 mb-8 gap-2">
             <TabsTrigger value="episodes" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
               <Icon name="Film" size={18} className="mr-2" />
               Эпизоды
             </TabsTrigger>
-            <TabsTrigger value="videos" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
-              <Icon name="Video" size={18} className="mr-2" />
-              Видео
+            <TabsTrigger value="articles" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              <Icon name="FileText" size={18} className="mr-2" />
+              Статьи
             </TabsTrigger>
             <TabsTrigger value="universes" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white">
               <Icon name="Globe" size={18} className="mr-2" />
@@ -334,8 +380,12 @@ const Admin = () => {
               Теории
             </TabsTrigger>
             <TabsTrigger value="blog" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">
-              <Icon name="FileText" size={18} className="mr-2" />
+              <Icon name="BookOpen" size={18} className="mr-2" />
               Блог
+            </TabsTrigger>
+            <TabsTrigger value="videos" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              <Icon name="Video" size={18} className="mr-2" />
+              Видео
             </TabsTrigger>
           </TabsList>
 
@@ -350,6 +400,22 @@ const Admin = () => {
                 episodes={episodes} 
                 onDelete={handleDeleteEpisode}
                 onEdit={(episode) => setEditingEpisode(episode)}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="articles">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <ArticleForm 
+                onSubmit={handleArticleSubmit} 
+                editingArticle={editingArticle} 
+                episodes={episodes}
+                onCancel={() => setEditingArticle(null)}
+              />
+              <ArticleList 
+                articles={articles} 
+                onDelete={handleDeleteArticle}
+                onEdit={(article) => setEditingArticle(article)}
               />
             </div>
           </TabsContent>

@@ -13,7 +13,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
     method: str = event.get('httpMethod', 'GET')
     params = event.get('queryStringParameters') or {}
-    content_type = params.get('type', 'universes')  # universes, characters, theories
+    content_type = params.get('type', 'universes')  # universes, characters, theories, articles
     
     # CORS preflight
     if method == 'OPTIONS':
@@ -35,8 +35,24 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     try:
         if method == 'GET':
             item_id = params.get('id')
+            episode_id = params.get('episodeId')
             
-            if item_id:
+            if content_type == 'articles':
+                if episode_id:
+                    cursor.execute(
+                        "SELECT a.*, e.title as episode_title, e.season, e.episode "
+                        "FROM episode_articles a JOIN episodes e ON a.episode_id = e.id "
+                        "WHERE a.episode_id = " + str(int(episode_id)) + " ORDER BY a.created_at DESC"
+                    )
+                else:
+                    cursor.execute(
+                        "SELECT a.*, e.title as episode_title, e.season, e.episode "
+                        "FROM episode_articles a JOIN episodes e ON a.episode_id = e.id "
+                        "ORDER BY a.created_at DESC"
+                    )
+                items = cursor.fetchall()
+                result = [dict(i) for i in items]
+            elif item_id:
                 cursor.execute(f'SELECT * FROM {content_type} WHERE id = ' + str(int(item_id)))
                 item = cursor.fetchone()
                 result = dict(item) if item else None
@@ -93,6 +109,14 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     "'" + body_data.get('evidence', '').replace("'", "''") + "', "
                     "'" + body_data.get('counterArguments', '').replace("'", "''") + "', "
                     "'" + body_data.get('image', '').replace("'", "''") + "') "
+                    "RETURNING id"
+                )
+            elif content_type == 'articles':
+                cursor.execute(
+                    "INSERT INTO episode_articles (episode_id, title, content) "
+                    "VALUES (" + str(int(body_data['episodeId'])) + ", "
+                    "'" + body_data['title'].replace("'", "''") + "', "
+                    "'" + body_data['content'].replace("'", "''") + "') "
                     "RETURNING id"
                 )
             
@@ -159,6 +183,14 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     "updated_at = CURRENT_TIMESTAMP "
                     "WHERE id = " + str(int(item_id))
                 )
+            elif content_type == 'articles':
+                cursor.execute(
+                    "UPDATE episode_articles SET "
+                    "episode_id = " + str(int(body_data['episodeId'])) + ", "
+                    "title = '" + body_data['title'].replace("'", "''") + "', "
+                    "content = '" + body_data['content'].replace("'", "''") + "' "
+                    "WHERE id = " + str(int(item_id))
+                )
             
             conn.commit()
             
@@ -180,7 +212,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'body': json.dumps({'error': 'ID required'})
                 }
             
-            cursor.execute(f'DELETE FROM {content_type} WHERE id = ' + str(int(item_id)))
+            table_name = 'episode_articles' if content_type == 'articles' else content_type
+            cursor.execute(f'DELETE FROM {table_name} WHERE id = ' + str(int(item_id)))
             conn.commit()
             
             return {
