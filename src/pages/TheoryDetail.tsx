@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -12,6 +12,51 @@ import CommentSection from '@/components/CommentSection';
 
 const TheoryDetail = () => {
   const { id } = useParams();
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  useEffect(() => {
+    const bookmarks = JSON.parse(localStorage.getItem('theoryBookmarks') || '[]');
+    setIsBookmarked(bookmarks.includes(Number(id)));
+  }, [id]);
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: theory.title,
+          text: theory.summary,
+          url: window.location.href
+        });
+      } catch (err) {
+        console.log('Share cancelled');
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Ссылка скопирована!');
+    }
+  };
+
+  const handleBookmark = () => {
+    const bookmarks = JSON.parse(localStorage.getItem('theoryBookmarks') || '[]');
+    if (isBookmarked) {
+      const updated = bookmarks.filter((bId: number) => bId !== Number(id));
+      localStorage.setItem('theoryBookmarks', JSON.stringify(updated));
+      setIsBookmarked(false);
+      alert('Удалено из закладок');
+    } else {
+      bookmarks.push(Number(id));
+      localStorage.setItem('theoryBookmarks', JSON.stringify(bookmarks));
+      setIsBookmarked(true);
+      alert('Добавлено в закладки!');
+    }
+  };
+
+  const handleReport = () => {
+    const reason = prompt('Укажите причину жалобы:');
+    if (reason) {
+      alert('Спасибо за вашу жалобу. Мы рассмотрим её.');
+    }
+  };
 
   const theoriesData = [
     {
@@ -164,15 +209,16 @@ const TheoryDetail = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <Card className="p-8 bg-gray-800 border-gray-700">
-              <EditableContent
-                content={theory.fullText}
-                onSave={handleContentSave}
-                title="Описание теории"
-              />
+            <Card className="p-8 bg-gray-800/80 border-gray-700">
+              <h2 className="text-2xl font-bold mb-6">Описание теории</h2>
+              <div className="prose prose-invert max-w-none">
+                {theory.fullText.split('\n').map((paragraph, index) => (
+                  paragraph.trim() && <p key={index} className="mb-4 text-gray-100 leading-relaxed text-base">{paragraph}</p>
+                ))}
+              </div>
             </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-700">
+            <Card className="p-6 bg-gray-800/80 border-purple-700/50">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
                 <Icon name="CheckCircle" size={28} className="text-purple-400" />
                 Доказательства
@@ -181,13 +227,13 @@ const TheoryDetail = () => {
                 {theory.evidence.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Icon name="ChevronRight" size={20} className="text-purple-400 mt-1 flex-shrink-0" />
-                    <span className="text-gray-200">{item}</span>
+                    <span className="text-gray-100">{item}</span>
                   </li>
                 ))}
               </ul>
             </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-pink-900/50 to-red-900/50 border-pink-700">
+            <Card className="p-6 bg-gray-800/80 border-pink-700/50">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
                 <Icon name="XCircle" size={28} className="text-pink-400" />
                 Контраргументы
@@ -196,7 +242,7 @@ const TheoryDetail = () => {
                 {theory.counterArguments.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Icon name="ChevronRight" size={20} className="text-pink-400 mt-1 flex-shrink-0" />
-                    <span className="text-gray-200">{item}</span>
+                    <span className="text-gray-100">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -235,38 +281,53 @@ const TheoryDetail = () => {
                 </ul>
               </Card>
 
-              <Card className="p-6 bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-700">
+              <Card className="p-6 bg-gray-800/80 border-gray-700">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Icon name="TrendingUp" size={24} className="text-purple-400" />
                   Статистика
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Уровень влияния:</span>
+                    <span className="text-gray-300">Уровень влияния:</span>
                     <span className="font-semibold text-purple-300">{theory.impactLevel}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Голосов:</span>
+                    <span className="text-gray-300">Голосов:</span>
                     <span className="font-semibold text-purple-300">{theory.votes.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Категория:</span>
+                    <span className="text-gray-300">Категория:</span>
                     <span className="font-semibold text-purple-300">{theory.category}</span>
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-6 bg-gray-800 border-gray-700">
-                <h3 className="text-xl font-bold mb-4">Поделиться теорией</h3>
-                <div className="flex gap-3">
-                  <Button variant="outline" size="sm" className="flex-1">
-                    <Icon name="Share2" size={16} />
+              <Card className="p-6 bg-gray-800/80 border-gray-700">
+                <h3 className="text-xl font-bold mb-4">Действия</h3>
+                <div className="space-y-3">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={handleShare}
+                  >
+                    <Icon name="Share2" size={18} className="mr-2" />
+                    Поделиться
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
-                    <Icon name="Bookmark" size={16} />
+                  <Button 
+                    variant="outline" 
+                    className={`w-full justify-start ${isBookmarked ? 'bg-purple-500/20 border-purple-500' : ''}`}
+                    onClick={handleBookmark}
+                  >
+                    <Icon name={isBookmarked ? "BookmarkCheck" : "Bookmark"} size={18} className="mr-2" />
+                    {isBookmarked ? 'В закладках' : 'Добавить в закладки'}
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
-                    <Icon name="Flag" size={16} />
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                    onClick={handleReport}
+                  >
+                    <Icon name="Flag" size={18} className="mr-2" />
+                    Пожаловаться
                   </Button>
                 </div>
               </Card>

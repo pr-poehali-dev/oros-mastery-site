@@ -7,9 +7,10 @@ interface EditableContentProps {
   onSave: (newContent: string) => void;
   className?: string;
   title?: string;
+  showEditButton?: boolean;
 }
 
-const EditableContent = ({ content, onSave, className = '', title }: EditableContentProps) => {
+const EditableContent = ({ content, onSave, className = '', title, showEditButton = false }: EditableContentProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
 
@@ -51,19 +52,21 @@ const EditableContent = ({ content, onSave, className = '', title }: EditableCon
     <div className={className}>
       <div className="flex items-center justify-between mb-4">
         {title && <h2 className="text-2xl font-bold">{title}</h2>}
-        <Button
-          onClick={() => setIsEditing(true)}
-          variant="outline"
-          size="sm"
-          className="ml-auto"
-        >
-          <Icon name="Edit" size={16} className="mr-2" />
-          Редактировать
-        </Button>
+        {showEditButton && (
+          <Button
+            onClick={() => setIsEditing(true)}
+            variant="outline"
+            size="sm"
+            className="ml-auto"
+          >
+            <Icon name="Edit" size={16} className="mr-2" />
+            Редактировать
+          </Button>
+        )}
       </div>
       <div className="prose prose-invert max-w-none">
         {content.split('\n').map((paragraph, index) => (
-          paragraph.trim() && <p key={index} className="mb-4 text-gray-300 leading-relaxed">{paragraph}</p>
+          paragraph.trim() && <p key={index} className="mb-4 text-gray-200 leading-relaxed">{paragraph}</p>
         ))}
       </div>
     </div>
