@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { generateSlug } from '@/utils/slugify';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -244,13 +245,13 @@ const Theories = () => {
             <Card 
               key={theory.id} 
               className="bg-gray-800/50 border-gray-700 hover:border-green-500/50 transition-all cursor-pointer"
-              onClick={() => navigate(`/theory/${theory.id}`)}
+              onClick={() => navigate(`/theory/${generateSlug(theory.id, theory.title)}`)}
             >
               <CardHeader>
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1">
                     <CardTitle className="text-2xl text-white mb-2">{theory.title}</CardTitle>
-                    <CardDescription className="text-gray-400 flex items-center gap-3 flex-wrap">
+                    <CardDescription className="text-gray-300 flex items-center gap-3 flex-wrap">
                       <span className="flex items-center gap-1">
                         <Icon name="User" size={14} />
                         {theory.author}

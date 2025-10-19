@@ -11,7 +11,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 
 const BlogPost = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const id = slug ? parseInt(slug.split('-')[0]) : 1;
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);

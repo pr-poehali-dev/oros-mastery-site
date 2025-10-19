@@ -7,6 +7,7 @@ import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import { generateSlug } from '@/utils/slugify';
 
 const Universes = () => {
   const navigate = useNavigate();
@@ -169,7 +170,7 @@ const Universes = () => {
             <Card 
               key={universe.id} 
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-purple-500/50 transition-all cursor-pointer"
-              onClick={() => navigate(`/universe/${universe.id}`)}
+              onClick={() => navigate(`/universe/${generateSlug(universe.id, universe.name)}`)}
             >
               <div className="relative h-48 overflow-hidden">
                 <img 

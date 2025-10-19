@@ -11,7 +11,8 @@ import EditableContent from '@/components/EditableContent';
 import CommentSection from '@/components/CommentSection';
 
 const TheoryDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const id = slug ? parseInt(slug.split('-')[0]) : 1;
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
@@ -175,7 +176,7 @@ const TheoryDetail = () => {
               <Badge className={`${getProbabilityColor(theory.probability)} mb-4 border px-4 py-1`}>
                 Вероятность: {getProbabilityText(theory.probability)}
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-4 leading-tight">
                 {theory.title}
               </h1>
               <p className="text-xl text-gray-200 mb-6">{theory.summary}</p>

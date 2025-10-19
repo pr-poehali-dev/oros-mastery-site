@@ -8,6 +8,7 @@ import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import { generateSlug } from '@/utils/slugify';
 
 const Episodes = () => {
   const navigate = useNavigate();
@@ -124,7 +125,7 @@ const Episodes = () => {
             <Card 
               key={episode.id} 
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer group"
-              onClick={() => navigate(`/episode/${episode.id}`)}
+              onClick={() => navigate(`/episode/${generateSlug(episode.id, episode.title)}`)}
             >
               <div className="relative h-48 overflow-hidden">
                 <img 

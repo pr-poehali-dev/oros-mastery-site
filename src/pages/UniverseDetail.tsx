@@ -11,7 +11,8 @@ import EditableContent from '@/components/EditableContent';
 import CommentSection from '@/components/CommentSection';
 
 const UniverseDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const id = slug ? parseInt(slug.split('-')[0]) : 1;
 
   const universesData = [
     {

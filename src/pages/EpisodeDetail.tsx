@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { generateSlug } from '@/utils/slugify';
 
 interface Episode {
   id: number;
@@ -36,7 +37,8 @@ interface Article {
 const API_URL = 'https://functions.poehali.dev/ac29f682-6173-43c7-a16b-3ffb94e0f51a';
 
 const EpisodeDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const id = slug ? parseInt(slug.split('-')[0]) : 1;
   const navigate = useNavigate();
   const [episode, setEpisode] = useState<Episode | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -89,10 +91,27 @@ const EpisodeDetail = () => {
   };
 
   const handleNavigate = (direction: 'prev' | 'next') => {
-    const currentId = parseInt(id || '1');
+    const currentId = id;
     const newId = direction === 'prev' ? currentId - 1 : currentId + 1;
     if (newId > 0 && newId <= 12) {
-      navigate(`/episode/${newId}`);
+      const episodes = [
+        { id: 1, title: 'Pilot' },
+        { id: 2, title: 'Lawnmower Dog' },
+        { id: 3, title: 'Anatomy Park' },
+        { id: 4, title: 'M. Night Shaym-Aliens!' },
+        { id: 5, title: 'Meeseeks and Destroy' },
+        { id: 6, title: 'Rick Potion #9' },
+        { id: 7, title: 'Raising Gazorpazorp' },
+        { id: 8, title: 'Rixty Minutes' },
+        { id: 9, title: 'Something Ricked This Way Comes' },
+        { id: 10, title: 'Close Rick-counters of the Rick Kind' },
+        { id: 11, title: 'Ricksy Business' },
+        { id: 12, title: 'A Rickle in Time' }
+      ];
+      const nextEpisode = episodes.find(ep => ep.id === newId);
+      if (nextEpisode) {
+        navigate(`/episode/${generateSlug(nextEpisode.id, nextEpisode.title)}`);
+      }
     }
   };
 

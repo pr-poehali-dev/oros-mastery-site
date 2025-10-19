@@ -30,15 +30,15 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/episodes" element={<Episodes />} />
-          <Route path="/episode/:id" element={<EpisodeDetail />} />
+          <Route path="/episode/:slug" element={<EpisodeDetail />} />
           <Route path="/universes" element={<Universes />} />
-          <Route path="/universe/:id" element={<UniverseDetail />} />
+          <Route path="/universe/:slug" element={<UniverseDetail />} />
           <Route path="/characters" element={<Characters />} />
-          <Route path="/character/:id" element={<CharacterDetail />} />
+          <Route path="/character/:slug" element={<CharacterDetail />} />
           <Route path="/theories" element={<Theories />} />
-          <Route path="/theory/:id" element={<TheoryDetail />} />
+          <Route path="/theory/:slug" element={<TheoryDetail />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

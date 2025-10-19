@@ -5,64 +5,64 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 
-interface EpisodeFormProps {
-  onSubmit: (formData: EpisodeFormData, isEdit: boolean) => Promise<void>;
-  editingEpisode?: EpisodeFormData & { id?: number } | null;
+interface CharacterFormProps {
+  onSubmit: (formData: CharacterFormData, isEdit: boolean) => Promise<void>;
+  editingCharacter?: CharacterFormData & { id?: number } | null;
   onCancelEdit?: () => void;
 }
 
-export interface EpisodeFormData {
+export interface CharacterFormData {
   id?: number;
-  title: string;
-  season: string;
-  episode: string;
-  description: string;
+  name: string;
+  role: string;
+  species: string;
+  status: string;
+  bio: string;
   image: string;
-  videoUrl: string;
-  airDate: string;
+  abilities: string;
 }
 
-const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProps) => {
-  const [form, setForm] = useState<EpisodeFormData>({
-    title: '',
-    season: '',
-    episode: '',
-    description: '',
+const CharacterForm = ({ onSubmit, editingCharacter, onCancelEdit }: CharacterFormProps) => {
+  const [form, setForm] = useState<CharacterFormData>({
+    name: '',
+    role: '',
+    species: '',
+    status: '',
+    bio: '',
     image: '',
-    videoUrl: '',
-    airDate: ''
+    abilities: ''
   });
 
   useEffect(() => {
-    if (editingEpisode) {
-      setForm(editingEpisode);
+    if (editingCharacter) {
+      setForm(editingCharacter);
     }
-  }, [editingEpisode]);
+  }, [editingCharacter]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(form, !!editingEpisode);
+    await onSubmit(form, !!editingCharacter);
     setForm({
-      title: '',
-      season: '',
-      episode: '',
-      description: '',
+      name: '',
+      role: '',
+      species: '',
+      status: '',
+      bio: '',
       image: '',
-      videoUrl: '',
-      airDate: ''
+      abilities: ''
     });
     if (onCancelEdit) onCancelEdit();
   };
 
   const handleCancel = () => {
     setForm({
-      title: '',
-      season: '',
-      episode: '',
-      description: '',
+      name: '',
+      role: '',
+      species: '',
+      status: '',
+      bio: '',
       image: '',
-      videoUrl: '',
-      airDate: ''
+      abilities: ''
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -71,23 +71,23 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
     <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="text-2xl text-white flex items-center gap-2">
-          <Icon name={editingEpisode ? "Edit" : "Plus"} size={24} className="text-cyan-400" />
-          {editingEpisode ? 'Редактировать эпизод' : 'Добавить эпизод'}
+          <Icon name={editingCharacter ? "Edit" : "Plus"} size={24} className="text-blue-400" />
+          {editingCharacter ? 'Редактировать персонажа' : 'Добавить персонажа'}
         </CardTitle>
         <CardDescription className="text-gray-300">
-          {editingEpisode ? 'Обновите данные эпизода' : 'Добавьте новый эпизод с видео'}
+          {editingCharacter ? 'Обновите данные персонажа' : 'Добавьте нового персонажа'}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Название эпизода *
+              Имя персонажа *
             </label>
             <Input
-              placeholder="Например: Pickle Rick"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              placeholder="Например: Рик Санчез"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
               className="bg-gray-900 border-gray-700 text-white"
             />
@@ -96,26 +96,24 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-white text-sm font-medium mb-2 block">
-                Сезон *
+                Роль *
               </label>
               <Input
-                type="number"
-                placeholder="1"
-                value={form.season}
-                onChange={(e) => setForm({ ...form, season: e.target.value })}
+                placeholder="Например: Главный герой"
+                value={form.role}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
                 required
                 className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
             <div>
               <label className="text-white text-sm font-medium mb-2 block">
-                Эпизод *
+                Вид *
               </label>
               <Input
-                type="number"
-                placeholder="3"
-                value={form.episode}
-                onChange={(e) => setForm({ ...form, episode: e.target.value })}
+                placeholder="Например: Человек"
+                value={form.species}
+                onChange={(e) => setForm({ ...form, species: e.target.value })}
                 required
                 className="bg-gray-900 border-gray-700 text-white"
               />
@@ -124,27 +122,38 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Дата выхода *
+              Статус
             </label>
             <Input
-              placeholder="9 дек 2013"
-              value={form.airDate}
-              onChange={(e) => setForm({ ...form, airDate: e.target.value })}
-              required
+              placeholder="Например: Живой"
+              value={form.status}
+              onChange={(e) => setForm({ ...form, status: e.target.value })}
               className="bg-gray-900 border-gray-700 text-white"
             />
           </div>
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Описание *
+              Биография *
             </label>
             <Textarea
-              placeholder="Краткое описание эпизода..."
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              placeholder="Краткая биография персонажа..."
+              value={form.bio}
+              onChange={(e) => setForm({ ...form, bio: e.target.value })}
               required
               className="bg-gray-900 border-gray-700 text-white min-h-[100px]"
+            />
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              Способности (через запятую)
+            </label>
+            <Textarea
+              placeholder="Например: Гениальный интеллект, Изобретательность, Портальная пушка"
+              value={form.abilities}
+              onChange={(e) => setForm({ ...form, abilities: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white min-h-[80px]"
             />
           </div>
 
@@ -161,24 +170,12 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
             />
           </div>
 
-          <div>
-            <label className="text-white text-sm font-medium mb-2 block">
-              URL видео (опционально)
-            </label>
-            <Input
-              placeholder="https://..."
-              value={form.videoUrl}
-              onChange={(e) => setForm({ ...form, videoUrl: e.target.value })}
-              className="bg-gray-900 border-gray-700 text-white"
-            />
-          </div>
-
           <div className="flex gap-3">
-            <Button type="submit" className="flex-1 bg-cyan-500 hover:bg-cyan-600">
+            <Button type="submit" className="flex-1 bg-blue-500 hover:bg-blue-600">
               <Icon name="Check" size={20} className="mr-2" />
-              {editingEpisode ? 'Сохранить' : 'Добавить эпизод'}
+              {editingCharacter ? 'Сохранить' : 'Добавить персонажа'}
             </Button>
-            {editingEpisode && (
+            {editingCharacter && (
               <Button 
                 type="button" 
                 onClick={handleCancel} 
@@ -196,4 +193,4 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
   );
 };
 
-export default EpisodeForm;
+export default CharacterForm;

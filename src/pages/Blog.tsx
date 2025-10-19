@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { generateSlug } from '@/utils/slugify';
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -276,7 +277,7 @@ const Blog = () => {
 
                     <Button 
                       className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
-                      onClick={() => navigate(`/blog/${post.id}`)}
+                      onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
                     >
                       Читать полностью
                       <Icon name="ArrowRight" className="ml-2" size={16} />

@@ -8,6 +8,7 @@ import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import { generateSlug } from '@/utils/slugify';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -220,7 +221,7 @@ const Characters = () => {
             <Card 
               key={character.id} 
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer"
-              onClick={() => navigate(`/character/${character.id}`)}
+              onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
             >
               <div className="relative h-64 overflow-hidden">
                 <img 

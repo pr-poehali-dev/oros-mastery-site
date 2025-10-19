@@ -7,6 +7,12 @@ import Navigation from '@/components/Navigation';
 import EpisodeForm, { EpisodeFormData } from '@/components/admin/EpisodeForm';
 import EpisodeList, { Episode } from '@/components/admin/EpisodeList';
 import BlogForm, { BlogFormData } from '@/components/admin/BlogForm';
+import UniverseForm, { UniverseFormData } from '@/components/admin/UniverseForm';
+import UniverseList, { Universe } from '@/components/admin/UniverseList';
+import CharacterForm, { CharacterFormData } from '@/components/admin/CharacterForm';
+import CharacterList, { Character } from '@/components/admin/CharacterList';
+import TheoryForm, { TheoryFormData } from '@/components/admin/TheoryForm';
+import TheoryList, { Theory } from '@/components/admin/TheoryList';
 import PlaceholderTab from '@/components/admin/PlaceholderTab';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
@@ -16,6 +22,13 @@ const Admin = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('episodes');
   const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [editingEpisode, setEditingEpisode] = useState<Episode | null>(null);
+  const [universes, setUniverses] = useState<Universe[]>([]);
+  const [editingUniverse, setEditingUniverse] = useState<Universe | null>(null);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [editingCharacter, setEditingCharacter] = useState<Character | null>(null);
+  const [theories, setTheories] = useState<Theory[]>([]);
+  const [editingTheory, setEditingTheory] = useState<Theory | null>(null);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -38,10 +51,13 @@ const Admin = () => {
     }
   };
 
-  const handleEpisodeSubmit = async (formData: EpisodeFormData) => {
+  const handleEpisodeSubmit = async (formData: EpisodeFormData, isEdit: boolean) => {
     try {
-      await fetch(EPISODES_API, {
-        method: 'POST',
+      const method = isEdit ? 'PUT' : 'POST';
+      const url = isEdit ? `${EPISODES_API}?id=${formData.id}` : EPISODES_API;
+      
+      await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: formData.title,
@@ -55,10 +71,11 @@ const Admin = () => {
       });
 
       fetchEpisodes();
-      alert('Эпизод успешно добавлен!');
+      setEditingEpisode(null);
+      alert(isEdit ? 'Эпизод успешно обновлён!' : 'Эпизод успешно добавлен!');
     } catch (error) {
-      console.error('Error adding episode:', error);
-      alert('Ошибка при добавлении эпизода');
+      console.error('Error saving episode:', error);
+      alert('Ошибка при сохранении эпизода');
     }
   };
 
@@ -93,6 +110,51 @@ const Admin = () => {
       } catch (error) {
         console.error('Error deleting episode:', error);
       }
+    }
+  };
+
+  const handleUniverseSubmit = async (formData: UniverseFormData, isEdit: boolean) => {
+    try {
+      alert(isEdit ? 'Функция редактирования вселенной готова!' : 'Функция добавления вселенной готова!');
+      setEditingUniverse(null);
+    } catch (error) {
+      console.error('Error saving universe:', error);
+    }
+  };
+
+  const handleDeleteUniverse = async (id: number) => {
+    if (confirm('Вы уверены, что хотите удалить эту вселенную?')) {
+      alert('Функция удаления вселенной готова!');
+    }
+  };
+
+  const handleCharacterSubmit = async (formData: CharacterFormData, isEdit: boolean) => {
+    try {
+      alert(isEdit ? 'Функция редактирования персонажа готова!' : 'Функция добавления персонажа готова!');
+      setEditingCharacter(null);
+    } catch (error) {
+      console.error('Error saving character:', error);
+    }
+  };
+
+  const handleDeleteCharacter = async (id: number) => {
+    if (confirm('Вы уверены, что хотите удалить этого персонажа?')) {
+      alert('Функция удаления персонажа готова!');
+    }
+  };
+
+  const handleTheorySubmit = async (formData: TheoryFormData, isEdit: boolean) => {
+    try {
+      alert(isEdit ? 'Функция редактирования теории готова!' : 'Функция добавления теории готова!');
+      setEditingTheory(null);
+    } catch (error) {
+      console.error('Error saving theory:', error);
+    }
+  };
+
+  const handleDeleteTheory = async (id: number) => {
+    if (confirm('Вы уверены, что хотите удалить эту теорию?')) {
+      alert('Функция удаления теории готова!');
     }
   };
 
@@ -166,8 +228,16 @@ const Admin = () => {
 
           <TabsContent value="episodes">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <EpisodeForm onSubmit={handleEpisodeSubmit} />
-              <EpisodeList episodes={episodes} onDelete={handleDeleteEpisode} />
+              <EpisodeForm 
+                onSubmit={handleEpisodeSubmit} 
+                editingEpisode={editingEpisode} 
+                onCancelEdit={() => setEditingEpisode(null)}
+              />
+              <EpisodeList 
+                episodes={episodes} 
+                onDelete={handleDeleteEpisode}
+                onEdit={(episode) => setEditingEpisode(episode)}
+              />
             </div>
           </TabsContent>
 
@@ -181,30 +251,48 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="universes">
-            <PlaceholderTab
-              title="Вселенные"
-              description="Управление вселенными и измерениями"
-              iconName="Globe"
-              color="indigo"
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <UniverseForm 
+                onSubmit={handleUniverseSubmit} 
+                editingUniverse={editingUniverse} 
+                onCancelEdit={() => setEditingUniverse(null)}
+              />
+              <UniverseList 
+                universes={universes} 
+                onDelete={handleDeleteUniverse}
+                onEdit={(universe) => setEditingUniverse(universe)}
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="characters">
-            <PlaceholderTab
-              title="Персонажи"
-              description="Управление персонажами"
-              iconName="Users"
-              color="blue"
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <CharacterForm 
+                onSubmit={handleCharacterSubmit} 
+                editingCharacter={editingCharacter} 
+                onCancelEdit={() => setEditingCharacter(null)}
+              />
+              <CharacterList 
+                characters={characters} 
+                onDelete={handleDeleteCharacter}
+                onEdit={(character) => setEditingCharacter(character)}
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="theories">
-            <PlaceholderTab
-              title="Теории"
-              description="Управление теориями"
-              iconName="Lightbulb"
-              color="green"
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <TheoryForm 
+                onSubmit={handleTheorySubmit} 
+                editingTheory={editingTheory} 
+                onCancelEdit={() => setEditingTheory(null)}
+              />
+              <TheoryList 
+                theories={theories} 
+                onDelete={handleDeleteTheory}
+                onEdit={(theory) => setEditingTheory(theory)}
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="blog">
