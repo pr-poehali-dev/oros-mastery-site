@@ -166,8 +166,9 @@ const Index = () => {
                 {filteredEpisodes.map((episode, index) => (
                   <Card 
                     key={episode.id} 
-                    className="bg-gray-800 border-gray-700 hover:border-green-400 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-400/20 group animate-scale-in overflow-hidden"
+                    className="bg-gray-800 border-gray-700 hover:border-green-400 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-400/20 group animate-scale-in overflow-hidden cursor-pointer"
                     style={{ animationDelay: `${index * 0.1}s` }}
+                    onClick={() => navigate(`/episode/${episode.id}`)}
                   >
                     <div className="relative overflow-hidden aspect-video">
                       <img 
