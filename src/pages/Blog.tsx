@@ -311,33 +311,33 @@ const Blog = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+      <section className="py-16 bg-gray-900 text-white">
         <div className="container px-4 space-y-12">
-          <Card className="bg-gradient-to-r from-purple-900/20 to-cyan-900/20 border-cyan-500/30 p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-cyan-400 mb-4 text-center">Изучай вселенную Rick and Morty</h3>
-            <p className="text-gray-300 text-center mb-6">
+          <Card className="bg-gray-800/60 backdrop-blur-sm border-gray-700/50 p-8 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-gray-100 mb-4 text-center">Изучай вселенную Rick and Morty</h3>
+            <p className="text-gray-400 text-center mb-6">
               Погрузись глубже в мир сериала - смотри эпизоды, изучай теории и открывай секреты мультивселенной
             </p>
             <div className="grid md:grid-cols-3 gap-4">
-              <Link to="/episodes">
-                <Card className="bg-gray-800/50 border-green-500/30 p-6 hover:border-green-400 transition-all group cursor-pointer">
+              <Link to="/episodes" className="h-full">
+                <Card className="bg-gray-800/80 border-green-500/30 p-6 hover:border-green-400 hover:bg-gray-700/80 transition-all group cursor-pointer h-full flex flex-col">
                   <Icon name="Play" size={32} className="text-green-400 mb-3 group-hover:scale-110 transition-transform" />
                   <h4 className="text-white font-semibold mb-2 group-hover:text-green-400 transition-colors">Все эпизоды</h4>
-                  <p className="text-gray-400 text-sm">Смотри и обсуждай каждую серию</p>
+                  <p className="text-gray-400 text-sm flex-grow">Смотри и обсуждай каждую серию</p>
                 </Card>
               </Link>
-              <Link to="/theories">
-                <Card className="bg-gray-800/50 border-purple-500/30 p-6 hover:border-purple-400 transition-all group cursor-pointer">
+              <Link to="/theories" className="h-full">
+                <Card className="bg-gray-800/80 border-purple-500/30 p-6 hover:border-purple-400 hover:bg-gray-700/80 transition-all group cursor-pointer h-full flex flex-col">
                   <Icon name="Lightbulb" size={32} className="text-purple-400 mb-3 group-hover:scale-110 transition-transform" />
                   <h4 className="text-white font-semibold mb-2 group-hover:text-purple-400 transition-colors">Теории фанатов</h4>
-                  <p className="text-gray-400 text-sm">Разгадывай загадки сериала</p>
+                  <p className="text-gray-400 text-sm flex-grow">Разгадывай загадки сериала</p>
                 </Card>
               </Link>
-              <Link to="/characters">
-                <Card className="bg-gray-800/50 border-cyan-500/30 p-6 hover:border-cyan-400 transition-all group cursor-pointer">
+              <Link to="/characters" className="h-full">
+                <Card className="bg-gray-800/80 border-cyan-500/30 p-6 hover:border-cyan-400 hover:bg-gray-700/80 transition-all group cursor-pointer h-full flex flex-col">
                   <Icon name="Users" size={32} className="text-cyan-400 mb-3 group-hover:scale-110 transition-transform" />
                   <h4 className="text-white font-semibold mb-2 group-hover:text-cyan-400 transition-colors">Персонажи</h4>
-                  <p className="text-gray-400 text-sm">Узнай больше о героях</p>
+                  <p className="text-gray-400 text-sm flex-grow">Узнай больше о героях</p>
                 </Card>
               </Link>
             </div>
