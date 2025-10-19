@@ -77,33 +77,35 @@ const Breadcrumbs = () => {
   }, [location.pathname]);
 
   return (
-    <nav className="container mx-auto px-4 py-4" aria-label="Навигационная цепочка">
-      <ol className="flex items-center gap-2 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
-        {breadcrumbs.map((crumb, index) => (
-          <li key={crumb.path} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            {index > 0 && (
-              <Icon name="ChevronRight" size={16} className="text-gray-500" />
-            )}
-            {index === breadcrumbs.length - 1 ? (
-              <>
-                <span className="text-cyan-400 font-medium" itemProp="name">{crumb.label}</span>
-                <meta itemProp="position" content={String(index + 1)} />
-              </>
-            ) : (
-              <>
-                <Link 
-                  to={crumb.path} 
-                  className="text-gray-400 hover:text-cyan-400 transition-colors"
-                  itemProp="item"
-                >
-                  <span itemProp="name">{crumb.label}</span>
-                </Link>
-                <meta itemProp="position" content={String(index + 1)} />
-              </>
-            )}
-          </li>
-        ))}
-      </ol>
+    <nav className="bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/50" aria-label="Навигационная цепочка">
+      <div className="container mx-auto px-4 py-3">
+        <ol className="flex items-center gap-2 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
+          {breadcrumbs.map((crumb, index) => (
+            <li key={crumb.path} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+              {index > 0 && (
+                <Icon name="ChevronRight" size={16} className="text-gray-500" />
+              )}
+              {index === breadcrumbs.length - 1 ? (
+                <>
+                  <span className="text-cyan-400 font-semibold" itemProp="name">{crumb.label}</span>
+                  <meta itemProp="position" content={String(index + 1)} />
+                </>
+              ) : (
+                <>
+                  <Link 
+                    to={crumb.path} 
+                    className="text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+                    itemProp="item"
+                  >
+                    <span itemProp="name">{crumb.label}</span>
+                  </Link>
+                  <meta itemProp="position" content={String(index + 1)} />
+                </>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
     </nav>
   );
 };
