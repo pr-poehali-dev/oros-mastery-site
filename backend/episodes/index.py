@@ -62,8 +62,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'episode': row[3],
                     'description': row[4],
                     'image': row[5],
-                    'airDate': row[6],
-                    'videoIframe': row[7] if len(row) > 7 else None
+                    'airDate': row[6] if row[6] else '',
+                    'videoIframe': row[7] if len(row) > 7 and row[7] else ''
                 })
             
             return {
