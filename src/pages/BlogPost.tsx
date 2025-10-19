@@ -8,6 +8,7 @@ import Comments from '@/components/Comments';
 import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import ShareButtons from '@/components/ShareButtons';
 import { generateSlug } from '@/utils/slugify';
@@ -54,6 +55,7 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <div className="py-20">
       <SEO
         title={article.title}

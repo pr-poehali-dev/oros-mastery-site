@@ -18,6 +18,7 @@ const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([{ id: 'all', name: 'Все статьи', icon: 'FileText' }]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,6 +30,31 @@ const Blog = () => {
       const response = await fetch(BLOG_API);
       const data = await response.json();
       setBlogPosts(data);
+      
+      const uniqueCategories = Array.from(new Set(data.map((post: any) => post.category).filter(Boolean)));
+      const categoryMap: Record<string, { name: string; icon: string }> = {
+        'episodes': { name: 'Эпизоды', icon: 'Play' },
+        'theory': { name: 'Теории', icon: 'Lightbulb' },
+        'Анализ': { name: 'Анализ', icon: 'Search' },
+        'Теории': { name: 'Теории', icon: 'Lightbulb' },
+        'Персонажи': { name: 'Персонажи', icon: 'Users' },
+        'Пасхалки': { name: 'Пасхалки', icon: 'Eye' },
+        'Философия': { name: 'Философия', icon: 'Brain' },
+        'characters': { name: 'Персонажи', icon: 'Users' },
+        'easter-eggs': { name: 'Пасхалки', icon: 'Eye' },
+        'technology': { name: 'Технологии', icon: 'Cpu' },
+        'quotes': { name: 'Цитаты', icon: 'Quote' },
+        'music': { name: 'Музыка', icon: 'Music' },
+        'philosophy': { name: 'Философия', icon: 'Brain' }
+      };
+      
+      const dynamicCategories = uniqueCategories.map((cat: any) => ({
+        id: cat,
+        name: categoryMap[cat]?.name || cat,
+        icon: categoryMap[cat]?.icon || 'FileText'
+      }));
+      
+      setCategories([{ id: 'all', name: 'Все статьи', icon: 'FileText' }, ...dynamicCategories]);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     } finally {
@@ -138,17 +164,7 @@ const Blog = () => {
     }
   ];
 
-  const categories = [
-    { id: 'all', name: 'Все статьи', icon: 'FileText' },
-    { id: 'episodes', name: 'Эпизоды', icon: 'Play' },
-    { id: 'theory', name: 'Теории', icon: 'Lightbulb' },
-    { id: 'characters', name: 'Персонажи', icon: 'Users' },
-    { id: 'easter-eggs', name: 'Пасхалки', icon: 'Eye' },
-    { id: 'technology', name: 'Технологии', icon: 'Cpu' },
-    { id: 'quotes', name: 'Цитаты', icon: 'Quote' },
-    { id: 'music', name: 'Музыка', icon: 'Music' },
-    { id: 'philosophy', name: 'Философия', icon: 'Brain' }
-  ];
+
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;

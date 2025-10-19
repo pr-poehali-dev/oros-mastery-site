@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import { generateSlug } from '@/utils/slugify';
 
@@ -135,6 +136,7 @@ const EpisodeDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <SEO
         title={`${episode.title} - S${episode.season}E${episode.episode}`}
         description={episode.description}
