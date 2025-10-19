@@ -211,8 +211,8 @@ const TheoryDetail = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <Card className="p-8 bg-gray-800/80 border-gray-700">
-              <h2 className="text-2xl font-bold mb-6">Описание теории</h2>
-              <div className="prose prose-invert max-w-none">
+              <h2 className="text-2xl font-bold mb-6 text-gray-100">Описание теории</h2>
+              <div className="prose prose-invert max-w-none prose-headings:text-gray-100">
                 {theory.fullText.split('\n').map((paragraph, index) => (
                   paragraph.trim() && <p key={index} className="mb-4 text-gray-100 leading-relaxed text-base">{paragraph}</p>
                 ))}
@@ -220,7 +220,7 @@ const TheoryDetail = () => {
             </Card>
 
             <Card className="p-6 bg-gray-800/80 border-purple-700/50">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-gray-100">
                 <Icon name="CheckCircle" size={28} className="text-purple-400" />
                 Доказательства
               </h2>
@@ -235,7 +235,7 @@ const TheoryDetail = () => {
             </Card>
 
             <Card className="p-6 bg-gray-800/80 border-pink-700/50">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-gray-100">
                 <Icon name="XCircle" size={28} className="text-pink-400" />
                 Контраргументы
               </h2>
@@ -254,57 +254,68 @@ const TheoryDetail = () => {
 
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              <Card className="p-6 bg-gray-800 border-gray-700">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <Icon name="Film" size={24} className="text-purple-400" />
-                  Связанные эпизоды
-                </h3>
-                <ul className="space-y-2">
-                  {theory.relatedEpisodes.map((episode, index) => (
-                    <li key={index} className="text-gray-300 hover:text-purple-400 transition-colors cursor-pointer">
-                      • {episode}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-
-              <Card className="p-6 bg-gray-800 border-gray-700">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <Icon name="Users" size={24} className="text-purple-400" />
-                  Связанные персонажи
-                </h3>
-                <ul className="space-y-2">
-                  {theory.relatedCharacters.map((character, index) => (
-                    <li key={index} className="text-gray-300 hover:text-purple-400 transition-colors cursor-pointer">
-                      • {character}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-
-              <Card className="p-6 bg-gray-800/80 border-gray-700">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <Icon name="TrendingUp" size={24} className="text-purple-400" />
-                  Статистика
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Уровень влияния:</span>
-                    <span className="font-semibold text-purple-300">{theory.impactLevel}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Голосов:</span>
-                    <span className="font-semibold text-purple-300">{theory.votes.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Категория:</span>
-                    <span className="font-semibold text-purple-300">{theory.category}</span>
-                  </div>
+              <Card className="bg-gradient-to-br from-purple-900/60 via-indigo-900/60 to-blue-900/60 backdrop-blur-sm border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-purple-200">
+                    <Icon name="Film" size={24} />
+                    Связанные эпизоды
+                  </h3>
+                  <ul className="space-y-2">
+                    {theory.relatedEpisodes.map((episode, index) => (
+                      <Link key={index} to="/episodes" className="block group">
+                        <li className="text-gray-300 group-hover:text-purple-300 transition-colors p-2 rounded hover:bg-white/5">
+                          • {episode}
+                        </li>
+                      </Link>
+                    ))}
+                  </ul>
                 </div>
               </Card>
 
-              <Card className="p-6 bg-gray-800/80 border-gray-700">
-                <h3 className="text-xl font-bold mb-4">Действия</h3>
+              <Card className="bg-gradient-to-br from-pink-900/60 via-purple-900/60 to-indigo-900/60 backdrop-blur-sm border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-pink-200">
+                    <Icon name="Users" size={24} />
+                    Связанные персонажи
+                  </h3>
+                  <ul className="space-y-2">
+                    {theory.relatedCharacters.map((character, index) => (
+                      <Link key={index} to="/characters" className="block group">
+                        <li className="text-gray-300 group-hover:text-pink-300 transition-colors p-2 rounded hover:bg-white/5">
+                          • {character}
+                        </li>
+                      </Link>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-indigo-900/60 via-blue-900/60 to-cyan-900/60 backdrop-blur-sm border-indigo-500/30 hover:border-indigo-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-indigo-200">
+                    <Icon name="TrendingUp" size={24} />
+                    Статистика
+                  </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Уровень влияния:</span>
+                    <span className="font-semibold text-indigo-300">{theory.impactLevel}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Голосов:</span>
+                    <span className="font-semibold text-indigo-300">{theory.votes.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Категория:</span>
+                    <span className="font-semibold text-indigo-300">{theory.category}</span>
+                  </div>
+                </div>
+                </div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-cyan-900/60 via-teal-900/60 to-emerald-900/60 backdrop-blur-sm border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-4 text-cyan-200">Действия</h3>
                 <div className="space-y-3">
                   <Button 
                     variant="outline" 
@@ -330,6 +341,7 @@ const TheoryDetail = () => {
                     <Icon name="Flag" size={18} className="mr-2" />
                     Пожаловаться
                   </Button>
+                </div>
                 </div>
               </Card>
             </div>
