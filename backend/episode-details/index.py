@@ -52,7 +52,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 }
             
             cur.execute(
-                "SELECT id, title, season, episode, description, image, air_date FROM episodes WHERE id = " + str(int(episode_id))
+                "SELECT id, title, season, episode, description, image, air_date, video_iframe FROM episodes WHERE id = " + str(int(episode_id))
             )
             row = cur.fetchone()
             
@@ -70,7 +70,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'episode': row[3],
                 'description': row[4],
                 'image': row[5],
-                'airDate': row[6]
+                'airDate': row[6] if row[6] else '',
+                'videoIframe': row[7] if len(row) > 7 and row[7] else ''
             }
             
             cur.execute(
