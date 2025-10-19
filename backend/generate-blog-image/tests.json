@@ -1,0 +1,17 @@
+{
+  "tests": [
+    {
+      "name": "Generate blog image",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "title": "Test Blog Article"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "imageUrl": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
