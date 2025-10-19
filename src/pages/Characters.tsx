@@ -282,13 +282,15 @@ const Characters = () => {
               <CardContent>
                 <p className="text-gray-300 text-sm mb-4">{character.description}</p>
                 
-                <div className="flex flex-wrap gap-2">
-                  {character.personality.map((trait, idx) => (
-                    <Badge key={idx} variant="outline" className="border-cyan-500/30 text-cyan-300 text-xs">
-                      {trait}
-                    </Badge>
-                  ))}
-                </div>
+                {character.personality && character.personality.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {character.personality.map((trait, idx) => (
+                      <Badge key={idx} variant="outline" className="border-cyan-500/30 text-cyan-300 text-xs">
+                        {trait}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
