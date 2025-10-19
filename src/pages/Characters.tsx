@@ -160,9 +160,9 @@ const Characters = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Персонажи"
-        description="Познакомьтесь со всеми персонажами Rick and Morty. Рик, Морти, Саммер, семья Смитов и другие герои сериала."
-        keywords="Rick and Morty персонажи, Рик Санчез, Морти Смит, герои, инопланетяне"
+        title="Персонажи Rick and Morty - Полный каталог героев"
+        description="Познакомьтесь со всеми персонажами Rick and Morty. Рик, Морти, Саммер, семья Смитов и другие герои сериала. Биографии, описания и факты о персонажах."
+        keywords="Rick and Morty персонажи, Рик Санчез, Морти Смит, герои, инопланетяне, персонажи Рик и Морти, биографии героев, все персонажи"
       />
       
       <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-to-br from-cyan-600 via-blue-500 to-purple-600">

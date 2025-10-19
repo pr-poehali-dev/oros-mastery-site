@@ -53,9 +53,9 @@ const Episodes = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Эпизоды"
-        description="Все эпизоды Rick and Morty с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала."
-        keywords="Rick and Morty эпизоды, все серии, сезоны, смотреть онлайн, описание эпизодов"
+        title="Эпизоды Rick and Morty - Полный каталог всех сезонов"
+        description="Все эпизоды Rick and Morty с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала. Полный каталог всех серий и сезонов."
+        keywords="Rick and Morty эпизоды, все серии, сезоны, смотреть онлайн, описание эпизодов, каталог серий Рик и Морти, рейтинги эпизодов"
       />
       
       <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-to-br from-cyan-600 via-green-500 to-blue-600">

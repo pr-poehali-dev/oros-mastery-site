@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,11 +7,13 @@ import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import EditableContent from '@/components/EditableContent';
+import CommentSection from '@/components/CommentSection';
 
 const UniverseDetail = () => {
   const { id } = useParams();
 
-  const universes = [
+  const universesData = [
     {
       id: 1,
       dimension: 'C-137',
@@ -85,7 +88,11 @@ const UniverseDetail = () => {
     }
   ];
 
-  const universe = universes.find(u => u.id === Number(id)) || universes[0];
+  const [universe, setUniverse] = useState(universesData.find(u => u.id === Number(id)) || universesData[0]);
+
+  const handleContentSave = (newContent: string) => {
+    setUniverse({ ...universe, fullDescription: newContent });
+  };
 
   const getDangerColor = (danger: string) => {
     switch (danger) {
@@ -101,10 +108,11 @@ const UniverseDetail = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title={`${universe.name} - ${universe.dimension}`}
+        title={`${universe.name} - ${universe.dimension} | Rick and Morty`}
         description={universe.description}
         image={universe.image}
-        keywords={`Rick and Morty, ${universe.dimension}, ${universe.name}, вселенная, измерение`}
+        keywords={`Rick and Morty, ${universe.dimension}, ${universe.name}, вселенная, измерение, мультивселенная`}
+        ogType="article"
       />
 
       <div className="relative h-96 overflow-hidden">
@@ -147,53 +155,15 @@ const UniverseDetail = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-3xl text-white flex items-center gap-3">
-                  <Icon name="BookOpen" size={28} className="text-cyan-400" />
-                  Подробное описание
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="prose prose-invert max-w-none">
-                <div className="text-gray-300 leading-relaxed space-y-4">
-                  {universe.fullDescription.split('\n\n').map((paragraph, idx) => {
-                    if (paragraph.startsWith('##')) {
-                      return (
-                        <h2 key={idx} className="text-2xl font-bold text-cyan-400 mt-8 mb-4">
-                          {paragraph.replace('## ', '')}
-                        </h2>
-                      );
-                    }
-                    if (paragraph.startsWith('-')) {
-                      const items = paragraph.split('\n').filter(item => item.startsWith('-'));
-                      return (
-                        <ul key={idx} className="space-y-2 ml-4">
-                          {items.map((item, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Icon name="Check" size={16} className="text-green-400 mt-1 flex-shrink-0" />
-                              <span>{item.replace(/^- \*\*(.+?)\*\*:/, '<strong>$1</strong>:').replace(/\*\*(.+?)\*\*/g, '$1')}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      );
-                    }
-                    if (paragraph.match(/^\d\./)) {
-                      const items = paragraph.split('\n').filter(item => item.match(/^\d\./));
-                      return (
-                        <ol key={idx} className="space-y-2 ml-4 list-decimal">
-                          {items.map((item, i) => (
-                            <li key={i} className="text-gray-300">
-                              {item.replace(/^\d\. \*\*(.+?)\*\*:/, '$1:').replace(/\*\*(.+?)\*\*/g, '$1')}
-                            </li>
-                          ))}
-                        </ol>
-                      );
-                    }
-                    return <p key={idx} className="text-gray-300">{paragraph}</p>;
-                  })}
-                </div>
-              </CardContent>
+            <Card className="bg-gray-800/50 border-gray-700 p-8">
+              <EditableContent
+                content={universe.fullDescription}
+                onSave={handleContentSave}
+                title="Подробное описание"
+              />
             </Card>
+
+            <CommentSection entityType="universe" entityId={universe.id} />
           </div>
 
           <div className="space-y-6">

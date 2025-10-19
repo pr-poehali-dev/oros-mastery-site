@@ -6,7 +6,7 @@ interface SEOProps {
   keywords?: string;
   image?: string;
   url?: string;
-  type?: 'website' | 'article';
+  ogType?: 'website' | 'article';
   author?: string;
   publishedTime?: string;
 }
@@ -17,10 +17,11 @@ const SEO = ({
   keywords = 'Рик и Морти, Rick and Morty, эпизоды, блог, теории, анализ, мультсериал',
   image = 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg',
   url = window.location.href,
-  type = 'website',
+  ogType = 'website',
   author,
   publishedTime
 }: SEOProps) => {
+  const type = ogType;
   useEffect(() => {
     document.title = `${title} | Rick and Morty Fan Site`;
     

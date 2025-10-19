@@ -184,9 +184,9 @@ const Theories = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Теории"
-        description="Фанатские теории о Rick and Morty. Злой Морти, мультивселенная, тайны персонажей и научные концепции сериала."
-        keywords="Rick and Morty теории, фанатские теории, Злой Морти, мультивселенная, анализ"
+        title="Теории Rick and Morty - Фанатские теории и анализ"
+        description="Фанатские теории о Rick and Morty. Злой Морти, мультивселенная, тайны персонажей и научные концепции сериала. Полный каталог теорий с доказательствами."
+        keywords="Rick and Morty теории, фанатские теории, Злой Морти, мультивселенная, анализ, теории Рик и Морти, разбор сериала, фан-теории"
       />
       
       <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-to-br from-green-600 via-cyan-500 to-blue-600">

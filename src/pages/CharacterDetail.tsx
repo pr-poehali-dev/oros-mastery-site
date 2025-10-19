@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,11 +7,13 @@ import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import EditableContent from '@/components/EditableContent';
+import CommentSection from '@/components/CommentSection';
 
 const CharacterDetail = () => {
   const { id } = useParams();
 
-  const characters = [
+  const charactersData = [
     {
       id: 1,
       name: 'Рик Санчез',
@@ -110,16 +113,21 @@ const CharacterDetail = () => {
     }
   ];
 
-  const character = characters.find(c => c.id === Number(id)) || characters[0];
+  const [character, setCharacter] = useState(charactersData.find(c => c.id === Number(id)) || charactersData[0]);
+
+  const handleContentSave = (newContent: string) => {
+    setCharacter({ ...character, fullBio: newContent });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title={character.name}
+        title={`${character.name} - Персонаж Rick and Morty`}
         description={`${character.name} - ${character.occupation}. ${character.fullBio.substring(0, 150)}...`}
         image={character.image}
-        keywords={`Rick and Morty, ${character.name}, персонаж, ${character.origin}`}
+        keywords={`Rick and Morty, ${character.name}, персонаж, ${character.origin}, ${character.species}, биография персонажа`}
+        ogType="article"
       />
 
       <div className="relative h-96 overflow-hidden">
@@ -161,48 +169,15 @@ const CharacterDetail = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-3xl text-white flex items-center gap-3">
-                  <Icon name="BookOpen" size={28} className="text-cyan-400" />
-                  Биография
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="prose prose-invert max-w-none">
-                <div className="text-gray-300 leading-relaxed space-y-4">
-                  {character.fullBio.split('\n\n').map((paragraph, idx) => {
-                    if (paragraph.startsWith('##')) {
-                      return (
-                        <h2 key={idx} className="text-2xl font-bold text-cyan-400 mt-8 mb-4">
-                          {paragraph.replace('## ', '')}
-                        </h2>
-                      );
-                    }
-                    if (paragraph.startsWith('###')) {
-                      return (
-                        <h3 key={idx} className="text-xl font-semibold text-cyan-300 mt-6 mb-3">
-                          {paragraph.replace('### ', '')}
-                        </h3>
-                      );
-                    }
-                    if (paragraph.startsWith('-')) {
-                      const items = paragraph.split('\n').filter(item => item.startsWith('-'));
-                      return (
-                        <ul key={idx} className="space-y-2 ml-4">
-                          {items.map((item, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Icon name="Check" size={16} className="text-green-400 mt-1 flex-shrink-0" />
-                              <span>{item.replace('- ', '')}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      );
-                    }
-                    return <p key={idx} className="text-gray-300">{paragraph}</p>;
-                  })}
-                </div>
-              </CardContent>
+            <Card className="bg-gray-800/50 border-gray-700 p-8">
+              <EditableContent
+                content={character.fullBio}
+                onSave={handleContentSave}
+                title="Биография"
+              />
             </Card>
+
+            <CommentSection entityType="character" entityId={character.id} />
           </div>
 
           <div className="space-y-6">
