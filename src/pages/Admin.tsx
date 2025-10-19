@@ -17,6 +17,7 @@ import PlaceholderTab from '@/components/admin/PlaceholderTab';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -39,7 +40,40 @@ const Admin = () => {
 
   useEffect(() => {
     fetchEpisodes();
+    fetchUniverses();
+    fetchCharacters();
+    fetchTheories();
   }, []);
+
+  const fetchUniverses = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=universes`);
+      const data = await response.json();
+      setUniverses(data);
+    } catch (error) {
+      console.error('Error fetching universes:', error);
+    }
+  };
+
+  const fetchCharacters = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=characters`);
+      const data = await response.json();
+      setCharacters(data);
+    } catch (error) {
+      console.error('Error fetching characters:', error);
+    }
+  };
+
+  const fetchTheories = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=theories`);
+      const data = await response.json();
+      setTheories(data);
+    } catch (error) {
+      console.error('Error fetching theories:', error);
+    }
+  };
 
   const fetchEpisodes = async () => {
     try {
@@ -115,46 +149,94 @@ const Admin = () => {
 
   const handleUniverseSubmit = async (formData: UniverseFormData, isEdit: boolean) => {
     try {
-      alert(isEdit ? 'Функция редактирования вселенной готова!' : 'Функция добавления вселенной готова!');
+      const method = isEdit ? 'PUT' : 'POST';
+      const url = isEdit ? `${CONTENT_API}?type=universes&id=${formData.id}` : `${CONTENT_API}?type=universes`;
+      
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      fetchUniverses();
       setEditingUniverse(null);
+      alert(isEdit ? 'Вселенная успешно обновлена!' : 'Вселенная успешно добавлена!');
     } catch (error) {
       console.error('Error saving universe:', error);
+      alert('Ошибка при сохранении вселенной');
     }
   };
 
   const handleDeleteUniverse = async (id: number) => {
     if (confirm('Вы уверены, что хотите удалить эту вселенную?')) {
-      alert('Функция удаления вселенной готова!');
+      try {
+        await fetch(`${CONTENT_API}?type=universes&id=${id}`, { method: 'DELETE' });
+        fetchUniverses();
+      } catch (error) {
+        console.error('Error deleting universe:', error);
+      }
     }
   };
 
   const handleCharacterSubmit = async (formData: CharacterFormData, isEdit: boolean) => {
     try {
-      alert(isEdit ? 'Функция редактирования персонажа готова!' : 'Функция добавления персонажа готова!');
+      const method = isEdit ? 'PUT' : 'POST';
+      const url = isEdit ? `${CONTENT_API}?type=characters&id=${formData.id}` : `${CONTENT_API}?type=characters`;
+      
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      fetchCharacters();
       setEditingCharacter(null);
+      alert(isEdit ? 'Персонаж успешно обновлён!' : 'Персонаж успешно добавлен!');
     } catch (error) {
       console.error('Error saving character:', error);
+      alert('Ошибка при сохранении персонажа');
     }
   };
 
   const handleDeleteCharacter = async (id: number) => {
     if (confirm('Вы уверены, что хотите удалить этого персонажа?')) {
-      alert('Функция удаления персонажа готова!');
+      try {
+        await fetch(`${CONTENT_API}?type=characters&id=${id}`, { method: 'DELETE' });
+        fetchCharacters();
+      } catch (error) {
+        console.error('Error deleting character:', error);
+      }
     }
   };
 
   const handleTheorySubmit = async (formData: TheoryFormData, isEdit: boolean) => {
     try {
-      alert(isEdit ? 'Функция редактирования теории готова!' : 'Функция добавления теории готова!');
+      const method = isEdit ? 'PUT' : 'POST';
+      const url = isEdit ? `${CONTENT_API}?type=theories&id=${formData.id}` : `${CONTENT_API}?type=theories`;
+      
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      fetchTheories();
       setEditingTheory(null);
+      alert(isEdit ? 'Теория успешно обновлена!' : 'Теория успешно добавлена!');
     } catch (error) {
       console.error('Error saving theory:', error);
+      alert('Ошибка при сохранении теории');
     }
   };
 
   const handleDeleteTheory = async (id: number) => {
     if (confirm('Вы уверены, что хотите удалить эту теорию?')) {
-      alert('Функция удаления теории готова!');
+      try {
+        await fetch(`${CONTENT_API}?type=theories&id=${id}`, { method: 'DELETE' });
+        fetchTheories();
+      } catch (error) {
+        console.error('Error deleting theory:', error);
+      }
     }
   };
 

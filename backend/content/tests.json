@@ -1,0 +1,42 @@
+{
+  "tests": [
+    {
+      "name": "GET all universes",
+      "method": "GET",
+      "path": "/?type=universes",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET all characters",
+      "method": "GET",
+      "path": "/?type=characters",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET all theories",
+      "method": "GET",
+      "path": "/?type=theories",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST create universe",
+      "method": "POST",
+      "path": "/?type=universes",
+      "body": {
+        "name": "Test Universe",
+        "description": "Test description",
+        "image": "https://example.com/img.jpg",
+        "status": "Active",
+        "features": "Feature 1, Feature 2"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "message": "Universe created"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
