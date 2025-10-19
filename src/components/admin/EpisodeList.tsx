@@ -27,7 +27,7 @@ const EpisodeList = ({ episodes, onDelete }: EpisodeListProps) => {
           <Icon name="List" size={24} className="text-cyan-400" />
           Список эпизодов
         </CardTitle>
-        <CardDescription className="text-gray-400">
+        <CardDescription className="text-gray-300">
           Всего эпизодов: {episodes.length}
         </CardDescription>
       </CardHeader>
@@ -46,8 +46,8 @@ const EpisodeList = ({ episodes, onDelete }: EpisodeListProps) => {
                     </Badge>
                     <h3 className="text-white font-semibold">{episode.title}</h3>
                   </div>
-                  <p className="text-gray-400 text-sm mb-2">{episode.description}</p>
-                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                  <p className="text-gray-300 text-sm mb-2">{episode.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-gray-300">
                     <span className="flex items-center gap-1">
                       <Icon name="Calendar" size={14} />
                       {episode.airDate}

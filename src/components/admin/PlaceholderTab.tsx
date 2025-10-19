@@ -16,7 +16,7 @@ const PlaceholderTab = ({ title, description, iconName, color }: PlaceholderTabP
           <Icon name={iconName as any} size={24} className={`text-${color}-400`} />
           {title}
         </CardTitle>
-        <CardDescription className="text-gray-400">
+        <CardDescription className="text-gray-300">
           {description}
         </CardDescription>
       </CardHeader>
@@ -25,8 +25,8 @@ const PlaceholderTab = ({ title, description, iconName, color }: PlaceholderTabP
           <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-${color}-500/20 mb-4`}>
             <Icon name="Construction" size={32} className={`text-${color}-400`} />
           </div>
-          <p className="text-gray-400 mb-2">Раздел в разработке</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-gray-300 mb-2">Раздел в разработке</p>
+          <p className="text-sm text-gray-300">
             Функционал управления {title.toLowerCase()} будет добавлен позже
           </p>
         </div>

@@ -103,7 +103,7 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               size="lg" 
-              className="bg-green-400 text-gray-900 hover:bg-green-300 text-lg px-8 py-6 h-auto font-bold shadow-2xl transform hover:scale-105 transition-all"
+              className="bg-green-400 text-gray-900 hover:bg-green-500 hover:text-white text-lg px-8 py-6 h-auto font-bold shadow-2xl transform hover:scale-105 transition-all"
               onClick={() => document.getElementById('episodes')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Icon name="Play" className="mr-2" size={20} />
@@ -113,7 +113,7 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 text-lg px-8 py-6 h-auto font-bold backdrop-blur-sm transform hover:scale-105 transition-all"
+              className="bg-transparent border-2 border-white text-white hover:bg-white/10 hover:border-green-400 text-lg px-8 py-6 h-auto font-bold backdrop-blur-sm transform hover:scale-105 transition-all"
               onClick={() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Icon name="BookOpen" className="mr-2" size={20} />
@@ -155,7 +155,7 @@ const Index = () => {
           <div className="text-center mb-12 animate-fade-in">
             <Badge className="mb-4 bg-green-400/20 text-green-400 border-green-400">Все серии</Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Каталог эпизодов</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Выбери сезон и начни просмотр прямо сейчас
             </p>
           </div>
@@ -200,7 +200,7 @@ const Index = () => {
                       <CardTitle className="text-white group-hover:text-green-400 transition-colors">
                         {episode.title}
                       </CardTitle>
-                      <CardDescription className="flex items-center justify-between text-gray-400">
+                      <CardDescription className="flex items-center justify-between text-gray-300">
                         <span className="flex items-center gap-1">
                           <Icon name="Clock" size={14} />
                           {episode.duration}
@@ -224,7 +224,7 @@ const Index = () => {
           <div className="text-center mb-12 animate-fade-in">
             <Badge className="mb-4 bg-cyan-400/20 text-cyan-400 border-cyan-400">Блог</Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Статьи и теории</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Глубокий разбор сериала, теории фанатов и интересные факты
             </p>
           </div>
@@ -256,13 +256,13 @@ const Index = () => {
                   <CardTitle className="text-xl text-white group-hover:text-cyan-400 transition-colors mb-2">
                     {post.title}
                   </CardTitle>
-                  <CardDescription className="text-gray-400 leading-relaxed mb-4">
+                  <CardDescription className="text-gray-300 leading-relaxed mb-4">
                     {post.excerpt}
                   </CardDescription>
                 </CardHeader>
 
                 <CardContent className="mt-auto">
-                  <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                  <div className="flex items-center justify-between text-sm text-gray-300 mb-4">
                     <div className="flex items-center gap-2">
                       <Icon name="User" size={14} />
                       <span>{post.author}</span>

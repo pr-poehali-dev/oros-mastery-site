@@ -51,7 +51,7 @@ const EpisodeForm = ({ onSubmit }: EpisodeFormProps) => {
           <Icon name="Plus" size={24} className="text-cyan-400" />
           Добавить эпизод
         </CardTitle>
-        <CardDescription className="text-gray-400">
+        <CardDescription className="text-gray-300">
           Добавьте новый эпизод с видео
         </CardDescription>
       </CardHeader>

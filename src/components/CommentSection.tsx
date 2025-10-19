@@ -128,7 +128,7 @@ const CommentSection = ({ entityType, entityId }: CommentSectionProps) => {
                   </div>
                   <div>
                     <h4 className="font-bold">{comment.author}</h4>
-                    <p className="text-sm text-gray-400">{comment.date}</p>
+                    <p className="text-sm text-gray-300">{comment.date}</p>
                   </div>
                 </div>
               </div>

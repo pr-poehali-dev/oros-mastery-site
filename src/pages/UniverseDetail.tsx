@@ -176,19 +176,19 @@ const UniverseDetail = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-gray-400 text-sm mb-1">Координаты</p>
+                  <p className="text-gray-300 text-sm mb-1">Координаты</p>
                   <p className="text-white font-semibold">{universe.coordinates}</p>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm mb-1">Дата открытия</p>
+                  <p className="text-gray-300 text-sm mb-1">Дата открытия</p>
                   <p className="text-white font-semibold">{universe.discoveryDate}</p>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm mb-1">Население</p>
+                  <p className="text-gray-300 text-sm mb-1">Население</p>
                   <p className="text-white font-semibold">{universe.population}</p>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm mb-1">Технологии</p>
+                  <p className="text-gray-300 text-sm mb-1">Технологии</p>
                   <p className="text-white font-semibold">{universe.technology}</p>
                 </div>
               </CardContent>

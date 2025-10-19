@@ -32,7 +32,7 @@ const VideoPlayer = ({ url, title }: VideoPlayerProps) => {
   if (!embedUrl) {
     return (
       <div className="w-full aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-        <p className="text-gray-400">Видео недоступно</p>
+        <p className="text-gray-300">Видео недоступно</p>
       </div>
     );
   }

@@ -176,7 +176,7 @@ const Blog = () => {
 
           <div className="max-w-2xl mx-auto animate-scale-in">
             <div className="relative">
-              <Icon name="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <Icon name="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
               <Input
                 type="text"
                 placeholder="Поиск статей..."
@@ -241,7 +241,7 @@ const Blog = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
-                    <Badge className="absolute top-3 right-3 bg-cyan-400 text-gray-900 border-0">
+                    <Badge className="absolute top-3 right-3 bg-cyan-400 text-gray-800 border-0 font-semibold">
                       {post.readTime}
                     </Badge>
                   </div>

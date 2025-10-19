@@ -53,7 +53,7 @@ const Login = () => {
             <CardTitle className="text-3xl font-bold text-white mb-2">
               Вход в админ-панель
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-gray-300">
               Введите данные для доступа к управлению
             </CardDescription>
           </div>
@@ -78,7 +78,7 @@ const Login = () => {
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 required
-                className="bg-gray-700/50 border-gray-600 text-white placeholder:text-gray-500 focus:border-cyan-400 focus:ring-cyan-400"
+                className="bg-gray-700/50 border-gray-600 text-white placeholder:text-gray-300 focus:border-cyan-400 focus:ring-cyan-400"
                 disabled={isLoading}
               />
             </div>
@@ -94,7 +94,7 @@ const Login = () => {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
-                className="bg-gray-700/50 border-gray-600 text-white placeholder:text-gray-500 focus:border-cyan-400 focus:ring-cyan-400"
+                className="bg-gray-700/50 border-gray-600 text-white placeholder:text-gray-300 focus:border-cyan-400 focus:ring-cyan-400"
                 disabled={isLoading}
               />
             </div>

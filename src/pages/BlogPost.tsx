@@ -143,7 +143,7 @@ const BlogPost = () => {
             <div className="mt-12 pt-8 border-t border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm mb-2">Понравилась статья?</p>
+                  <p className="text-gray-300 text-sm mb-2">Понравилась статья?</p>
                   <Button 
                     onClick={handleLike}
                     className={liked ? "bg-red-500 hover:bg-red-600 text-white" : "bg-cyan-500 hover:bg-cyan-600 text-white"}

@@ -137,7 +137,7 @@ const Comments = ({ articleId }: CommentsProps) => {
                   placeholder="Ваше имя"
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
-                  className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
+                  className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-300"
                   maxLength={100}
                   disabled={submitting}
                 />
@@ -148,11 +148,11 @@ const Comments = ({ articleId }: CommentsProps) => {
                   placeholder="Напишите ваш комментарий..."
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
-                  className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400 min-h-[120px]"
+                  className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-300 min-h-[120px]"
                   maxLength={2000}
                   disabled={submitting}
                 />
-                <div className="text-xs text-gray-400 mt-1 text-right">
+                <div className="text-xs text-gray-300 mt-1 text-right">
                   {commentText.length}/2000
                 </div>
               </div>
@@ -192,12 +192,12 @@ const Comments = ({ articleId }: CommentsProps) => {
           {/* Список комментариев */}
           <div className="space-y-4">
             {loading ? (
-              <div className="text-center py-8 text-gray-400">
+              <div className="text-center py-8 text-gray-300">
                 <Icon name="Loader2" className="mx-auto animate-spin mb-2" size={32} />
                 <p>Загрузка комментариев...</p>
               </div>
             ) : comments.length === 0 ? (
-              <div className="text-center py-8 text-gray-400">
+              <div className="text-center py-8 text-gray-300">
                 <Icon name="MessageSquare" className="mx-auto mb-2" size={48} />
                 <p>Пока нет комментариев. Будьте первым!</p>
               </div>
@@ -216,7 +216,7 @@ const Comments = ({ articleId }: CommentsProps) => {
                         <span className="font-semibold text-white">
                           {comment.author_name}
                         </span>
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-gray-300">
                           {formatDate(comment.created_at)}
                         </span>
                       </div>

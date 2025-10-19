@@ -143,7 +143,7 @@ const EpisodeDetail = () => {
                   <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-green-500 text-white text-sm rounded-full">
                     S{episode.season}E{episode.episode}
                   </span>
-                  <span className="text-gray-400">{episode.airDate}</span>
+                  <span className="text-gray-300">{episode.airDate}</span>
                 </div>
                 <h1 className="text-4xl font-bold text-cyan-400 mb-4">{episode.title}</h1>
                 <p className="text-gray-300 text-lg leading-relaxed">{episode.description}</p>

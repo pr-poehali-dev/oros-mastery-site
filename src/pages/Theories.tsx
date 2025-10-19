@@ -211,12 +211,12 @@ const Theories = () => {
       <section className="container mx-auto px-4 py-12">
         <div className="mb-8 space-y-6">
           <div className="relative">
-            <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />
             <Input
               placeholder="Поиск теорий..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 h-14 text-lg"
+              className="pl-12 bg-gray-800 border-gray-700 text-white placeholder:text-gray-300 h-14 text-lg"
             />
           </div>
 

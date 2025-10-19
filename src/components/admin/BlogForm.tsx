@@ -48,7 +48,7 @@ const BlogForm = ({ onSubmit }: BlogFormProps) => {
           <Icon name="Plus" size={24} className="text-orange-400" />
           Добавить статью
         </CardTitle>
-        <CardDescription className="text-gray-400">
+        <CardDescription className="text-gray-300">
           Создайте новую статью для блога
         </CardDescription>
       </CardHeader>
