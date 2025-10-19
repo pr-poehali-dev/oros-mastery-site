@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import { useNavigate } from 'react-router-dom';
+import { blogPosts } from '@/data/blogData';
 
 const Index = () => {
   const navigate = useNavigate();
