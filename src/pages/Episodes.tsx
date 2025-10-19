@@ -53,10 +53,16 @@ const Episodes = () => {
 
   const displayEpisodes = episodes.length > 0 ? episodes : fallbackEpisodes;
 
+  // Получаем уникальные сезоны динамически
+  const uniqueSeasons = Array.from(new Set(displayEpisodes.map(e => e.season))).sort((a, b) => a - b);
+  
   const seasons = [
     { id: 'all', name: 'Все сезоны', count: displayEpisodes.length },
-    { id: '1', name: 'Сезон 1', count: displayEpisodes.filter(e => e.season === 1).length },
-    { id: '2', name: 'Сезон 2', count: displayEpisodes.filter(e => e.season === 2).length }
+    ...uniqueSeasons.map(season => ({
+      id: season.toString(),
+      name: `Сезон ${season}`,
+      count: displayEpisodes.filter(e => e.season === season).length
+    }))
   ];
 
   const filteredEpisodes = displayEpisodes.filter(ep => {

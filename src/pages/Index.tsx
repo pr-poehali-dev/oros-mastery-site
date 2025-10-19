@@ -41,6 +41,9 @@ const Index = () => {
     ? episodes 
     : episodes.filter(ep => ep.season === parseInt(selectedSeason));
 
+  // Получаем уникальные сезоны из загруженных эпизодов
+  const availableSeasons = Array.from(new Set(episodes.map(ep => ep.season))).sort((a, b) => a - b);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <SEO
@@ -141,12 +144,17 @@ const Index = () => {
           </div>
 
           <Tabs defaultValue="all" className="w-full max-w-6xl mx-auto mb-8" onValueChange={setSelectedSeason}>
-            <TabsList className="grid grid-cols-5 w-full max-w-2xl mx-auto bg-gray-800 mb-12">
+            <TabsList className="flex flex-wrap justify-center gap-2 w-full max-w-4xl mx-auto bg-gray-800 mb-12 p-2">
               <TabsTrigger value="all" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Все</TabsTrigger>
-              <TabsTrigger value="1" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Сезон 1</TabsTrigger>
-              <TabsTrigger value="2" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Сезон 2</TabsTrigger>
-              <TabsTrigger value="3" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Сезон 3</TabsTrigger>
-              <TabsTrigger value="4" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Сезон 4</TabsTrigger>
+              {availableSeasons.map(season => (
+                <TabsTrigger 
+                  key={season} 
+                  value={season.toString()} 
+                  className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900"
+                >
+                  Сезон {season}
+                </TabsTrigger>
+              ))}
             </TabsList>
 
             <TabsContent value={selectedSeason} className="mt-0">
