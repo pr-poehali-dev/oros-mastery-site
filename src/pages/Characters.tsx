@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { generateSlug } from '@/utils/slugify';
@@ -182,6 +183,7 @@ const Characters = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <SEO
         title="Персонажи Rick and Morty - Полный каталог героев"
         description="Познакомьтесь со всеми персонажами Rick and Morty. Рик, Морти, Саммер, семья Смитов и другие герои сериала. Биографии, описания и факты о персонажах."

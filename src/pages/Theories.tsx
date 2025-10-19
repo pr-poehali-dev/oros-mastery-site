@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 
@@ -206,6 +207,7 @@ const Theories = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <SEO
         title="Теории Rick and Morty - Фанатские теории и анализ"
         description="Фанатские теории о Rick and Morty. Злой Морти, мультивселенная, тайны персонажей и научные концепции сериала. Полный каталог теорий с доказательствами."

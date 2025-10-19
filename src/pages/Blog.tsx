@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
-import { blogPosts } from '@/data/blogData';
+import Breadcrumbs from '@/components/Breadcrumbs';
+
+const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
 import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
@@ -15,6 +17,24 @@ const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const navigate = useNavigate();
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
+  const fetchBlogPosts = async () => {
+    try {
+      const response = await fetch(BLOG_API);
+      const data = await response.json();
+      setBlogPosts(data);
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const blogPostsOld = [
     {
@@ -140,6 +160,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <SEO
         title="Блог Rick and Morty - Теории, анализ и факты"
         description="Блог о Rick and Morty - теории фанатов, анализ эпизодов, интересные факты, философские размышления и научные концепции из сериала. Глубокий разбор мультсериала."

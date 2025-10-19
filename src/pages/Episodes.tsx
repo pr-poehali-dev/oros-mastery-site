@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,16 +6,37 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { generateSlug } from '@/utils/slugify';
+
+const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 
 const Episodes = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSeason, setSelectedSeason] = useState('all');
+  const [episodes, setEpisodes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const episodes = [
+  useEffect(() => {
+    fetchEpisodes();
+  }, []);
+
+  const fetchEpisodes = async () => {
+    try {
+      const response = await fetch(EPISODES_API);
+      const data = await response.json();
+      setEpisodes(data);
+    } catch (error) {
+      console.error('Error fetching episodes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fallbackEpisodes = [
     { id: 1, season: 1, episode: 1, title: 'Pilot', rating: 8.2, airDate: '2 дек 2013', description: 'Рик переезжает к семье своей дочери и берет Морти в первое приключение.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
     { id: 2, season: 1, episode: 2, title: 'Lawnmower Dog', rating: 8.5, airDate: '9 дек 2013', description: 'Рик делает собаку Снаффлса умной, а Морти застревает во сне.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
     { id: 3, season: 1, episode: 3, title: 'Anatomy Park', rating: 8.3, airDate: '16 дек 2013', description: 'Морти попадает внутрь бездомного по имени Рубен.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
@@ -30,13 +51,15 @@ const Episodes = () => {
     { id: 12, season: 2, episode: 1, title: 'A Rickle in Time', rating: 9.2, airDate: '26 июл 2015', description: 'Время расколото на множество реальностей.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
   ];
 
+  const displayEpisodes = episodes.length > 0 ? episodes : fallbackEpisodes;
+
   const seasons = [
-    { id: 'all', name: 'Все сезоны', count: episodes.length },
-    { id: '1', name: 'Сезон 1', count: episodes.filter(e => e.season === 1).length },
-    { id: '2', name: 'Сезон 2', count: episodes.filter(e => e.season === 2).length }
+    { id: 'all', name: 'Все сезоны', count: displayEpisodes.length },
+    { id: '1', name: 'Сезон 1', count: displayEpisodes.filter(e => e.season === 1).length },
+    { id: '2', name: 'Сезон 2', count: displayEpisodes.filter(e => e.season === 2).length }
   ];
 
-  const filteredEpisodes = episodes.filter(ep => {
+  const filteredEpisodes = displayEpisodes.filter(ep => {
     const matchesSeason = selectedSeason === 'all' || ep.season === parseInt(selectedSeason);
     const matchesSearch = ep.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          ep.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -53,6 +76,7 @@ const Episodes = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <SEO
         title="Эпизоды Rick and Morty - Полный каталог всех сезонов"
         description="Все эпизоды Rick and Morty с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала. Полный каталог всех серий и сезонов."
@@ -90,6 +114,12 @@ const Episodes = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="text-cyan-400 text-xl">Загрузка эпизодов...</div>
+          </div>
+        ) : (
+          <>
         <div className="mb-8 space-y-6">
           <div className="relative">
             <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />
@@ -175,6 +205,8 @@ const Episodes = () => {
             <h3 className="text-2xl font-bold text-gray-400 mb-2">Эпизоды не найдены</h3>
             <p className="text-gray-500">Попробуйте изменить параметры поиска</p>
           </div>
+        )}
+        </>
         )}
       </section>
 

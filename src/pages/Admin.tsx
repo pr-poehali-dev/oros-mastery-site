@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation';
 import EpisodeForm, { EpisodeFormData } from '@/components/admin/EpisodeForm';
 import EpisodeList, { Episode } from '@/components/admin/EpisodeList';
 import BlogForm, { BlogFormData } from '@/components/admin/BlogForm';
+import BlogList from '@/components/admin/BlogList';
 import UniverseForm, { UniverseFormData } from '@/components/admin/UniverseForm';
 import UniverseList, { Universe } from '@/components/admin/UniverseList';
 import CharacterForm, { CharacterFormData } from '@/components/admin/CharacterForm';
@@ -30,6 +31,8 @@ const Admin = () => {
   const [editingCharacter, setEditingCharacter] = useState<Character | null>(null);
   const [theories, setTheories] = useState<Theory[]>([]);
   const [editingTheory, setEditingTheory] = useState<Theory | null>(null);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [editingBlogPost, setEditingBlogPost] = useState<any | null>(null);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -43,7 +46,18 @@ const Admin = () => {
     fetchUniverses();
     fetchCharacters();
     fetchTheories();
+    fetchBlogPosts();
   }, []);
+
+  const fetchBlogPosts = async () => {
+    try {
+      const response = await fetch(BLOG_API);
+      const data = await response.json();
+      setBlogPosts(data);
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+    }
+  };
 
   const fetchUniverses = async () => {
     try {
@@ -113,10 +127,13 @@ const Admin = () => {
     }
   };
 
-  const handleBlogSubmit = async (formData: BlogFormData) => {
+  const handleBlogSubmit = async (formData: BlogFormData, isEdit: boolean) => {
     try {
-      await fetch(BLOG_API, {
-        method: 'POST',
+      const method = isEdit ? 'PUT' : 'POST';
+      const url = isEdit ? `${BLOG_API}?id=${formData.id}` : BLOG_API;
+      
+      await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'post',
@@ -129,10 +146,12 @@ const Admin = () => {
         })
       });
 
-      alert('Статья успешно добавлена!');
+      fetchBlogPosts();
+      setEditingBlogPost(null);
+      alert(isEdit ? 'Статья успешно обновлена!' : 'Статья успешно добавлена!');
     } catch (error) {
-      console.error('Error adding blog post:', error);
-      alert('Ошибка при добавлении статьи');
+      console.error('Error saving blog post:', error);
+      alert('Ошибка при сохранении статьи');
     }
   };
 
@@ -143,6 +162,17 @@ const Admin = () => {
         fetchEpisodes();
       } catch (error) {
         console.error('Error deleting episode:', error);
+      }
+    }
+  };
+
+  const handleDeleteBlogPost = async (id: number) => {
+    if (confirm('Вы уверены, что хотите удалить эту статью?')) {
+      try {
+        await fetch(`${BLOG_API}?id=${id}`, { method: 'DELETE' });
+        fetchBlogPosts();
+      } catch (error) {
+        console.error('Error deleting blog post:', error);
       }
     }
   };
@@ -378,8 +408,17 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="blog">
-            <div className="max-w-3xl mx-auto">
-              <BlogForm onSubmit={handleBlogSubmit} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <BlogForm 
+                onSubmit={handleBlogSubmit}
+                initialData={editingBlogPost}
+                onCancel={() => setEditingBlogPost(null)}
+              />
+              <BlogList 
+                posts={blogPosts}
+                onDelete={handleDeleteBlogPost}
+                onEdit={(post) => setEditingBlogPost(post)}
+              />
             </div>
           </TabsContent>
         </Tabs>

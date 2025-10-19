@@ -6,10 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 
 interface BlogFormProps {
-  onSubmit: (formData: BlogFormData) => Promise<void>;
+  onSubmit: (formData: BlogFormData, isEdit: boolean) => Promise<void>;
+  initialData?: BlogFormData | null;
+  onCancel?: () => void;
 }
 
 export interface BlogFormData {
+  id?: number;
   title: string;
   content: string;
   excerpt: string;
@@ -18,8 +21,8 @@ export interface BlogFormData {
   image: string;
 }
 
-const BlogForm = ({ onSubmit }: BlogFormProps) => {
-  const [form, setForm] = useState<BlogFormData>({
+const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
+  const [form, setForm] = useState<BlogFormData>(initialData || {
     title: '',
     content: '',
     excerpt: '',
@@ -27,29 +30,42 @@ const BlogForm = ({ onSubmit }: BlogFormProps) => {
     author: 'Админ',
     image: ''
   });
+  const [imageUrl, setImageUrl] = useState('');
+
+  const isEdit = !!initialData;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(form);
-    setForm({
-      title: '',
-      content: '',
-      excerpt: '',
-      tags: '',
-      author: 'Админ',
-      image: ''
-    });
+    await onSubmit(form, isEdit);
+    if (!isEdit) {
+      setForm({
+        title: '',
+        content: '',
+        excerpt: '',
+        tags: '',
+        author: 'Админ',
+        image: ''
+      });
+    }
+  };
+
+  const insertImage = () => {
+    if (imageUrl) {
+      const imageMarkdown = `\n![Изображение](${imageUrl})\n`;
+      setForm({ ...form, content: form.content + imageMarkdown });
+      setImageUrl('');
+    }
   };
 
   return (
     <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="text-2xl text-white flex items-center gap-2">
-          <Icon name="Plus" size={24} className="text-orange-400" />
-          Добавить статью
+          <Icon name={isEdit ? "Edit" : "Plus"} size={24} className="text-orange-400" />
+          {isEdit ? 'Редактировать статью' : 'Добавить статью'}
         </CardTitle>
         <CardDescription className="text-gray-300">
-          Создайте новую статью для блога
+          {isEdit ? 'Внесите изменения в статью' : 'Создайте новую статью для блога'}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -82,15 +98,34 @@ const BlogForm = ({ onSubmit }: BlogFormProps) => {
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Содержание *
+              Содержание * (поддерживает Markdown)
             </label>
-            <Textarea
-              placeholder="Полный текст статьи..."
-              value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              required
-              className="bg-gray-900 border-gray-700 text-white min-h-[300px]"
-            />
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <Input
+                  placeholder="URL картинки для вставки"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="bg-gray-900 border-gray-700 text-white flex-1"
+                />
+                <Button 
+                  type="button" 
+                  onClick={insertImage}
+                  className="bg-purple-500 hover:bg-purple-600"
+                >
+                  <Icon name="Image" size={16} className="mr-2" />
+                  Вставить картинку
+                </Button>
+              </div>
+              <Textarea
+                placeholder="Полный текст статьи... Используйте ![alt](url) для картинок"
+                value={form.content}
+                onChange={(e) => setForm({ ...form, content: e.target.value })}
+                required
+                className="bg-gray-900 border-gray-700 text-white min-h-[300px] font-mono text-sm"
+              />
+              <p className="text-xs text-gray-400">💡 Форматирование: **жирный**, *курсив*, # Заголовок, ![alt](url) - картинка</p>
+            </div>
           </div>
 
           <div>
@@ -130,10 +165,22 @@ const BlogForm = ({ onSubmit }: BlogFormProps) => {
             />
           </div>
 
-          <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600">
-            <Icon name="Check" size={20} className="mr-2" />
-            Опубликовать статью
-          </Button>
+          <div className="flex gap-2">
+            <Button type="submit" className="flex-1 bg-orange-500 hover:bg-orange-600">
+              <Icon name="Check" size={20} className="mr-2" />
+              {isEdit ? 'Сохранить изменения' : 'Опубликовать статью'}
+            </Button>
+            {isEdit && onCancel && (
+              <Button 
+                type="button" 
+                onClick={onCancel}
+                variant="outline"
+                className="border-gray-600 text-gray-300 hover:bg-gray-800"
+              >
+                Отмена
+              </Button>
+            )}
+          </div>
         </form>
       </CardContent>
     </Card>
