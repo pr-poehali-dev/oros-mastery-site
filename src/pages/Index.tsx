@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [selectedSeason, setSelectedSeason] = useState('all');
 
   const episodes = [
@@ -17,7 +18,9 @@ const Index = () => {
     { id: 6, season: 3, episode: 1, title: 'The Rickshank Rickdemption', duration: '22 min', rating: 9.8, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' }
   ];
 
-  const blogPosts = [
+  const blogPostsPreview = blogPosts.slice(0, 3);
+  
+  const blogPostsOld = [
     {
       id: 1,
       title: 'Топ-10 лучших эпизодов Rick and Morty',
@@ -216,7 +219,7 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {blogPosts.map((post, index) => (
+            {blogPostsPreview.map((post, index) => (
               <Card 
                 key={post.id} 
                 className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col"
@@ -267,7 +270,7 @@ const Index = () => {
 
                   <Button 
                     className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
-                    onClick={() => window.location.href = `/blog/${post.id}`}
+                    onClick={() => navigate(`/blog/${post.id}`)}
                   >
                     Читать полностью
                     <Icon name="ArrowRight" className="ml-2" size={16} />

@@ -4,12 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
+import { blogPosts } from '@/data/blogData';
+import { useNavigate } from 'react-router-dom';
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const navigate = useNavigate();
 
-  const blogPosts = [
+  const blogPostsOld = [
     {
       id: 1,
       title: 'Топ-10 лучших эпизодов Rick and Morty',
@@ -116,7 +119,11 @@ const Blog = () => {
     { id: 'episodes', name: 'Эпизоды', icon: 'Play' },
     { id: 'theory', name: 'Теории', icon: 'Lightbulb' },
     { id: 'characters', name: 'Персонажи', icon: 'Users' },
-    { id: 'easter-eggs', name: 'Пасхалки', icon: 'Eye' }
+    { id: 'easter-eggs', name: 'Пасхалки', icon: 'Eye' },
+    { id: 'technology', name: 'Технологии', icon: 'Cpu' },
+    { id: 'quotes', name: 'Цитаты', icon: 'Quote' },
+    { id: 'music', name: 'Музыка', icon: 'Music' },
+    { id: 'philosophy', name: 'Философия', icon: 'Brain' }
   ];
 
   const filteredPosts = blogPosts.filter(post => {
@@ -260,7 +267,7 @@ const Blog = () => {
 
                     <Button 
                       className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
-                      onClick={() => window.location.href = `/blog/${post.id}`}
+                      onClick={() => navigate(`/blog/${post.id}`)}
                     >
                       Читать полностью
                       <Icon name="ArrowRight" className="ml-2" size={16} />
