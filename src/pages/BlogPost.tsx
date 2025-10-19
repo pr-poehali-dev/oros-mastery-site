@@ -454,12 +454,12 @@ const BlogPost = () => {
             <CardContent className="p-8">
               <div 
                 className="prose prose-invert prose-lg max-w-none
-                  prose-headings:text-cyan-400 prose-headings:font-bold
-                  prose-h2:text-3xl prose-h2:mt-8 prose-h2:mb-4
-                  prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
-                  prose-ul:text-gray-300 prose-ul:my-4
-                  prose-li:mb-2
-                  prose-strong:text-white prose-strong:font-semibold
+                  prose-headings:text-cyan-400 prose-headings:font-extrabold
+                  prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:border-b prose-h2:border-cyan-400/30 prose-h2:pb-3
+                  prose-p:text-gray-100 prose-p:leading-relaxed prose-p:mb-5 prose-p:text-lg
+                  prose-ul:text-gray-100 prose-ul:my-4
+                  prose-li:mb-2 prose-li:text-lg
+                  prose-strong:text-cyan-300 prose-strong:font-bold
                 "
                 dangerouslySetInnerHTML={{ __html: article.content }}
               />
