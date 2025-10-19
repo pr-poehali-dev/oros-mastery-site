@@ -36,39 +36,6 @@ const Index = () => {
   };
 
   const blogPostsPreview = blogPosts.slice(0, 3);
-  
-  const blogPostsOld = [
-    {
-      id: 1,
-      title: 'Топ-10 лучших эпизодов Rick and Morty',
-      excerpt: 'Разбираем самые запоминающиеся и философские эпизоды сериала, которые заставляют задуматься о вселенной.',
-      author: 'Рик Санчез',
-      date: '15 окт 2024',
-      readTime: '5 мин',
-      image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg',
-      tags: ['Episodes', 'Top']
-    },
-    {
-      id: 2,
-      title: 'Теория мультивселенной в Rick and Morty',
-      excerpt: 'Как сериал использует концепцию бесконечных миров и что это говорит о нашей реальности.',
-      author: 'Морти Смит',
-      date: '10 окт 2024',
-      readTime: '8 мин',
-      image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg',
-      tags: ['Theory', 'Science']
-    },
-    {
-      id: 3,
-      title: 'Все пасхалки 5 сезона',
-      excerpt: 'Собрали все отсылки, скрытые детали и пасхалки из последнего сезона сериала.',
-      author: 'Саммер Смит',
-      date: '5 окт 2024',
-      readTime: '6 мин',
-      image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg',
-      tags: ['Easter Eggs', 'Season 5']
-    }
-  ];
 
   const filteredEpisodes = selectedSeason === 'all' 
     ? episodes 
