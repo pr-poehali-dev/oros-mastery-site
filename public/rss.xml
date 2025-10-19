@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  This is a redirect/reference file.
+  For the latest dynamic RSS feed generated from the database, use:
+  https://functions.poehali.dev/b693b55c-12cf-432c-a0f8-a29bd1b5deb8
+-->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rick and Morty Fan Site - Блог</title>
+    <link>https://oros-mastery-site.poehali.app/blog</link>
+    <description>Блог о Rick and Morty - теории, анализ эпизодов, интересные факты</description>
+    <language>ru</language>
+    <atom:link href="https://functions.poehali.dev/b693b55c-12cf-432c-a0f8-a29bd1b5deb8" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

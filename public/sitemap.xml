@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  This is a static fallback sitemap.
+  For the latest dynamic sitemap generated from the database, use:
+  https://functions.poehali.dev/ef8dba09-e4a9-4cda-8f1c-29b8444eea2a
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   

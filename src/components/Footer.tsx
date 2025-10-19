@@ -118,21 +118,21 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
+                <Link to="/about" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm flex items-center gap-2">
+                  <Icon name="Info" size={14} />
+                  О сайте
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm flex items-center gap-2">
+                  <Icon name="Mail" size={14} />
+                  Контакты
+                </Link>
+              </li>
+              <li>
                 <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm flex items-center gap-2">
                   <Icon name="Shield" size={14} />
                   Политика конфиденциальности
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm flex items-center gap-2">
-                  <Icon name="FileText" size={14} />
-                  Условия использования
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm flex items-center gap-2">
-                  <Icon name="Mail" size={14} />
-                  Контакты
                 </a>
               </li>
               <li>

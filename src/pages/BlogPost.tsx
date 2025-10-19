@@ -9,6 +9,7 @@ import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import ShareButtons from '@/components/ShareButtons';
 import { generateSlug } from '@/utils/slugify';
 
 const BlogPost = () => {
@@ -143,26 +144,18 @@ const BlogPost = () => {
             </div>
 
             <div className="mt-12 pt-8 border-t border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-300 text-sm mb-2">Понравилась статья?</p>
-                  <Button 
-                    onClick={handleLike}
-                    className={liked ? "bg-red-500 hover:bg-red-600 text-white" : "bg-cyan-500 hover:bg-cyan-600 text-white"}
-                  >
-                    <Icon name="Heart" size={18} className={liked ? "mr-2 fill-current" : "mr-2"} />
-                    {liked ? 'Нравится' : 'Поставить лайк'}
-                  </Button>
-                </div>
-                <div className="flex gap-3">
-                  <Button 
-                    variant="outline" 
-                    className="border-gray-600 text-gray-300 hover:bg-gray-700"
-                    onClick={handleShare}
-                  >
-                    <Icon name="Share2" size={18} className="mr-2" />
-                    Поделиться
-                  </Button>
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-300 text-sm mb-2">Понравилась статья?</p>
+                    <Button 
+                      onClick={handleLike}
+                      className={liked ? "bg-red-500 hover:bg-red-600 text-white" : "bg-cyan-500 hover:bg-cyan-600 text-white"}
+                    >
+                      <Icon name="Heart" size={18} className={liked ? "mr-2 fill-current" : "mr-2"} />
+                      {liked ? 'Нравится' : 'Поставить лайк'}
+                    </Button>
+                  </div>
                   <Button 
                     variant="outline" 
                     className={bookmarked ? "border-cyan-500 text-cyan-400 hover:bg-cyan-500/10" : "border-gray-600 text-gray-300 hover:bg-gray-700"}
@@ -171,6 +164,11 @@ const BlogPost = () => {
                     <Icon name="Bookmark" size={18} className={bookmarked ? "fill-current" : ""} />
                   </Button>
                 </div>
+                
+                <ShareButtons 
+                  title={article.title} 
+                  excerpt={article.excerpt}
+                />
               </div>
             </div>
           </CardContent>

@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import { useEffect } from 'react';
 
 interface BreadcrumbItem {
   label: string;
@@ -21,7 +22,9 @@ const Breadcrumbs = () => {
     'character': 'Персонаж',
     'theory': 'Теория',
     'episode': 'Эпизод',
-    'post': 'Статья'
+    'post': 'Статья',
+    'about': 'О сайте',
+    'contact': 'Контакты'
   };
 
   if (pathnames.length === 0) {
@@ -41,23 +44,59 @@ const Breadcrumbs = () => {
     }
   });
 
+  useEffect(() => {
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': breadcrumbs.map((item, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'name': item.label,
+        'item': `${window.location.origin}${item.path}`
+      }))
+    };
+
+    let scriptTag = document.querySelector('script[data-breadcrumb-schema="true"]');
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.setAttribute('type', 'application/ld+json');
+      scriptTag.setAttribute('data-breadcrumb-schema', 'true');
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify(structuredData);
+
+    return () => {
+      const existingScript = document.querySelector('script[data-breadcrumb-schema="true"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [location.pathname]);
+
   return (
-    <nav className="container mx-auto px-4 py-4">
-      <ol className="flex items-center gap-2 text-sm">
+    <nav className="container mx-auto px-4 py-4" aria-label="Навигационная цепочка">
+      <ol className="flex items-center gap-2 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
         {breadcrumbs.map((crumb, index) => (
-          <li key={crumb.path} className="flex items-center gap-2">
+          <li key={crumb.path} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
             {index > 0 && (
               <Icon name="ChevronRight" size={16} className="text-gray-500" />
             )}
             {index === breadcrumbs.length - 1 ? (
-              <span className="text-cyan-400 font-medium">{crumb.label}</span>
+              <>
+                <span className="text-cyan-400 font-medium" itemProp="name">{crumb.label}</span>
+                <meta itemProp="position" content={String(index + 1)} />
+              </>
             ) : (
-              <Link 
-                to={crumb.path} 
-                className="text-gray-400 hover:text-cyan-400 transition-colors"
-              >
-                {crumb.label}
-              </Link>
+              <>
+                <Link 
+                  to={crumb.path} 
+                  className="text-gray-400 hover:text-cyan-400 transition-colors"
+                  itemProp="item"
+                >
+                  <span itemProp="name">{crumb.label}</span>
+                </Link>
+                <meta itemProp="position" content={String(index + 1)} />
+              </>
             )}
           </li>
         ))}

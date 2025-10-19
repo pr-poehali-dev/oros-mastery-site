@@ -1,5 +1,31 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login
+Disallow: /private/
+
+# Sitemap
+Sitemap: https://oros-mastery-site.poehali.app/sitemap.xml
+Sitemap: https://functions.poehali.dev/ef8dba09-e4a9-4cda-8f1c-29b8444eea2a
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Specific bot rules
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Yandex
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
@@ -10,9 +36,5 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: Googlebot-Image
 Allow: /
-Disallow: /admin
-Disallow: /login
-
-Sitemap: https://yoursite.poehali.dev/sitemap.xml
