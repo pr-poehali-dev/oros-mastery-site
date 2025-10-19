@@ -10,6 +10,10 @@ import BlogPost from "./pages/BlogPost";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import EpisodeDetail from "./pages/EpisodeDetail";
+import Videos from "./pages/Videos";
+import Universes from "./pages/Universes";
+import Characters from "./pages/Characters";
+import Theories from "./pages/Theories";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +26,10 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/videos" element={<Videos />} />
+          <Route path="/universes" element={<Universes />} />
+          <Route path="/characters" element={<Characters />} />
+          <Route path="/theories" element={<Theories />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/episode/:id" element={<EpisodeDetail />} />

@@ -9,8 +9,11 @@ const Navigation = () => {
 
   const menuItems = [
     { path: '/', label: 'Главная', icon: 'Home' },
-    { path: '/blog', label: 'Блог', icon: 'BookOpen' },
-    { path: '/admin', label: 'Админка', icon: 'Settings' }
+    { path: '/videos', label: 'Видео', icon: 'Video' },
+    { path: '/universes', label: 'Вселенные', icon: 'Globe' },
+    { path: '/characters', label: 'Персонажи', icon: 'Users' },
+    { path: '/theories', label: 'Теории', icon: 'Lightbulb' },
+    { path: '/blog', label: 'Блог', icon: 'BookOpen' }
   ];
 
   const isActive = (path: string) => location.pathname === path;

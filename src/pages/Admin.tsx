@@ -191,14 +191,30 @@ const Admin = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-gray-800 mb-8">
+          <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-6 bg-gray-800 mb-8 gap-2">
             <TabsTrigger value="episodes" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
               <Icon name="Film" size={18} className="mr-2" />
               Эпизоды
             </TabsTrigger>
-            <TabsTrigger value="blog" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
+            <TabsTrigger value="videos" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              <Icon name="Video" size={18} className="mr-2" />
+              Видео
+            </TabsTrigger>
+            <TabsTrigger value="universes" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white">
+              <Icon name="Globe" size={18} className="mr-2" />
+              Вселенные
+            </TabsTrigger>
+            <TabsTrigger value="characters" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">
+              <Icon name="Users" size={18} className="mr-2" />
+              Персонажи
+            </TabsTrigger>
+            <TabsTrigger value="theories" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
+              <Icon name="Lightbulb" size={18} className="mr-2" />
+              Теории
+            </TabsTrigger>
+            <TabsTrigger value="blog" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">
               <Icon name="FileText" size={18} className="mr-2" />
-              Статьи
+              Блог
             </TabsTrigger>
           </TabsList>
 
@@ -458,6 +474,62 @@ const Admin = () => {
                     Опубликовать статью
                   </Button>
                 </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="videos">
+            <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white">Управление видео</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Добавляйте и редактируйте видео контент (трейлеры, эпизоды, теории)
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Раздел в разработке. Скоро здесь появится функционал управления видео.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="universes">
+            <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white">Управление вселенными</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Добавляйте информацию о различных измерениях и вселенных
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Раздел в разработке. Скоро здесь появится функционал управления вселенными.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="characters">
+            <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white">Управление персонажами</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Добавляйте и редактируйте информацию о персонажах сериала
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Раздел в разработке. Скоро здесь появится функционал управления персонажами.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="theories">
+            <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white">Управление теориями</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Публикуйте и модерируйте фанатские теории о сериале
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Раздел в разработке. Скоро здесь появится функционал управления теориями.</p>
               </CardContent>
             </Card>
           </TabsContent>
