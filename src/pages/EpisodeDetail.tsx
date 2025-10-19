@@ -314,6 +314,24 @@ const EpisodeDetail = () => {
                   <span className="ml-2 font-semibold">{articles.length}</span>
                 </div>
               </div>
+
+              <div className="mt-6 pt-6 border-t border-purple-500/30">
+                <h4 className="text-lg font-semibold text-purple-300 mb-3">Быстрая навигация</h4>
+                <div className="space-y-2">
+                  <Link to="/episodes" className="block text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-2">
+                    <Icon name="Film" size={14} />
+                    Все эпизоды
+                  </Link>
+                  <Link to="/blog" className="block text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-2">
+                    <Icon name="BookOpen" size={14} />
+                    Читать блог
+                  </Link>
+                  <Link to="/theories" className="block text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-2">
+                    <Icon name="Lightbulb" size={14} />
+                    Теории фанатов
+                  </Link>
+                </div>
+              </div>
             </Card>
           </div>
         </div>

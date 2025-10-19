@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -214,6 +214,29 @@ const Episodes = () => {
         )}
         </>
         )}
+
+        <div className="mt-16 text-center">
+          <Card className="bg-gradient-to-r from-cyan-900/20 to-green-900/20 border-cyan-500/30 p-8 max-w-2xl mx-auto">
+            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Хотите узнать больше?</h3>
+            <p className="text-gray-300 mb-6">
+              Читайте наш блог с глубоким анализом эпизодов, теориями фанатов и интересными фактами о Rick and Morty
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/blog">
+                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+                  <Icon name="BookOpen" size={18} className="mr-2" />
+                  Перейти в блог
+                </Button>
+              </Link>
+              <Link to="/theories">
+                <Button variant="outline" className="border-green-500 text-green-400 hover:bg-green-500/10">
+                  <Icon name="Lightbulb" size={18} className="mr-2" />
+                  Теории фанатов
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </div>
       </section>
 
       <Footer />

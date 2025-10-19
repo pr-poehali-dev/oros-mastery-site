@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -303,6 +303,29 @@ const Characters = () => {
         )}
         </>
         )}
+
+        <div className="mt-16 text-center">
+          <Card className="bg-gradient-to-r from-purple-900/20 to-cyan-900/20 border-cyan-500/30 p-8 max-w-2xl mx-auto">
+            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Продолжай исследование</h3>
+            <p className="text-gray-300 mb-6">
+              Узнай больше о вселенной Rick and Morty - смотри эпизоды, читай теории и открывай новые миры
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/episodes">
+                <Button className="bg-green-500 hover:bg-green-600 text-white">
+                  <Icon name="Play" size={18} className="mr-2" />
+                  Смотреть эпизоды
+                </Button>
+              </Link>
+              <Link to="/universes">
+                <Button variant="outline" className="border-yellow-500 text-yellow-400 hover:bg-yellow-500/10">
+                  <Icon name="Globe" size={18} className="mr-2" />
+                  Изучить вселенные
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </div>
       </section>
 
       <Footer />

@@ -84,28 +84,28 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/episode/1" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Pilot
+                <Link to="/episode/2-pilot" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Pilot - S1E1
                 </Link>
               </li>
               <li>
-                <Link to="/character/1" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Рик Санчез
+                <Link to="/episodes" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Все эпизоды
                 </Link>
               </li>
               <li>
-                <Link to="/universe/1" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Вселенная C-137
-                </Link>
-              </li>
-              <li>
-                <Link to="/theory/1" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Злой Морти
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog/1" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                <Link to="/blog/1-kak-multivselennaya-rabotaet-v-rick-and-morty-nauchnyy-podkhod" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
                   Теория мультивселенной
+                </Link>
+              </li>
+              <li>
+                <Link to="/theories" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Теории фанатов
+                </Link>
+              </li>
+              <li>
+                <Link to="/characters" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Персонажи
                 </Link>
               </li>
             </ul>

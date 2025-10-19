@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +9,7 @@ import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { generateSlug } from '@/utils/slugify';
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -178,6 +179,59 @@ const BlogPost = () => {
         <div className="mt-8">
           <Comments comments={article.comments} />
         </div>
+
+        <Card className="bg-gray-800/50 border-cyan-500/30 p-8 mt-8">
+          <h3 className="text-2xl font-bold text-cyan-400 mb-6 flex items-center gap-2">
+            <Icon name="BookOpen" size={28} />
+            Читайте также
+          </h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            {blogPosts
+              .filter(post => post.id !== article.id)
+              .slice(0, 3)
+              .map(post => (
+                <Link 
+                  key={post.id} 
+                  to={`/blog/${generateSlug(post.id, post.title)}`}
+                  className="group"
+                >
+                  <div className="bg-gray-700/50 rounded-lg p-4 hover:bg-gray-700 transition-colors">
+                    <div className="flex gap-2 mb-2">
+                      {post.tags.slice(0, 2).map((tag, idx) => (
+                        <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                    <h4 className="text-white font-semibold mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
+                      {post.title}
+                    </h4>
+                    <p className="text-gray-400 text-sm line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center gap-3 mt-3 text-xs text-gray-400">
+                      <span className="flex items-center gap-1">
+                        <Icon name="Eye" size={12} />
+                        {post.views}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Icon name="Clock" size={12} />
+                        {post.readTime}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+          <div className="mt-6 text-center">
+            <Link to="/blog">
+              <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+                <Icon name="ArrowRight" size={18} className="mr-2" />
+                Все статьи блога
+              </Button>
+            </Link>
+          </div>
+        </Card>
       </div>
       </div>
 

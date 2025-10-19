@@ -293,11 +293,80 @@ const Index = () => {
             <Button 
               size="lg" 
               className="bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-bold"
-              onClick={() => window.location.href = '/blog'}
+              onClick={() => navigate('/blog')}
             >
               <Icon name="FileText" className="mr-2" size={20} />
               Все статьи блога
             </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gradient-to-br from-purple-900 via-gray-900 to-cyan-900 text-white">
+        <div className="container px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                Исследуй вселенную Rick and Morty
+              </h2>
+              <p className="text-xl text-gray-300">
+                Множество разделов ждут тебя в путешествии по мультивселенной
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card 
+                className="bg-gray-800/50 border-cyan-500/30 p-6 hover:border-cyan-400 transition-all hover:scale-105 cursor-pointer group"
+                onClick={() => navigate('/episodes')}
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="Play" size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-cyan-400 group-hover:text-cyan-300">Эпизоды</h3>
+                  <p className="text-gray-400 text-sm">Полный каталог всех серий с описаниями</p>
+                </div>
+              </Card>
+
+              <Card 
+                className="bg-gray-800/50 border-purple-500/30 p-6 hover:border-purple-400 transition-all hover:scale-105 cursor-pointer group"
+                onClick={() => navigate('/theories')}
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="Lightbulb" size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-purple-400 group-hover:text-purple-300">Теории</h3>
+                  <p className="text-gray-400 text-sm">Разгадывай тайны сериала вместе с фанатами</p>
+                </div>
+              </Card>
+
+              <Card 
+                className="bg-gray-800/50 border-green-500/30 p-6 hover:border-green-400 transition-all hover:scale-105 cursor-pointer group"
+                onClick={() => navigate('/characters')}
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="Users" size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-green-400 group-hover:text-green-300">Персонажи</h3>
+                  <p className="text-gray-400 text-sm">Узнай больше о героях мультивселенной</p>
+                </div>
+              </Card>
+
+              <Card 
+                className="bg-gray-800/50 border-yellow-500/30 p-6 hover:border-yellow-400 transition-all hover:scale-105 cursor-pointer group"
+                onClick={() => navigate('/universes')}
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="Globe" size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-yellow-400 group-hover:text-yellow-300">Вселенные</h3>
+                  <p className="text-gray-400 text-sm">Исследуй параллельные миры и измерения</p>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
