@@ -3,13 +3,16 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Comments from '@/components/Comments';
 import { blogPosts } from '@/data/blogData';
+import SEO from '@/components/SEO';
 
 const BlogPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [liked, setLiked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
   const article = blogPosts.find(p => p.id === Number(id)) || blogPosts[0];
 
@@ -17,8 +20,43 @@ const BlogPost = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: article.title,
+        text: article.excerpt,
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Ссылка скопирована в буфер обмена!');
+    }
+  };
+
+  const handleLike = () => {
+    setLiked(!liked);
+  };
+
+  const handleBookmark = () => {
+    setBookmarked(!bookmarked);
+    if (!bookmarked) {
+      localStorage.setItem(`bookmark_${article.id}`, 'true');
+    } else {
+      localStorage.removeItem(`bookmark_${article.id}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 py-20">
+      <SEO
+        title={article.title}
+        description={article.excerpt}
+        image={article.image}
+        keywords={article.tags.join(', ')}
+        type="article"
+        author={article.author}
+        publishedTime={article.date}
+      />
       <div className="container mx-auto px-4 max-w-4xl">
         <Button 
           onClick={() => navigate('/blog')} 
@@ -102,18 +140,29 @@ const BlogPost = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm mb-2">Понравилась статья?</p>
-                  <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
-                    <Icon name="Heart" size={18} className="mr-2" />
-                    Поставить лайк
+                  <Button 
+                    onClick={handleLike}
+                    className={liked ? "bg-red-500 hover:bg-red-600 text-white" : "bg-cyan-500 hover:bg-cyan-600 text-white"}
+                  >
+                    <Icon name="Heart" size={18} className={liked ? "mr-2 fill-current" : "mr-2"} />
+                    {liked ? 'Нравится' : 'Поставить лайк'}
                   </Button>
                 </div>
                 <div className="flex gap-3">
-                  <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-700">
+                  <Button 
+                    variant="outline" 
+                    className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                    onClick={handleShare}
+                  >
                     <Icon name="Share2" size={18} className="mr-2" />
                     Поделиться
                   </Button>
-                  <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-700">
-                    <Icon name="Bookmark" size={18} />
+                  <Button 
+                    variant="outline" 
+                    className={bookmarked ? "border-cyan-500 text-cyan-400 hover:bg-cyan-500/10" : "border-gray-600 text-gray-300 hover:bg-gray-700"}
+                    onClick={handleBookmark}
+                  >
+                    <Icon name="Bookmark" size={18} className={bookmarked ? "fill-current" : ""} />
                   </Button>
                 </div>
               </div>
