@@ -22,7 +22,6 @@ const Breadcrumbs = () => {
     'character': 'Персонаж',
     'theory': 'Теория',
     'episode': 'Эпизод',
-    'post': 'Статья',
     'about': 'О сайте',
     'contact': 'Контакты'
   };
@@ -37,9 +36,13 @@ const Breadcrumbs = () => {
 
   pathnames.forEach((value, index) => {
     const path = `/${pathnames.slice(0, index + 1).join('/')}`;
-    const label = breadcrumbNameMap[value] || value;
     
-    if (!value.includes('-') || index === pathnames.length - 1) {
+    if (value.includes('-')) {
+      const words = value.split('-').slice(1).join(' ');
+      const label = words.charAt(0).toUpperCase() + words.slice(1);
+      breadcrumbs.push({ label, path });
+    } else {
+      const label = breadcrumbNameMap[value] || value;
       breadcrumbs.push({ label, path });
     }
   });
