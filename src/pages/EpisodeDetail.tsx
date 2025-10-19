@@ -140,7 +140,9 @@ const EpisodeDetail = () => {
         description={episode.description}
         image={episode.image}
         keywords={`Rick and Morty, ${episode.title}, сезон ${episode.season}, эпизод ${episode.episode}, смотреть онлайн`}
-        type="article"
+        ogType="article"
+        episodeNumber={episode.episode}
+        seasonNumber={episode.season}
       />
       <div className="container mx-auto px-4 pt-24 pb-12">
         <Link to="/">

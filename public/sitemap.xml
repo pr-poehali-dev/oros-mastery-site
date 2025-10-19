@@ -1,87 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Главная страница -->
   <url>
     <loc>https://yoursite.poehali.dev/</loc>
     <lastmod>2025-10-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  <!-- Страница эпизодов -->
+  <url>
+    <loc>https://yoursite.poehali.dev/episodes</loc>
+    <lastmod>2025-10-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Страница блога -->
   <url>
     <loc>https://yoursite.poehali.dev/blog</loc>
     <lastmod>2025-10-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yoursite.poehali.dev/episode/1</loc>
-    <lastmod>2025-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  
+  <!-- Блог-посты -->
   <url>
-    <loc>https://yoursite.poehali.dev/episode/2</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yoursite.poehali.dev/blog/1-kak-multivselennaya-rabotaet-v-rick-and-morty-nauchnyy-podkhod</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg</image:loc>
+      <image:title>Как мультивселенная работает в Rick and Morty</image:title>
+    </image:image>
   </url>
+  
   <url>
-    <loc>https://yoursite.poehali.dev/episode/3</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yoursite.poehali.dev/blog/2-top-20-pashalok-v-7-sezone-rick-and-morty</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg</image:loc>
+      <image:title>Топ-20 пасхалок в 7 сезоне</image:title>
+    </image:image>
   </url>
+  
   <url>
-    <loc>https://yoursite.poehali.dev/episode/4</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yoursite.poehali.dev/blog/3-filosofiya-ekzistentsializma-v-rick-and-morty</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg</image:loc>
+      <image:title>Философия экзистенциализма в Rick and Morty</image:title>
+    </image:image>
   </url>
+  
   <url>
-    <loc>https://yoursite.poehali.dev/episode/5</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yoursite.poehali.dev/blog/4-evolyutsiya-personazhey-cherez-7-sezonov</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
+  
   <url>
-    <loc>https://yoursite.poehali.dev/episode/6</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yoursite.poehali.dev/blog/5-nauchnyye-teorii-za-tekhnologiyami-rika</loc>
+    <lastmod>2025-01-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
+  
   <url>
-    <loc>https://yoursite.poehali.dev/episode/7</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yoursite.poehali.dev/blog/6-analiz-vzaimootnosheniy-rika-i-morti</loc>
+    <lastmod>2025-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://yoursite.poehali.dev/episode/8</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://yoursite.poehali.dev/episode/9</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://yoursite.poehali.dev/episode/10</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://yoursite.poehali.dev/episode/11</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://yoursite.poehali.dev/episode/12</loc>
-    <lastmod>2025-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
 </urlset>

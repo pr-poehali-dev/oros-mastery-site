@@ -57,8 +57,8 @@ const BlogPost = () => {
         title={article.title}
         description={article.excerpt}
         image={article.image}
-        keywords={article.tags.join(', ')}
-        type="article"
+        keywords={`Rick and Morty, ${article.tags.join(', ')}, блог, статьи, теории`}
+        ogType="article"
         author={article.author}
         publishedTime={article.date}
       />

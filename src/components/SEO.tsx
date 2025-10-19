@@ -9,6 +9,8 @@ interface SEOProps {
   ogType?: 'website' | 'article';
   author?: string;
   publishedTime?: string;
+  episodeNumber?: number;
+  seasonNumber?: number;
 }
 
 const SEO = ({
@@ -19,11 +21,15 @@ const SEO = ({
   url = window.location.href,
   ogType = 'website',
   author,
-  publishedTime
+  publishedTime,
+  episodeNumber,
+  seasonNumber
 }: SEOProps) => {
   const type = ogType;
+  const isEpisode = episodeNumber !== undefined && seasonNumber !== undefined;
   useEffect(() => {
     document.title = `${title} | Rick and Morty Fan Site`;
+    document.documentElement.lang = 'ru';
     
     const metaTags = [
       { name: 'description', content: description },
@@ -34,17 +40,21 @@ const SEO = ({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:image', content: image },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
       { property: 'og:url', content: url },
       { property: 'og:site_name', content: 'Rick and Morty Fan Site' },
+      { property: 'og:locale', content: 'ru_RU' },
       
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
       { name: 'twitter:image', content: image },
       
-      { name: 'robots', content: 'index, follow' },
+      { name: 'robots', content: 'index, follow, max-image-preview:large' },
       { name: 'googlebot', content: 'index, follow' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+      { name: 'theme-color', content: '#1f2937' },
     ];
     
     if (publishedTime && type === 'article') {
@@ -74,21 +84,62 @@ const SEO = ({
     }
     canonicalLink.setAttribute('href', url);
     
-    const structuredData = {
-      '@context': 'https://schema.org',
-      '@type': type === 'article' ? 'Article' : 'WebSite',
-      'name': title,
-      'description': description,
-      'url': url,
-      'image': image,
-      ...(type === 'article' && {
-        'author': {
-          '@type': 'Person',
-          'name': author || 'Unknown'
-        },
-        'datePublished': publishedTime
-      })
+    let structuredData: any = {
+      '@context': 'https://schema.org'
     };
+
+    if (isEpisode) {
+      structuredData = {
+        ...structuredData,
+        '@type': 'TVEpisode',
+        'name': title,
+        'description': description,
+        'episodeNumber': episodeNumber,
+        'partOfSeason': {
+          '@type': 'TVSeason',
+          'seasonNumber': seasonNumber,
+          'partOfSeries': {
+            '@type': 'TVSeries',
+            'name': 'Rick and Morty'
+          }
+        },
+        'image': {
+          '@type': 'ImageObject',
+          'url': image,
+          'width': 1200,
+          'height': 630
+        }
+      };
+    } else {
+      structuredData = {
+        ...structuredData,
+        '@type': type === 'article' ? 'Article' : 'WebSite',
+        'name': title,
+        'description': description,
+        'url': url,
+        'image': {
+          '@type': 'ImageObject',
+          'url': image,
+          'width': 1200,
+          'height': 630
+        },
+        ...(type === 'article' && {
+          'author': {
+            '@type': 'Person',
+            'name': author || 'Rick and Morty Fan Site'
+          },
+          'datePublished': publishedTime,
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'Rick and Morty Fan Site',
+            'logo': {
+              '@type': 'ImageObject',
+              'url': 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg'
+            }
+          }
+        })
+      };
+    }
     
     let scriptTag = document.querySelector('script[type="application/ld+json"]');
     if (!scriptTag) {
@@ -98,7 +149,7 @@ const SEO = ({
     }
     scriptTag.textContent = JSON.stringify(structuredData);
     
-  }, [title, description, keywords, image, url, type, author, publishedTime]);
+  }, [title, description, keywords, image, url, type, author, publishedTime, episodeNumber, seasonNumber, isEpisode]);
 
   return null;
 };
