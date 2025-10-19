@@ -267,6 +267,7 @@ const Index = () => {
 
                   <Button 
                     className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
+                    onClick={() => window.location.href = `/blog/${post.id}`}
                   >
                     Читать полностью
                     <Icon name="ArrowRight" className="ml-2" size={16} />
