@@ -305,23 +305,25 @@ const Characters = () => {
         )}
 
         <div className="mt-16 text-center">
-          <Card className="bg-gradient-to-r from-purple-900/20 to-cyan-900/20 border-cyan-500/30 p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Продолжай исследование</h3>
-            <p className="text-gray-300 mb-6">
+          <Card className="bg-gray-800/60 backdrop-blur-sm border-gray-700/50 p-8 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-gray-100 mb-4 text-center">Продолжай исследование</h3>
+            <p className="text-gray-400 text-center mb-6">
               Узнай больше о вселенной Rick and Morty - смотри эпизоды, читай теории и открывай новые миры
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/episodes">
-                <Button className="bg-green-500 hover:bg-green-600 text-white">
-                  <Icon name="Play" size={18} className="mr-2" />
-                  Смотреть эпизоды
-                </Button>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Link to="/episodes" className="h-full">
+                <Card className="bg-gray-800/80 border-green-500/30 p-6 hover:border-green-400 hover:bg-gray-700/80 transition-all group cursor-pointer h-full flex flex-col">
+                  <Icon name="Play" size={32} className="text-green-400 mb-3 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-semibold mb-2 group-hover:text-green-400 transition-colors">Смотреть эпизоды</h4>
+                  <p className="text-gray-400 text-sm flex-grow">Полный каталог всех серий</p>
+                </Card>
               </Link>
-              <Link to="/universes">
-                <Button variant="outline" className="border-yellow-500 text-yellow-400 hover:bg-yellow-500/10">
-                  <Icon name="Globe" size={18} className="mr-2" />
-                  Изучить вселенные
-                </Button>
+              <Link to="/universes" className="h-full">
+                <Card className="bg-gray-800/80 border-yellow-500/30 p-6 hover:border-yellow-400 hover:bg-gray-700/80 transition-all group cursor-pointer h-full flex flex-col">
+                  <Icon name="Globe" size={32} className="text-yellow-400 mb-3 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-semibold mb-2 group-hover:text-yellow-400 transition-colors">Изучить вселенные</h4>
+                  <p className="text-gray-400 text-sm flex-grow">Исследуй параллельные миры</p>
+                </Card>
               </Link>
             </div>
           </Card>

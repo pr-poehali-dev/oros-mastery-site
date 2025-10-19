@@ -233,11 +233,11 @@ const Universes = () => {
         )}
 
         <div className="mt-12 text-center">
-          <Card className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 border-purple-500/30 backdrop-blur-sm">
+          <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm">
             <CardContent className="p-8">
               <Icon name="Infinity" size={64} className="mx-auto text-purple-400 mb-4" />
-              <h3 className="text-3xl font-bold text-white mb-4">Бесконечность вселенных</h3>
-              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              <h3 className="text-3xl font-bold text-gray-100 mb-4">Бесконечность вселенных</h3>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
                 В мультивселенной Rick and Morty существует бесконечное количество измерений. 
                 Каждое решение создаёт новую ветвь реальности, а каждая вселенная имеет свои уникальные особенности.
               </p>

@@ -302,7 +302,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-br from-purple-900 via-gray-900 to-cyan-900 text-white">
+      <section className="py-20 bg-gray-900 text-white">
         <div className="container px-4">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
@@ -316,7 +316,7 @@ const Index = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card 
-                className="bg-gray-800/50 border-cyan-500/30 p-6 hover:border-cyan-400 transition-all hover:scale-105 cursor-pointer group"
+                className="bg-gray-800/80 border-cyan-500/30 p-6 hover:border-cyan-400 transition-all hover:scale-105 cursor-pointer group"
                 onClick={() => navigate('/episodes')}
               >
                 <div className="text-center">
@@ -329,7 +329,7 @@ const Index = () => {
               </Card>
 
               <Card 
-                className="bg-gray-800/50 border-purple-500/30 p-6 hover:border-purple-400 transition-all hover:scale-105 cursor-pointer group"
+                className="bg-gray-800/80 border-purple-500/30 p-6 hover:border-purple-400 transition-all hover:scale-105 cursor-pointer group"
                 onClick={() => navigate('/theories')}
               >
                 <div className="text-center">
@@ -342,7 +342,7 @@ const Index = () => {
               </Card>
 
               <Card 
-                className="bg-gray-800/50 border-green-500/30 p-6 hover:border-green-400 transition-all hover:scale-105 cursor-pointer group"
+                className="bg-gray-800/80 border-green-500/30 p-6 hover:border-green-400 transition-all hover:scale-105 cursor-pointer group"
                 onClick={() => navigate('/characters')}
               >
                 <div className="text-center">
@@ -355,7 +355,7 @@ const Index = () => {
               </Card>
 
               <Card 
-                className="bg-gray-800/50 border-yellow-500/30 p-6 hover:border-yellow-400 transition-all hover:scale-105 cursor-pointer group"
+                className="bg-gray-800/80 border-yellow-500/30 p-6 hover:border-yellow-400 transition-all hover:scale-105 cursor-pointer group"
                 onClick={() => navigate('/universes')}
               >
                 <div className="text-center">

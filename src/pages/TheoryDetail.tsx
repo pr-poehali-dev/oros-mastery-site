@@ -254,10 +254,10 @@ const TheoryDetail = () => {
 
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              <Card className="bg-gradient-to-br from-purple-900/60 via-indigo-900/60 to-blue-900/60 backdrop-blur-sm border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/20">
+              <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm hover:border-gray-600/50 transition-all duration-300">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-purple-200">
-                    <Icon name="Film" size={24} />
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-100">
+                    <Icon name="Film" size={24} className="text-purple-400" />
                     Связанные эпизоды
                   </h3>
                   <ul className="space-y-2">
@@ -272,10 +272,10 @@ const TheoryDetail = () => {
                 </div>
               </Card>
 
-              <Card className="bg-gradient-to-br from-pink-900/60 via-purple-900/60 to-indigo-900/60 backdrop-blur-sm border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/20">
+              <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm hover:border-gray-600/50 transition-all duration-300">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-pink-200">
-                    <Icon name="Users" size={24} />
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-100">
+                    <Icon name="Users" size={24} className="text-pink-400" />
                     Связанные персонажи
                   </h3>
                   <ul className="space-y-2">
@@ -290,10 +290,10 @@ const TheoryDetail = () => {
                 </div>
               </Card>
 
-              <Card className="bg-gradient-to-br from-indigo-900/60 via-blue-900/60 to-cyan-900/60 backdrop-blur-sm border-indigo-500/30 hover:border-indigo-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/20">
+              <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm hover:border-gray-600/50 transition-all duration-300">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-indigo-200">
-                    <Icon name="TrendingUp" size={24} />
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-100">
+                    <Icon name="TrendingUp" size={24} className="text-indigo-400" />
                     Статистика
                   </h3>
                 <div className="space-y-3">
@@ -313,9 +313,9 @@ const TheoryDetail = () => {
                 </div>
               </Card>
 
-              <Card className="bg-gradient-to-br from-cyan-900/60 via-teal-900/60 to-emerald-900/60 backdrop-blur-sm border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20">
+              <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm hover:border-gray-600/50 transition-all duration-300">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-4 text-cyan-200">Действия</h3>
+                  <h3 className="text-xl font-bold mb-4 text-gray-100">Действия</h3>
                 <div className="space-y-3">
                   <Button 
                     variant="outline" 
