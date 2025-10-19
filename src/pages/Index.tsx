@@ -277,7 +277,11 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button size="lg" className="bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-bold">
+            <Button 
+              size="lg" 
+              className="bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-bold"
+              onClick={() => window.location.href = '/blog'}
+            >
               <Icon name="FileText" className="mr-2" size={20} />
               Все статьи блога
             </Button>
