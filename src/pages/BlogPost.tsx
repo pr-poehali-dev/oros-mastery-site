@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { useEffect } from 'react';
+import Comments from '@/components/Comments';
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -469,6 +470,9 @@ const BlogPost = () => {
               />
             </CardContent>
           </Card>
+
+          {/* Секция комментариев */}
+          <Comments articleId={article.id} />
 
           <div className="mt-12 flex justify-between items-center">
             <Button 

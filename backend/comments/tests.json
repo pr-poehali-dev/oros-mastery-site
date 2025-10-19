@@ -1,0 +1,43 @@
+{
+  "tests": [
+    {
+      "name": "GET comments for article",
+      "method": "GET",
+      "path": "/?article_id=1",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "comments": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST new comment",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "article_id": 1,
+        "author_name": "Test User",
+        "comment_text": "Great article!"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true,
+        "comment_id": "number"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST comment without required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "article_id": 1
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
