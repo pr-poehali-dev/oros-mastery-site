@@ -114,6 +114,7 @@ const Admin = () => {
           description: formData.description,
           image: formData.image,
           videoUrl: formData.videoUrl,
+          videoIframe: formData.videoIframe,
           airDate: formData.airDate
         })
       });

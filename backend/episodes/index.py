@@ -46,11 +46,11 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             if season:
                 cur.execute(
-                    "SELECT id, title, season, episode, description, image, air_date FROM episodes WHERE season = " + str(int(season)) + " ORDER BY episode"
+                    "SELECT id, title, season, episode, description, image, air_date, video_iframe FROM episodes WHERE season = " + str(int(season)) + " ORDER BY episode"
                 )
             else:
                 cur.execute(
-                    "SELECT id, title, season, episode, description, image, air_date FROM episodes ORDER BY season, episode"
+                    "SELECT id, title, season, episode, description, image, air_date, video_iframe FROM episodes ORDER BY season, episode"
                 )
             
             episodes = []
@@ -62,7 +62,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'episode': row[3],
                     'description': row[4],
                     'image': row[5],
-                    'airDate': row[6]
+                    'airDate': row[6],
+                    'videoIframe': row[7] if len(row) > 7 else None
                 })
             
             return {
@@ -80,9 +81,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             description = body.get('description', '').replace("'", "''")
             image = body.get('image', '').replace("'", "''")
             air_date = body.get('airDate', '').replace("'", "''")
+            video_iframe = body.get('videoIframe', '').replace("'", "''")
             
             cur.execute(
-                f"INSERT INTO episodes (title, season, episode, description, image, air_date) VALUES ('{title}', {season}, {episode}, '{description}', '{image}', '{air_date}') RETURNING id"
+                f"INSERT INTO episodes (title, season, episode, description, image, air_date, video_iframe) VALUES ('{title}', {season}, {episode}, '{description}', '{image}', '{air_date}', '{video_iframe}') RETURNING id"
             )
             episode_id = cur.fetchone()[0]
             conn.commit()
@@ -91,6 +93,38 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'statusCode': 201,
                 'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                 'body': json.dumps({'id': episode_id, 'message': 'Episode created'})
+            }
+        
+        elif method == 'PUT':
+            query_params = event.get('queryStringParameters') or {}
+            episode_id = query_params.get('id')
+            
+            if not episode_id:
+                return {
+                    'statusCode': 400,
+                    'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                    'body': json.dumps({'error': 'Episode ID required'})
+                }
+            
+            body = json.loads(event.get('body', '{}'))
+            
+            title = body.get('title', '').replace("'", "''")
+            season = int(body.get('season'))
+            episode = int(body.get('episode'))
+            description = body.get('description', '').replace("'", "''")
+            image = body.get('image', '').replace("'", "''")
+            air_date = body.get('airDate', '').replace("'", "''")
+            video_iframe = body.get('videoIframe', '').replace("'", "''")
+            
+            cur.execute(
+                f"UPDATE episodes SET title='{title}', season={season}, episode={episode}, description='{description}', image='{image}', air_date='{air_date}', video_iframe='{video_iframe}' WHERE id={int(episode_id)}"
+            )
+            conn.commit()
+            
+            return {
+                'statusCode': 200,
+                'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                'body': json.dumps({'message': 'Episode updated'})
             }
         
         elif method == 'DELETE':

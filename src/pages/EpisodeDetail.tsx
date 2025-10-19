@@ -16,6 +16,7 @@ interface Episode {
   description: string;
   image: string;
   airDate: string;
+  videoIframe?: string;
 }
 
 interface Comment {
@@ -152,11 +153,18 @@ const EpisodeDetail = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <Card className="bg-gray-800/50 border-cyan-500/30 overflow-hidden">
-              <img 
-                src={episode.image} 
-                alt={episode.title}
-                className="w-full h-96 object-cover"
-              />
+              {episode.videoIframe ? (
+                <div 
+                  className="w-full aspect-video"
+                  dangerouslySetInnerHTML={{ __html: episode.videoIframe }}
+                />
+              ) : (
+                <img 
+                  src={episode.image} 
+                  alt={episode.title}
+                  className="w-full h-96 object-cover"
+                />
+              )}
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-green-500 text-white text-sm rounded-full">

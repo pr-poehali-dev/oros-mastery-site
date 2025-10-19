@@ -19,6 +19,7 @@ export interface EpisodeFormData {
   description: string;
   image: string;
   videoUrl: string;
+  videoIframe: string;
   airDate: string;
 }
 
@@ -30,6 +31,7 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
     description: '',
     image: '',
     videoUrl: '',
+    videoIframe: '',
     airDate: ''
   });
 
@@ -49,6 +51,7 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
       description: '',
       image: '',
       videoUrl: '',
+      videoIframe: '',
       airDate: ''
     });
     if (onCancelEdit) onCancelEdit();
@@ -62,6 +65,7 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
       description: '',
       image: '',
       videoUrl: '',
+      videoIframe: '',
       airDate: ''
     });
     if (onCancelEdit) onCancelEdit();
@@ -171,6 +175,19 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
               onChange={(e) => setForm({ ...form, videoUrl: e.target.value })}
               className="bg-gray-900 border-gray-700 text-white"
             />
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              iframe видео (опционально)
+            </label>
+            <Textarea
+              placeholder='<iframe src="https://..." ...></iframe>'
+              value={form.videoIframe}
+              onChange={(e) => setForm({ ...form, videoIframe: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white min-h-[100px] font-mono text-sm"
+            />
+            <p className="text-xs text-gray-400 mt-1">💡 Вставьте полный код iframe с YouTube, VK или другого видеохостинга</p>
           </div>
 
           <div className="flex gap-3">
