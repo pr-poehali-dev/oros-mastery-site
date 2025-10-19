@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,18 +11,29 @@ import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import { generateSlug } from '@/utils/slugify';
 
+const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
+
 const Index = () => {
   const navigate = useNavigate();
   const [selectedSeason, setSelectedSeason] = useState('all');
+  const [episodes, setEpisodes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const episodes = [
-    { id: 1, season: 1, episode: 1, title: 'Pilot', duration: '22 min', rating: 8.2, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
-    { id: 2, season: 1, episode: 2, title: 'Lawnmower Dog', duration: '22 min', rating: 8.5, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
-    { id: 3, season: 1, episode: 3, title: 'Anatomy Park', duration: '22 min', rating: 8.3, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
-    { id: 4, season: 2, episode: 1, title: 'A Rickle in Time', duration: '22 min', rating: 9.1, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
-    { id: 5, season: 2, episode: 2, title: 'Mortynight Run', duration: '22 min', rating: 8.6, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
-    { id: 6, season: 3, episode: 1, title: 'The Rickshank Rickdemption', duration: '22 min', rating: 9.8, image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' }
-  ];
+  useEffect(() => {
+    fetchEpisodes();
+  }, []);
+
+  const fetchEpisodes = async () => {
+    try {
+      const response = await fetch(EPISODES_API);
+      const data = await response.json();
+      setEpisodes(data);
+    } catch (error) {
+      console.error('Error fetching episodes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const blogPostsPreview = blogPosts.slice(0, 3);
   
@@ -126,18 +137,18 @@ const Index = () => {
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up">
               <div className="text-3xl mb-2">🔬</div>
-              <div className="text-2xl font-bold mb-1">200+</div>
-              <div className="text-white/90 text-sm">Эпизодов</div>
+              <div className="text-2xl font-bold mb-1">12</div>
+              <div className="text-white/90 text-sm">Серий</div>
             </div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+              <div className="text-3xl mb-2">📺</div>
+              <div className="text-2xl font-bold mb-1">8</div>
+              <div className="text-white/90 text-sm">Сезонов</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <div className="text-3xl mb-2">🌌</div>
               <div className="text-2xl font-bold mb-1">∞</div>
               <div className="text-white/90 text-sm">Вселенных</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="text-3xl mb-2">👽</div>
-              <div className="text-2xl font-bold mb-1">500+</div>
-              <div className="text-white/90 text-sm">Персонажей</div>
             </div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.3s' }}>
               <div className="text-3xl mb-2">⭐</div>
@@ -172,8 +183,17 @@ const Index = () => {
             </TabsList>
 
             <TabsContent value={selectedSeason} className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                {filteredEpisodes.map((episode, index) => (
+              {loading ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="text-green-400 text-xl">Загрузка эпизодов...</div>
+                </div>
+              ) : filteredEpisodes.length === 0 ? (
+                <div className="text-center py-20 text-gray-400">
+                  <p className="text-xl">Эпизоды не найдены</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                  {filteredEpisodes.map((episode, index) => (
                   <Card 
                     key={episode.id} 
                     className="bg-gray-800 border-gray-700 hover:border-green-400 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-400/20 group animate-scale-in overflow-hidden cursor-pointer"
@@ -204,18 +224,19 @@ const Index = () => {
                       </CardTitle>
                       <CardDescription className="flex items-center justify-between text-gray-300">
                         <span className="flex items-center gap-1">
-                          <Icon name="Clock" size={14} />
-                          {episode.duration}
+                          <Icon name="Calendar" size={14} />
+                          {episode.airDate || 'TBA'}
                         </span>
-                        <span className="flex items-center gap-1 text-yellow-400">
-                          <Icon name="Star" size={14} className="fill-yellow-400" />
-                          {episode.rating}
+                        <span className="flex items-center gap-1 text-green-400">
+                          <Icon name="Film" size={14} />
+                          S{episode.season}E{episode.episode}
                         </span>
                       </CardDescription>
                     </CardHeader>
                   </Card>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
