@@ -215,7 +215,7 @@ const Blog = () => {
               {filteredPosts.map((post, index) => (
                 <Card 
                   key={post.id} 
-                  className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden"
+                  className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="relative overflow-hidden aspect-video">
@@ -230,7 +230,7 @@ const Blog = () => {
                     </Badge>
                   </div>
 
-                  <CardHeader>
+                  <CardHeader className="flex-grow">
                     <div className="flex flex-wrap gap-2 mb-3">
                       {post.tags.map((tag, idx) => (
                         <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 border-cyan-400/50 text-xs">
@@ -246,7 +246,7 @@ const Blog = () => {
                     </CardDescription>
                   </CardHeader>
 
-                  <CardContent>
+                  <CardContent className="mt-auto">
                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                       <div className="flex items-center gap-2">
                         <Icon name="User" size={14} />
