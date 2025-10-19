@@ -155,7 +155,7 @@ const EpisodeDetail = () => {
             <Card className="bg-gray-800/50 border-cyan-500/30 overflow-hidden">
               {episode.videoIframe ? (
                 <div 
-                  className="w-full aspect-video"
+                  className="w-full h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
                   dangerouslySetInnerHTML={{ __html: episode.videoIframe }}
                 />
               ) : (
