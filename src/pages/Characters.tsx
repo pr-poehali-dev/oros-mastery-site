@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,12 +10,32 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { generateSlug } from '@/utils/slugify';
 
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
+
 const Characters = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecies, setSelectedSpecies] = useState('all');
+  const [characters, setCharacters] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const characters = [
+  useEffect(() => {
+    fetchCharacters();
+  }, []);
+
+  const fetchCharacters = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=characters`);
+      const data = await response.json();
+      setCharacters(data);
+    } catch (error) {
+      console.error('Error fetching characters:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fallbackCharacters = [
     {
       id: 1,
       name: 'Рик Санчез',
@@ -138,13 +158,15 @@ const Characters = () => {
     }
   ];
 
+  const displayCharacters = characters.length > 0 ? characters : fallbackCharacters;
+
   const species = [
     { id: 'all', name: 'Все', icon: 'Users' },
     { id: 'human', name: 'Люди', icon: 'User' },
     { id: 'alien', name: 'Инопланетяне', icon: 'Rocket' }
   ];
 
-  const filteredCharacters = characters.filter(char => {
+  const filteredCharacters = displayCharacters.filter(char => {
     const matchesSpecies = selectedSpecies === 'all' || char.species === selectedSpecies;
     const matchesSearch = char.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          char.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -186,6 +208,12 @@ const Characters = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="text-cyan-400 text-xl">Загрузка персонажей...</div>
+          </div>
+        ) : (
+          <>
         <div className="mb-8 space-y-6">
           <div className="relative">
             <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />
@@ -270,6 +298,8 @@ const Characters = () => {
             <h3 className="text-2xl font-bold text-gray-400 mb-2">Персонажи не найдены</h3>
             <p className="text-gray-500">Попробуйте изменить параметры поиска</p>
           </div>
+        )}
+        </>
         )}
       </section>
 

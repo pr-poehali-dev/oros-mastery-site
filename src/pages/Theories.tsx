@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { generateSlug } from '@/utils/slugify';
 import { Button } from '@/components/ui/button';
@@ -10,12 +10,32 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
+
 const Theories = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
+  const [theories, setTheories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const theories = [
+  useEffect(() => {
+    fetchTheories();
+  }, []);
+
+  const fetchTheories = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=theories`);
+      const data = await response.json();
+      setTheories(data);
+    } catch (error) {
+      console.error('Error fetching theories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fallbackTheories = [
     {
       id: 1,
       title: 'Злой Морти — это будущая версия нашего Морти',
@@ -146,6 +166,8 @@ const Theories = () => {
     }
   ];
 
+  const displayTheories = theories.length > 0 ? theories : fallbackTheories;
+
   const types = [
     { id: 'all', name: 'Все теории', icon: 'Lightbulb' },
     { id: 'character', name: 'Персонажи', icon: 'User' },
@@ -154,7 +176,7 @@ const Theories = () => {
     { id: 'future', name: 'Будущее', icon: 'TrendingUp' }
   ];
 
-  const filteredTheories = theories.filter(theory => {
+  const filteredTheories = displayTheories.filter(theory => {
     const matchesType = selectedType === 'all' || theory.type === selectedType;
     const matchesSearch = theory.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          theory.summary.toLowerCase().includes(searchQuery.toLowerCase());
@@ -210,6 +232,12 @@ const Theories = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="text-cyan-400 text-xl">Загрузка теорий...</div>
+          </div>
+        ) : (
+          <>
         <div className="mb-8 space-y-6">
           <div className="relative">
             <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />
@@ -292,6 +320,8 @@ const Theories = () => {
             <h3 className="text-2xl font-bold text-gray-400 mb-2">Теории не найдены</h3>
             <p className="text-gray-500">Попробуйте изменить параметры поиска</p>
           </div>
+        )}
+        </>
         )}
       </section>
 

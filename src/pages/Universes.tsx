@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,11 +9,31 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { generateSlug } from '@/utils/slugify';
 
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
+
 const Universes = () => {
   const navigate = useNavigate();
   const [selectedDimension, setSelectedDimension] = useState<number | null>(null);
+  const [universes, setUniverses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const universes = [
+  useEffect(() => {
+    fetchUniverses();
+  }, []);
+
+  const fetchUniverses = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=universes`);
+      const data = await response.json();
+      setUniverses(data);
+    } catch (error) {
+      console.error('Error fetching universes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fallbackUniverses = [
     {
       id: 1,
       dimension: 'C-137',
@@ -112,6 +132,8 @@ const Universes = () => {
     }
   ];
 
+  const displayUniverses = universes.length > 0 ? universes : fallbackUniverses;
+
   const getDangerColor = (danger: string) => {
     switch (danger) {
       case 'low': return 'bg-green-500/20 text-green-300 border-green-500/30';
@@ -165,8 +187,13 @@ const Universes = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {universes.map((universe) => (
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="text-cyan-400 text-xl">Загрузка вселенных...</div>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayUniverses.map((universe) => (
             <Card 
               key={universe.id} 
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-purple-500/50 transition-all cursor-pointer"
@@ -201,6 +228,7 @@ const Universes = () => {
             </Card>
           ))}
         </div>
+        )}
 
         <div className="mt-12 text-center">
           <Card className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 border-purple-500/30 backdrop-blur-sm">
