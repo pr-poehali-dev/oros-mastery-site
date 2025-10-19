@@ -8,6 +8,7 @@ import { blogPosts } from '@/data/blogData';
 import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -329,80 +330,7 @@ const Blog = () => {
         </div>
       </section>
 
-      <footer className="bg-gray-950 text-white py-16 border-t border-gray-800">
-        <div className="container px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-            <div className="md:col-span-2">
-              <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-                Rick and Morty Portal
-              </h3>
-              <p className="text-gray-400 leading-relaxed mb-4">
-                Твой путеводитель по бесконечной мультивселенной Rick and Morty. Смотри серии, читай теории и открывай новые измерения!
-              </p>
-              <div className="flex gap-3">
-                <Button size="sm" className="bg-green-400 text-gray-900 hover:bg-green-300">
-                  <Icon name="Youtube" size={18} />
-                </Button>
-                <Button size="sm" className="bg-cyan-400 text-gray-900 hover:bg-cyan-300">
-                  <Icon name="Twitter" size={18} />
-                </Button>
-                <Button size="sm" className="bg-blue-400 text-gray-900 hover:bg-blue-300">
-                  <Icon name="Facebook" size={18} />
-                </Button>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-bold mb-4 text-lg text-green-400">Навигация</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a href="/" className="hover:text-green-400 transition-colors flex items-center gap-2">
-                    <Icon name="ChevronRight" size={16} />
-                    Главная
-                  </a>
-                </li>
-                <li>
-                  <a href="/blog" className="hover:text-green-400 transition-colors flex items-center gap-2">
-                    <Icon name="ChevronRight" size={16} />
-                    Блог
-                  </a>
-                </li>
-                <li>
-                  <a href="/#episodes" className="hover:text-green-400 transition-colors flex items-center gap-2">
-                    <Icon name="ChevronRight" size={16} />
-                    Эпизоды
-                  </a>
-                </li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold mb-4 text-lg text-cyan-400">Информация</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Icon name="Tv" size={16} />
-                  Adult Swim
-                </li>
-                <li className="flex items-center gap-2">
-                  <Icon name="Calendar" size={16} />
-                  С 2013 года
-                </li>
-                <li className="flex items-center gap-2">
-                  <Icon name="Users" size={16} />
-                  Фанатское сообщество
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-500">
-            <p className="mb-2">
-              Фанатский сайт Rick and Morty. Все права на контент принадлежат Adult Swim и создателям сериала.
-            </p>
-            <p>&copy; 2025 Rick and Morty Universe Portal. Made with 💚 by fans for fans.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

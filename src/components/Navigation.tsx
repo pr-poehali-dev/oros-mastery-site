@@ -9,7 +9,7 @@ const Navigation = () => {
 
   const menuItems = [
     { path: '/', label: 'Главная', icon: 'Home' },
-    { path: '/videos', label: 'Видео', icon: 'Video' },
+    { path: '/episodes', label: 'Эпизоды', icon: 'Film' },
     { path: '/universes', label: 'Вселенные', icon: 'Globe' },
     { path: '/characters', label: 'Персонажи', icon: 'Users' },
     { path: '/theories', label: 'Теории', icon: 'Lightbulb' },

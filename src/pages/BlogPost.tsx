@@ -8,6 +8,7 @@ import Comments from '@/components/Comments';
 import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -178,6 +179,8 @@ const BlogPost = () => {
         </div>
       </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

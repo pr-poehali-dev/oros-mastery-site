@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 
 const Characters = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecies, setSelectedSpecies] = useState('all');
 
@@ -214,7 +217,11 @@ const Characters = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCharacters.map((character) => (
-            <Card key={character.id} className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all">
+            <Card 
+              key={character.id} 
+              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer"
+              onClick={() => navigate(`/character/${character.id}`)}
+            >
               <div className="relative h-64 overflow-hidden">
                 <img 
                   src={character.image} 
@@ -264,6 +271,8 @@ const Characters = () => {
           </div>
         )}
       </section>
+
+      <Footer />
     </div>
   );
 };

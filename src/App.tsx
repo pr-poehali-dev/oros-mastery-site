@@ -9,11 +9,14 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
+import Episodes from "./pages/Episodes";
 import EpisodeDetail from "./pages/EpisodeDetail";
-import Videos from "./pages/Videos";
 import Universes from "./pages/Universes";
+import UniverseDetail from "./pages/UniverseDetail";
 import Characters from "./pages/Characters";
+import CharacterDetail from "./pages/CharacterDetail";
 import Theories from "./pages/Theories";
+import TheoryDetail from "./pages/TheoryDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,13 +29,16 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/videos" element={<Videos />} />
+          <Route path="/episodes" element={<Episodes />} />
+          <Route path="/episode/:id" element={<EpisodeDetail />} />
           <Route path="/universes" element={<Universes />} />
+          <Route path="/universe/:id" element={<UniverseDetail />} />
           <Route path="/characters" element={<Characters />} />
+          <Route path="/character/:id" element={<CharacterDetail />} />
           <Route path="/theories" element={<Theories />} />
+          <Route path="/theory/:id" element={<TheoryDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
-          <Route path="/episode/:id" element={<EpisodeDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

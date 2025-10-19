@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 
 const Universes = () => {
+  const navigate = useNavigate();
   const [selectedDimension, setSelectedDimension] = useState<number | null>(null);
 
   const universes = [
@@ -166,7 +169,7 @@ const Universes = () => {
             <Card 
               key={universe.id} 
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-purple-500/50 transition-all cursor-pointer"
-              onClick={() => setSelectedDimension(selectedDimension === universe.id ? null : universe.id)}
+              onClick={() => navigate(`/universe/${universe.id}`)}
             >
               <div className="relative h-48 overflow-hidden">
                 <img 
@@ -194,34 +197,6 @@ const Universes = () => {
                   {universe.description}
                 </CardDescription>
               </CardHeader>
-              
-              {selectedDimension === universe.id && (
-                <CardContent className="border-t border-gray-700 pt-6">
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-sm font-semibold text-cyan-400 mb-2 flex items-center gap-2">
-                        <Icon name="Users" size={16} />
-                        Жители
-                      </h4>
-                      <p className="text-gray-300 text-sm">{universe.inhabitants}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-sm font-semibold text-cyan-400 mb-2 flex items-center gap-2">
-                        <Icon name="Sparkles" size={16} />
-                        Особенности
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {universe.features.map((feature, idx) => (
-                          <Badge key={idx} variant="outline" className="border-gray-600 text-gray-300">
-                            {feature}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              )}
             </Card>
           ))}
         </div>
@@ -239,6 +214,8 @@ const Universes = () => {
           </Card>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

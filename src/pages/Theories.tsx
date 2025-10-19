@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 
 const Theories = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
-  const [expandedTheory, setExpandedTheory] = useState<number | null>(null);
 
   const theories = [
     {
@@ -239,7 +241,11 @@ const Theories = () => {
 
         <div className="space-y-6">
           {filteredTheories.map((theory) => (
-            <Card key={theory.id} className="bg-gray-800/50 border-gray-700 hover:border-green-500/50 transition-all">
+            <Card 
+              key={theory.id} 
+              className="bg-gray-800/50 border-gray-700 hover:border-green-500/50 transition-all cursor-pointer"
+              onClick={() => navigate(`/theory/${theory.id}`)}
+            >
               <CardHeader>
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1">
@@ -262,51 +268,19 @@ const Theories = () => {
                 <p className="text-gray-300">{theory.summary}</p>
               </CardHeader>
               
-              {expandedTheory === theory.id && (
-                <CardContent className="border-t border-gray-700 pt-6">
-                  <div className="space-y-6">
-                    <div>
-                      <h4 className="text-lg font-semibold text-cyan-400 mb-3">Полное описание:</h4>
-                      <p className="text-gray-300 leading-relaxed">{theory.fullText}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
-                        <Icon name="FileCheck" size={18} />
-                        Доказательства:
-                      </h4>
-                      <ul className="space-y-2">
-                        {theory.evidence.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-gray-300">
-                            <Icon name="Check" size={16} className="text-green-400 mt-1 flex-shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              )}
-              
-              <div className="px-6 pb-6">
+              <CardContent>
                 <Button
-                  onClick={() => setExpandedTheory(expandedTheory === theory.id ? null : theory.id)}
                   variant="outline"
-                  className="w-full border-gray-600 text-cyan-400 hover:bg-cyan-500/10"
+                  className="w-full border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/theory/${theory.id}`);
+                  }}
                 >
-                  {expandedTheory === theory.id ? (
-                    <>
-                      <Icon name="ChevronUp" size={18} className="mr-2" />
-                      Свернуть
-                    </>
-                  ) : (
-                    <>
-                      <Icon name="ChevronDown" size={18} className="mr-2" />
-                      Читать подробнее
-                    </>
-                  )}
+                  <Icon name="BookOpen" size={18} className="mr-2" />
+                  Читать подробнее
                 </Button>
-              </div>
+              </CardContent>
             </Card>
           ))}
         </div>
@@ -319,6 +293,8 @@ const Theories = () => {
           </div>
         )}
       </section>
+
+      <Footer />
     </div>
   );
 };

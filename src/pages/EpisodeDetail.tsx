@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 interface Episode {
   id: number;
@@ -288,6 +289,8 @@ const EpisodeDetail = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
