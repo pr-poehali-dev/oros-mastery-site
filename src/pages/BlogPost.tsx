@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Comments from '@/components/Comments';
 import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
+import Navigation from '@/components/Navigation';
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -47,7 +48,9 @@ const BlogPost = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 py-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <Navigation />
+      <div className="py-20">
       <SEO
         title={article.title}
         description={article.excerpt}
@@ -173,6 +176,7 @@ const BlogPost = () => {
         <div className="mt-8">
           <Comments comments={article.comments} />
         </div>
+      </div>
       </div>
     </div>
   );

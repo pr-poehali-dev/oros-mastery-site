@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
+import Navigation from '@/components/Navigation';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
@@ -151,7 +152,8 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
-      <div className="container mx-auto px-4 py-12">
+      <Navigation />
+      <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="mb-8">
           <Button 
             onClick={() => navigate('/')} 

@@ -7,6 +7,7 @@ import Icon from '@/components/ui/icon';
 import { blogPosts } from '@/data/blogData';
 import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
+import Navigation from '@/components/Navigation';
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -136,12 +137,13 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+      <Navigation />
       <SEO
         title="Блог"
         description="Блог о Rick and Morty - теории фанатов, анализ эпизодов, интересные факты, философские размышления и научные концепции из сериала."
         keywords="Rick and Morty блог, теории, анализ эпизодов, пасхалки, персонажи, философия, наука"
       />
-      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-cyan-600 via-green-500 to-blue-600">
+      <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-to-br from-cyan-600 via-green-500 to-blue-600">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
         
         <div className="absolute inset-0">

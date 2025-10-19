@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
+import Navigation from '@/components/Navigation';
 
 interface Episode {
   id: number;
@@ -112,6 +113,7 @@ const EpisodeDetail = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <Navigation />
       <SEO
         title={`${episode.title} - S${episode.season}E${episode.episode}`}
         description={episode.description}
@@ -119,7 +121,7 @@ const EpisodeDetail = () => {
         keywords={`Rick and Morty, ${episode.title}, сезон ${episode.season}, эпизод ${episode.episode}, смотреть онлайн`}
         type="article"
       />
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 pt-24 pb-12">
         <Link to="/">
           <Button variant="ghost" className="text-cyan-400 hover:text-cyan-300 mb-6">
             <Icon name="ArrowLeft" size={20} className="mr-2" />
