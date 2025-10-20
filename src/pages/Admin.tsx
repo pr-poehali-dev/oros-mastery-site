@@ -203,7 +203,7 @@ const Admin = () => {
 
           <TabsContent value="blog" className="space-y-6">
             <BlogForm 
-              editingBlogPost={editingBlogPost}
+              initialData={editingBlogPost}
               onSubmit={handleBlogSubmit}
               onCancel={() => setEditingBlogPost(null)}
             />
