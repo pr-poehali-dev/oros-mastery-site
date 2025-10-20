@@ -297,7 +297,7 @@ const Blog = () => {
 
                   <CardHeader className="flex-grow">
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {post.tags.map((tag, idx) => (
+                      {(post.tags || []).map((tag, idx) => (
                         <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 border-cyan-400/50 text-xs">
                           {tag}
                         </Badge>
