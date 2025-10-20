@@ -5,7 +5,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { useEffect, useState } from 'react';
 import Comments from '@/components/Comments';
-import { blogPosts } from '@/data/blogData';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -13,20 +12,51 @@ import Footer from '@/components/Footer';
 import ShareButtons from '@/components/ShareButtons';
 import { generateSlug } from '@/utils/slugify';
 
+const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
+
 const BlogPost = () => {
   const { slug } = useParams();
   const id = slug ? parseInt(slug.split('-')[0]) : 1;
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
-
-  const article = blogPosts.find(p => p.id === Number(id)) || blogPosts[0];
+  const [article, setArticle] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchArticle();
   }, [id]);
 
+  const fetchArticle = async () => {
+    try {
+      const [blogResponse, articlesResponse] = await Promise.all([
+        fetch(BLOG_API),
+        fetch(`${CONTENT_API}?type=articles`)
+      ]);
+      
+      const blogData = await blogResponse.json();
+      const articlesData = await articlesResponse.json();
+      
+      const validBlogData = Array.isArray(blogData) ? blogData : [];
+      const validArticlesData = Array.isArray(articlesData) ? articlesData : [];
+      
+      const combinedPosts = [...validBlogData, ...validArticlesData];
+      const foundArticle = combinedPosts.find(p => p.id === Number(id));
+      
+      if (foundArticle) {
+        setArticle(foundArticle);
+      }
+    } catch (error) {
+      console.error('Error fetching article:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleShare = () => {
+    if (!article) return;
     if (navigator.share) {
       navigator.share({
         title: article.title,
@@ -44,6 +74,7 @@ const BlogPost = () => {
   };
 
   const handleBookmark = () => {
+    if (!article) return;
     setBookmarked(!bookmarked);
     if (!bookmarked) {
       localStorage.setItem(`bookmark_${article.id}`, 'true');
@@ -52,21 +83,42 @@ const BlogPost = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center">
+        <div className="text-white text-xl">Загрузка...</div>
+      </div>
+    );
+  }
+
+  if (!article) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+        <Navigation />
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Статья не найдена</h1>
+          <Button onClick={() => navigate('/blog')} className="bg-cyan-400 text-gray-900">
+            Вернуться к блогу
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
       <Breadcrumbs />
-      <div className="py-20">
       <SEO
         title={article.title}
         description={article.excerpt}
         image={article.image}
-        keywords={`Rick and Morty, ${article.tags.join(', ')}, блог, статьи, теории`}
+        keywords={`Rick and Morty, ${(article.tags || []).join(', ')}, блог, статьи, теории`}
         ogType="article"
         author={article.author}
         publishedTime={article.date}
       />
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="container mx-auto px-4 max-w-4xl pt-24 pb-12">
         <Button 
           onClick={() => navigate('/blog')} 
           variant="ghost" 
@@ -87,7 +139,7 @@ const BlogPost = () => {
             
             <div className="absolute bottom-0 left-0 right-0 p-8">
               <div className="flex flex-wrap gap-2 mb-4">
-                {article.tags.map((tag, idx) => (
+                {(article.tags || []).map((tag, idx) => (
                   <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 border-cyan-400/50">
                     {tag}
                   </Badge>
@@ -110,14 +162,18 @@ const BlogPost = () => {
                   <Icon name="Clock" size={18} />
                   <span>{article.readTime}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Icon name="Eye" size={18} />
-                  <span>{article.views.toLocaleString()} просмотров</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Icon name="Heart" size={18} />
-                  <span>{article.likes} лайков</span>
-                </div>
+                {article.views !== undefined && (
+                  <div className="flex items-center gap-2">
+                    <Icon name="Eye" size={18} />
+                    <span>{article.views.toLocaleString()} просмотров</span>
+                  </div>
+                )}
+                {article.likes !== undefined && (
+                  <div className="flex items-center gap-2">
+                    <Icon name="Heart" size={18} />
+                    <span>{article.likes} лайков</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

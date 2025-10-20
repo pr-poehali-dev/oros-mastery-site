@@ -8,6 +8,15 @@ export interface ArticleFormData {
   episodeId: number;
   title: string;
   content: string;
+  excerpt: string;
+  author: string;
+  image: string;
+  tags: string;
+  category: string;
+  date?: string;
+  readTime?: string;
+  views?: number;
+  likes?: number;
 }
 
 interface ArticleFormProps {
@@ -21,7 +30,16 @@ const ArticleForm = ({ editingArticle, episodes, onSubmit, onCancel }: ArticleFo
   const [formData, setFormData] = useState<ArticleFormData>({
     episodeId: 0,
     title: '',
-    content: ''
+    content: '',
+    excerpt: '',
+    author: '',
+    image: '',
+    tags: '',
+    category: '',
+    date: new Date().toISOString().split('T')[0],
+    readTime: '5 мин',
+    views: 0,
+    likes: 0
   });
 
   useEffect(() => {
@@ -31,7 +49,16 @@ const ArticleForm = ({ editingArticle, episodes, onSubmit, onCancel }: ArticleFo
       setFormData({
         episodeId: 0,
         title: '',
-        content: ''
+        content: '',
+        excerpt: '',
+        author: '',
+        image: '',
+        tags: '',
+        category: '',
+        date: new Date().toISOString().split('T')[0],
+        readTime: '5 мин',
+        views: 0,
+        likes: 0
       });
     }
   }, [editingArticle]);
@@ -82,13 +109,118 @@ const ArticleForm = ({ editingArticle, episodes, onSubmit, onCancel }: ArticleFo
 
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Содержание
+            Краткое описание
+          </label>
+          <textarea
+            value={formData.excerpt}
+            onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+            className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500 min-h-[80px]"
+            placeholder="Краткое описание статьи для превью..."
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Полное содержание (Markdown)
           </label>
           <textarea
             value={formData.content}
             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500 min-h-[150px]"
-            placeholder="Подробное описание интересного факта..."
+            className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500 min-h-[200px] font-mono text-sm"
+            placeholder="# Заголовок\n\nПодробное содержание статьи в формате Markdown..."
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Автор
+            </label>
+            <input
+              type="text"
+              value={formData.author}
+              onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+              className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              placeholder="Имя автора"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Дата публикации
+            </label>
+            <input
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Изображение (URL)
+          </label>
+          <input
+            type="url"
+            value={formData.image}
+            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+            className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+            placeholder="https://example.com/image.jpg"
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Категория
+            </label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              required
+            >
+              <option value="">Выберите категорию</option>
+              <option value="Анализ">Анализ</option>
+              <option value="Теории">Теории</option>
+              <option value="Персонажи">Персонажи</option>
+              <option value="Пасхалки">Пасхалки</option>
+              <option value="Философия">Философия</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Время чтения
+            </label>
+            <input
+              type="text"
+              value={formData.readTime}
+              onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
+              className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              placeholder="5 мин"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Теги (через запятую)
+          </label>
+          <input
+            type="text"
+            value={formData.tags}
+            onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+            className="w-full px-4 py-2 bg-gray-700 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+            placeholder="Философия, Экзистенциализм, Рик"
             required
           />
         </div>

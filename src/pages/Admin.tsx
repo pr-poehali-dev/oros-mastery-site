@@ -291,10 +291,17 @@ const Admin = () => {
       const method = isEdit ? 'PUT' : 'POST';
       const url = isEdit ? `${CONTENT_API}?type=articles&id=${formData.id}` : `${CONTENT_API}?type=articles`;
       
+      const tagsArray = formData.tags.split(',').map(t => t.trim());
+      
       await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          tags: tagsArray,
+          views: formData.views || 0,
+          likes: formData.likes || 0
+        })
       });
 
       fetchArticles();
