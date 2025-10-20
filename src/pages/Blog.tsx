@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import { generateSlug } from '@/utils/slugify';
 
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,11 +28,18 @@ const Blog = () => {
 
   const fetchBlogPosts = async () => {
     try {
-      const response = await fetch(BLOG_API);
-      const data = await response.json();
-      setBlogPosts(data);
+      const [blogResponse, articlesResponse] = await Promise.all([
+        fetch(BLOG_API),
+        fetch(`${CONTENT_API}?type=articles`)
+      ]);
       
-      const uniqueCategories = Array.from(new Set(data.map((post: any) => post.category).filter(Boolean)));
+      const blogData = await blogResponse.json();
+      const articlesData = await articlesResponse.json();
+      
+      const combinedPosts = [...blogData, ...articlesData];
+      setBlogPosts(combinedPosts);
+      
+      const uniqueCategories = Array.from(new Set(combinedPosts.map((post: any) => post.category).filter(Boolean)));
       const categoryMap: Record<string, { name: string; icon: string }> = {
         'episodes': { name: 'Эпизоды', icon: 'Play' },
         'theory': { name: 'Теории', icon: 'Lightbulb' },

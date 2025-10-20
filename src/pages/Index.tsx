@@ -12,6 +12,7 @@ import { generateSlug } from '@/utils/slugify';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -40,9 +41,16 @@ const Index = () => {
 
   const fetchBlogPosts = async () => {
     try {
-      const response = await fetch(BLOG_API);
-      const data = await response.json();
-      setBlogPosts(data);
+      const [blogResponse, articlesResponse] = await Promise.all([
+        fetch(BLOG_API),
+        fetch(`${CONTENT_API}?type=articles`)
+      ]);
+      
+      const blogData = await blogResponse.json();
+      const articlesData = await articlesResponse.json();
+      
+      const combinedPosts = [...blogData, ...articlesData];
+      setBlogPosts(combinedPosts);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     } finally {
