@@ -11,7 +11,7 @@ interface BreadcrumbsProps {
   customLabel?: string;
 }
 
-const Breadcrumbs = ({ customLabel }: BreadcrumbsProps = {}) => {
+const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(x => x);
 
