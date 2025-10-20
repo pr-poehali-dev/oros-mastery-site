@@ -19,6 +19,11 @@ export interface BlogFormData {
   tags: string;
   author: string;
   image: string;
+  category: string;
+  date?: string;
+  readTime?: string;
+  views?: number;
+  likes?: number;
 }
 
 const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
@@ -28,7 +33,12 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
     excerpt: '',
     tags: '',
     author: 'Админ',
-    image: ''
+    image: '',
+    category: '',
+    date: new Date().toISOString().split('T')[0],
+    readTime: '5 мин',
+    views: 0,
+    likes: 0
   });
   const [imageUrl, setImageUrl] = useState('');
 
@@ -44,7 +54,12 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
         excerpt: '',
         tags: '',
         author: 'Админ',
-        image: ''
+        image: '',
+        category: '',
+        date: new Date().toISOString().split('T')[0],
+        readTime: '5 мин',
+        views: 0,
+        likes: 0
       });
     }
   };
@@ -140,16 +155,30 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
             />
           </div>
 
-          <div>
-            <label className="text-white text-sm font-medium mb-2 block">
-              Автор
-            </label>
-            <Input
-              placeholder="Имя автора"
-              value={form.author}
-              onChange={(e) => setForm({ ...form, author: e.target.value })}
-              className="bg-gray-900 border-gray-700 text-white"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Автор
+              </label>
+              <Input
+                placeholder="Имя автора"
+                value={form.author}
+                onChange={(e) => setForm({ ...form, author: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Дата публикации
+              </label>
+              <Input
+                type="date"
+                value={form.date}
+                onChange={(e) => setForm({ ...form, date: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
           </div>
 
           <div>
@@ -163,6 +192,39 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
               required
               className="bg-gray-900 border-gray-700 text-white"
             />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Категория
+              </label>
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                required
+              >
+                <option value="">Выберите категорию</option>
+                <option value="Анализ">Анализ</option>
+                <option value="Теории">Теории</option>
+                <option value="Персонажи">Персонажи</option>
+                <option value="Пасхалки">Пасхалки</option>
+                <option value="Философия">Философия</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Время чтения
+              </label>
+              <Input
+                placeholder="5 мин"
+                value={form.readTime}
+                onChange={(e) => setForm({ ...form, readTime: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
           </div>
 
           <div className="flex gap-2">

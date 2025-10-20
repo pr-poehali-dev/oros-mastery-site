@@ -22,6 +22,8 @@ export const useBlogManager = () => {
       const method = isEdit ? 'PUT' : 'POST';
       const url = isEdit ? `${BLOG_API}?id=${formData.id}` : BLOG_API;
       
+      const tagsArray = formData.tags.split(',').map(t => t.trim());
+      
       await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -30,9 +32,14 @@ export const useBlogManager = () => {
           title: formData.title,
           content: formData.content,
           excerpt: formData.excerpt,
-          tags: formData.tags.split(',').map(t => t.trim()),
+          tags: tagsArray,
           author: formData.author,
-          image: formData.image
+          image: formData.image,
+          category: formData.category,
+          date: formData.date,
+          readTime: formData.readTime,
+          views: formData.views || 0,
+          likes: formData.likes || 0
         })
       });
 

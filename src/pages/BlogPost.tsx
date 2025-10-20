@@ -108,7 +108,7 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
-      <Breadcrumbs />
+      <Breadcrumbs customLabel={article.title} />
       <SEO
         title={article.title}
         description={article.excerpt}

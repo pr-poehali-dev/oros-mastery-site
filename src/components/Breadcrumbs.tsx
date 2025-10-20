@@ -7,7 +7,11 @@ interface BreadcrumbItem {
   path: string;
 }
 
-const Breadcrumbs = () => {
+interface BreadcrumbsProps {
+  customLabel?: string;
+}
+
+const Breadcrumbs = ({ customLabel }: BreadcrumbsProps = {}) => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(x => x);
 
@@ -36,9 +40,12 @@ const Breadcrumbs = () => {
 
   pathnames.forEach((value, index) => {
     const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+    const isLast = index === pathnames.length - 1;
     
-    if (value.includes('-')) {
-      const words = value.split('-').slice(1).join(' ');
+    if (isLast && customLabel) {
+      breadcrumbs.push({ label: customLabel, path });
+    } else if (value.includes('-')) {
+      const words = value.split('-').slice(1).join(' ').replace(/-/g, ' ');
       const label = words.charAt(0).toUpperCase() + words.slice(1);
       breadcrumbs.push({ label, path });
     } else {
