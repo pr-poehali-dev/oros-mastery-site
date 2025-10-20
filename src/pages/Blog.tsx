@@ -36,7 +36,10 @@ const Blog = () => {
       const blogData = await blogResponse.json();
       const articlesData = await articlesResponse.json();
       
-      const combinedPosts = [...blogData, ...articlesData];
+      const validBlogData = Array.isArray(blogData) ? blogData : [];
+      const validArticlesData = Array.isArray(articlesData) ? articlesData : [];
+      
+      const combinedPosts = [...validBlogData, ...validArticlesData];
       setBlogPosts(combinedPosts);
       
       const uniqueCategories = Array.from(new Set(combinedPosts.map((post: any) => post.category).filter(Boolean)));

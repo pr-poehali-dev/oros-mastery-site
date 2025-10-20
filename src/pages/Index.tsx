@@ -49,7 +49,10 @@ const Index = () => {
       const blogData = await blogResponse.json();
       const articlesData = await articlesResponse.json();
       
-      const combinedPosts = [...blogData, ...articlesData];
+      const validBlogData = Array.isArray(blogData) ? blogData : [];
+      const validArticlesData = Array.isArray(articlesData) ? articlesData : [];
+      
+      const combinedPosts = [...validBlogData, ...validArticlesData];
       setBlogPosts(combinedPosts);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
