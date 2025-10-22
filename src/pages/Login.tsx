@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,8 +35,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
+      <div className="flex items-center justify-center px-4 min-h-[calc(100vh-140px)]">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-[150px] opacity-20 animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500 rounded-full blur-[150px] opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -153,6 +156,7 @@ const Login = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

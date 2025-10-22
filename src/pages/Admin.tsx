@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import AdminHeader from '@/components/admin/AdminHeader';
 import EpisodeForm from '@/components/admin/EpisodeForm';
 import EpisodeList from '@/components/admin/EpisodeList';
@@ -88,6 +89,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <div className="container mx-auto px-4 pt-24 pb-12">
         <AdminHeader />
         
