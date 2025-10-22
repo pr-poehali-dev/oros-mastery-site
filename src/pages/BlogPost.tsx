@@ -233,7 +233,7 @@ const BlogPost = () => {
         </Card>
 
         <div className="mt-8">
-          <Comments comments={article.comments} />
+          <Comments articleId={article.id} />
         </div>
 
         <div className="mt-6 text-center">
