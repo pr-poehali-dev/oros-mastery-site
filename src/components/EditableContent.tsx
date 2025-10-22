@@ -64,10 +64,29 @@ const EditableContent = ({ content, onSave, className = '', title, showEditButto
           </Button>
         )}
       </div>
-      <div className="prose prose-invert max-w-none">
-        {content.split('\n').map((paragraph, index) => (
-          paragraph.trim() && <p key={index} className="mb-4 text-gray-200 leading-relaxed">{paragraph}</p>
-        ))}
+      <div className="prose prose-invert max-w-none prose-headings:text-white prose-h2:text-white prose-h3:text-white">
+        {content.split('\n').map((paragraph, index) => {
+          const trimmed = paragraph.trim();
+          if (!trimmed) return null;
+          
+          if (trimmed.startsWith('## ')) {
+            return <h2 key={index} className="text-2xl font-bold text-white mt-8 mb-4">{trimmed.replace('## ', '')}</h2>;
+          }
+          
+          if (trimmed.startsWith('### ')) {
+            return <h3 key={index} className="text-xl font-bold text-white mt-6 mb-3">{trimmed.replace('### ', '')}</h3>;
+          }
+          
+          if (trimmed.startsWith('# ')) {
+            return <h1 key={index} className="text-3xl font-bold text-white mt-10 mb-5">{trimmed.replace('# ', '')}</h1>;
+          }
+          
+          if (trimmed.startsWith('- ')) {
+            return <li key={index} className="text-gray-200 mb-2 ml-4">{trimmed.replace('- ', '')}</li>;
+          }
+          
+          return <p key={index} className="mb-4 text-gray-200 leading-relaxed">{trimmed}</p>;
+        })}
       </div>
     </div>
   );
