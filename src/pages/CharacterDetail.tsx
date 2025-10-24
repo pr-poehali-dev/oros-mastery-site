@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,128 +8,69 @@ import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import EditableContent from '@/components/EditableContent';
 import CommentSection from '@/components/CommentSection';
+
+const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
 const CharacterDetail = () => {
   const { slug } = useParams();
   const id = slug ? parseInt(slug.split('-')[0]) : 1;
 
-  const charactersData = [
-    {
-      id: 1,
-      name: 'Рик Санчез',
-      species: 'Человек',
-      status: 'Жив',
-      origin: 'Вселенная C-137',
-      occupation: 'Учёный, изобретатель',
-      personality: ['Гениальный', 'Циничный', 'Пьющий', 'Безрассудный'],
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop',
-      fullBio: `Рик Санчез — гениальный учёный, изобретатель и один из самых умных существ во всей мультивселенной. Его полное имя — Рик Санчез C-137, что указывает на его происхождение из вселенной C-137.
+  const [character, setCharacter] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-## Ранняя жизнь
+  useEffect(() => {
+    fetchCharacter();
+  }, [id]);
 
-Рик родился и вырос в обычной семье. В молодости он был счастлив, женился на женщине по имени Диана и у них родилась дочь Бет. Однако его жизнь кардинально изменилась, когда другой Рик из параллельной вселенной убил его жену и дочь, взорвав их дом.
-
-Это трагическое событие превратило Рика в того циничного, озлобленного гения, которого мы знаем. Он посвятил годы поискам убийцы своей семьи, путешествуя по бесконечным измерениям мультивселенной.
-
-## Изобретения и достижения
-
-Рик создал множество революционных изобретений:
-
-### Портальная пушка
-Главное изобретение Рика — портальная пушка, позволяющая мгновенно перемещаться между различными измерениями и вселенными. Это устройство делает его одним из самых опасных существ в мультивселенной, так как он может в любой момент сбежать или призвать подкрепление из других измерений.
-
-### Микроверс батарейка
-Рик создал целую миниатюрную вселенную внутри батарейки, жители которой производят энергию для его космического корабля, даже не подозревая об этом. Это демонстрирует его гениальность и полное отсутствие этики.
-
-### Другие изобретения
-- Лазерное оружие различных типов
-- Устройство для замораживания времени
-- Оборудование для чтения мыслей
-- Медицинские приборы, способные лечить любые болезни
-- Робототехника и искусственный интеллект
-
-## Характер и личность
-
-Рик — сложная и противоречивая личность:
-
-### Цинизм и нигилизм
-Рик не верит в смысл жизни, любовь или какие-либо высшие ценности. Для него вселенная — это бессмысленное место, где ничего не имеет значения. Этот цинизм является защитным механизмом, помогающим ему справиться с потерей семьи.
-
-### Алкоголизм
-Рик страдает от тяжёлой алкогольной зависимости. Он постоянно пьян или под действием различных веществ. Это его способ справиться с болью и экзистенциальным кризисом.
-
-### Интеллект
-Несмотря на все свои проблемы, Рик остаётся гениальным учёным. Он может решать задачи, которые другим кажутся невозможными, и регулярно перехитряет существ, считающих себя умнее его.
-
-### Скрытая любовь к семье
-Хотя Рик утверждает, что ничто не имеет значения, его действия показывают обратное. Он рискует жизнью ради Морти и остальных членов семьи, хотя никогда не признается в этом открыто.
-
-## Отношения
-
-### Морти
-Морти — внук Рика и его постоянный спутник в приключениях. Рик использует "глупые" мозговые волны Морти, чтобы скрыть свои собственные гениальные волны от врагов. Но со временем между ними развивается настоящая связь, хотя Рик никогда не признает это.
-
-### Бет
-Бет — дочь Рика. Их отношения сложны, так как Рик бросил её в детстве и вернулся только спустя десятилетия. Бет страдает от проблем с привязанностью и алкоголизма, частично из-за отсутствия отца.
-
-### Птица-Личность
-Один из немногих друзей Рика. Их дружба выдержала множество испытаний, включая предательство Птицы-Личности. Несмотря ни на что, Рик продолжает считать его другом.
-
-### Другие Рики
-Рик C-137 презирает большинство других Риков из параллельных вселенных. Он считает Цитадель Риков признаком слабости и конформизма. Для него другие Рики — это версии его самого, которые выбрали лёгкий путь.
-
-## Способности
-
-Помимо интеллекта, Рик обладает:
-- Экспертными знаниями в боевых искусствах
-- Навыками стрельбы и рукопашного боя
-- Способностью быстро адаптироваться к любой ситуации
-- Умением манипулировать людьми и существами
-- Знанием тысяч языков и культур
-
-## Моральная философия
-
-Рик живёт по своим правилам. Он не признаёт авторитетов, правительств или богов. Для него единственная ценность — это свобода делать всё, что он хочет. Эта философия одновременно освобождает и разрушает его.
-
-Несмотря на цинизм, Рик иногда демонстрирует признаки совести. Он может спасти невинных, наказать злодеев или защитить семью. Но он всегда отрицает, что это имеет какое-то значение.
-
-## Влияние на мультивселенную
-
-Рик Санчез — одна из самых влиятельных фигур в мультивселенной. Его действия часто имеют последствия для целых измерений и цивилизаций. Он свергал правительства, уничтожал планеты и создавал новые формы жизни.
-
-## Загадки и тайны
-
-Многое о Рике остаётся загадкой:
-- Что на самом деле случилось с его женой Дианой?
-- Почему он вернулся к Бет именно сейчас?
-- Есть ли что-то, что может заставить его изменить свою философию?
-- Какова его истинная цель?`,
-      age: '70+',
-      gender: 'Мужской',
-      affiliation: 'Независимый',
-      abilities: ['Гениальный интеллект', 'Изобретательность', 'Боевые навыки', 'Путешествия между измерениями'],
-      firstAppearance: 'Pilot (S1E1)',
-      voiceActor: 'Justin Roiland'
+  const fetchCharacter = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=characters&id=${id}`);
+      const data = await response.json();
+      setCharacter(data);
+    } catch (error) {
+      console.error('Error fetching character:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
-
-  const [character, setCharacter] = useState(charactersData.find(c => c.id === Number(id)) || charactersData[0]);
-
-  const handleContentSave = (newContent: string) => {
-    setCharacter({ ...character, fullBio: newContent });
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+        <Navigation />
+        <div className="container mx-auto px-4 py-32 text-center">
+          <p className="text-white text-xl">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!character) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+        <Navigation />
+        <div className="container mx-auto px-4 py-32 text-center">
+          <p className="text-white text-xl">Персонаж не найден</p>
+          <Link to="/characters">
+            <Button className="mt-4">Вернуться к списку</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const abilitiesArray = character.abilities ? character.abilities.split(',').map((a: string) => a.trim()) : [];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
       <Breadcrumbs />
       <SEO
-        title={`${character.name} - Персонаж Rick and Morty`}
-        description={`${character.name} - ${character.occupation}. ${character.fullBio.substring(0, 150)}...`}
+        title={`${character.name} | Rick and Morty`}
+        description={character.description?.substring(0, 160)}
         image={character.image}
-        keywords={`Rick and Morty, ${character.name}, персонаж, ${character.origin}, ${character.species}, биография персонажа`}
+        keywords={`Rick and Morty, ${character.name}, персонаж`}
         ogType="article"
       />
 
@@ -155,15 +96,11 @@ const CharacterDetail = () => {
             </h1>
             
             <div className="flex gap-3 flex-wrap">
-              <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
-                {character.status}
-              </Badge>
-              <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
-                {character.species}
-              </Badge>
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
-                {character.occupation}
-              </Badge>
+              {character.status && (
+                <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                  {character.status}
+                </Badge>
+              )}
             </div>
           </div>
         </div>
@@ -172,86 +109,66 @@ const CharacterDetail = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <Card className="bg-gray-800/50 border-gray-700 p-8">
-              <EditableContent
-                content={character.fullBio}
-                onSave={handleContentSave}
-                title="Биография"
-              />
+            <Card className="bg-gray-800/50 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white flex items-center gap-2">
+                  <Icon name="BookOpen" size={24} className="text-cyan-400" />
+                  Биография
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="prose prose-invert max-w-none">
+                <div className="text-gray-300 whitespace-pre-wrap">
+                  {character.description}
+                </div>
+              </CardContent>
             </Card>
 
             <CommentSection entityType="character" entityId={character.id} />
           </div>
 
           <div className="space-y-6">
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-xl text-white flex items-center gap-2">
-                  <Icon name="Info" size={20} className="text-cyan-400" />
-                  Информация
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Возраст</p>
-                  <p className="text-white font-semibold">{character.age}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Пол</p>
-                  <p className="text-white font-semibold">{character.gender}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Происхождение</p>
-                  <p className="text-white font-semibold">{character.origin}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Принадлежность</p>
-                  <p className="text-white font-semibold">{character.affiliation}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Первое появление</p>
-                  <p className="text-white font-semibold">{character.firstAppearance}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Голос</p>
-                  <p className="text-white font-semibold">{character.voiceActor}</p>
-                </div>
-              </CardContent>
-            </Card>
+            {abilitiesArray.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Zap" size={20} className="text-cyan-400" />
+                    Способности
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {abilitiesArray.map((ability: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <Icon name="ChevronRight" size={16} className="text-cyan-400 mt-1 shrink-0" />
+                        <span>{ability}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
 
             <Card className="bg-gray-800/50 border-gray-700">
               <CardHeader>
                 <CardTitle className="text-xl text-white flex items-center gap-2">
-                  <Icon name="Zap" size={20} className="text-cyan-400" />
-                  Способности
+                  <Icon name="Share2" size={20} className="text-cyan-400" />
+                  Поделиться
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {character.abilities.map((ability, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-gray-300">
-                      <Icon name="Star" size={14} className="text-yellow-400" />
-                      <span>{ability}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-xl text-white flex items-center gap-2">
-                  <Icon name="Heart" size={20} className="text-cyan-400" />
-                  Черты характера
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {character.personality.map((trait, idx) => (
-                    <Badge key={idx} variant="outline" className="border-cyan-500/30 text-cyan-300">
-                      {trait}
-                    </Badge>
-                  ))}
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex-1 border-gray-600 hover:bg-gray-700"
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert('Ссылка скопирована!');
+                    }}
+                  >
+                    <Icon name="Link" size={16} className="mr-2" />
+                    Копировать
+                  </Button>
                 </div>
               </CardContent>
             </Card>
