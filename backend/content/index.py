@@ -138,7 +138,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         elif method == 'PUT':
             item_id = params.get('id')
+            print(f'PUT request - content_type: {content_type}, item_id: {item_id}')
             if not item_id:
+                print('ERROR: No ID in params')
                 return {
                     'statusCode': 400,
                     'headers': {'Access-Control-Allow-Origin': '*'},
@@ -147,6 +149,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 }
             
             body_data = json.loads(event.get('body', '{}'))
+            print(f'Body data keys: {list(body_data.keys())}')
             
             if content_type == 'universes':
                 sql = (
