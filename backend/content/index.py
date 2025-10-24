@@ -4,9 +4,13 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from typing import Dict, Any
 
+def escape_sql(value: str) -> str:
+    """Экранирование одинарных кавычек для SQL"""
+    return value.replace("'", "''") if value else ''
+
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
-    Business: Универсальный CRUD API для всего контента (вселенные, персонажи, теории)
+    Business: Универсальный CRUD API для контента (вселенные, персонажи, теории, статьи)
     Args: event - dict с httpMethod, body, queryStringParameters
           context - объект с request_id
     Returns: HTTP response dict с данными контента
@@ -29,7 +33,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'isBase64Encoded': False
         }
     
-    # Подключение к БД
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
@@ -37,12 +40,22 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         if method == 'GET':
             item_id = params.get('id')
             
-            if item_id:
-                cursor.execute(f'SELECT * FROM {content_type} WHERE id = {int(item_id)}')
+            if content_type == 'articles':
+                if item_id:
+                    sql = f"SELECT * FROM episode_articles WHERE id = {int(item_id)}"
+                else:
+                    sql = "SELECT * FROM episode_articles ORDER BY created_at DESC"
+                cursor.execute(sql)
+                items = cursor.fetchall()
+                result = [dict(i) for i in items] if not item_id else (dict(items[0]) if items else None)
+            elif item_id:
+                sql = f'SELECT * FROM {content_type} WHERE id = {int(item_id)}'
+                cursor.execute(sql)
                 item = cursor.fetchone()
                 result = dict(item) if item else None
             else:
-                cursor.execute(f'SELECT * FROM {content_type} ORDER BY created_at DESC')
+                sql = f'SELECT * FROM {content_type} ORDER BY created_at DESC'
+                cursor.execute(sql)
                 items = cursor.fetchall()
                 result = [dict(i) for i in items]
             
@@ -60,43 +73,43 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             body_data = json.loads(event.get('body', '{}'))
             
             if content_type == 'universes':
-                cursor.execute(
-                    "INSERT INTO universes (name, description, image, status, features) "
-                    "VALUES (%s, %s, %s, %s, %s) RETURNING id",
-                    (
-                        body_data.get('name', ''),
-                        body_data.get('description', ''),
-                        body_data.get('image', ''),
-                        body_data.get('status', ''),
-                        body_data.get('features', '')
-                    )
+                sql = (
+                    f"INSERT INTO universes (name, description, image, status, features) "
+                    f"VALUES ('{escape_sql(body_data.get('name', ''))}', "
+                    f"'{escape_sql(body_data.get('description', ''))}', "
+                    f"'{escape_sql(body_data.get('image', ''))}', "
+                    f"'{escape_sql(body_data.get('status', ''))}', "
+                    f"'{escape_sql(body_data.get('features', ''))}') RETURNING id"
                 )
             elif content_type == 'characters':
-                cursor.execute(
-                    "INSERT INTO characters (name, description, image, background_image, status, abilities) "
-                    "VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
-                    (
-                        body_data.get('name', ''),
-                        body_data.get('description', ''),
-                        body_data.get('image', ''),
-                        body_data.get('background_image', ''),
-                        body_data.get('status', ''),
-                        body_data.get('abilities', '')
-                    )
+                sql = (
+                    f"INSERT INTO characters (name, description, image, background_image, status, abilities) "
+                    f"VALUES ('{escape_sql(body_data.get('name', ''))}', "
+                    f"'{escape_sql(body_data.get('description', ''))}', "
+                    f"'{escape_sql(body_data.get('image', ''))}', "
+                    f"'{escape_sql(body_data.get('background_image', ''))}', "
+                    f"'{escape_sql(body_data.get('status', ''))}', "
+                    f"'{escape_sql(body_data.get('abilities', ''))}') RETURNING id"
                 )
             elif content_type == 'theories':
-                cursor.execute(
-                    "INSERT INTO theories (title, description, image, status, evidence) "
-                    "VALUES (%s, %s, %s, %s, %s) RETURNING id",
-                    (
-                        body_data.get('title', ''),
-                        body_data.get('description', ''),
-                        body_data.get('image', ''),
-                        body_data.get('status', ''),
-                        body_data.get('evidence', '')
-                    )
+                sql = (
+                    f"INSERT INTO theories (title, description, image, status, evidence) "
+                    f"VALUES ('{escape_sql(body_data.get('title', ''))}', "
+                    f"'{escape_sql(body_data.get('description', ''))}', "
+                    f"'{escape_sql(body_data.get('image', ''))}', "
+                    f"'{escape_sql(body_data.get('status', ''))}', "
+                    f"'{escape_sql(body_data.get('evidence', ''))}') RETURNING id"
+                )
+            elif content_type == 'articles':
+                episode_id = int(body_data.get('episodeId', 0))
+                sql = (
+                    f"INSERT INTO episode_articles (episode_id, title, content) "
+                    f"VALUES ({episode_id}, "
+                    f"'{escape_sql(body_data.get('title', ''))}', "
+                    f"'{escape_sql(body_data.get('content', ''))}') RETURNING id"
                 )
             
+            cursor.execute(sql)
             new_id = cursor.fetchone()['id']
             conn.commit()
             
@@ -123,46 +136,47 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             body_data = json.loads(event.get('body', '{}'))
             
             if content_type == 'universes':
-                cursor.execute(
-                    "UPDATE universes SET name=%s, description=%s, image=%s, status=%s, features=%s, "
-                    "updated_at=CURRENT_TIMESTAMP WHERE id=%s",
-                    (
-                        body_data.get('name', ''),
-                        body_data.get('description', ''),
-                        body_data.get('image', ''),
-                        body_data.get('status', ''),
-                        body_data.get('features', ''),
-                        int(item_id)
-                    )
+                sql = (
+                    f"UPDATE universes SET "
+                    f"name='{escape_sql(body_data.get('name', ''))}', "
+                    f"description='{escape_sql(body_data.get('description', ''))}', "
+                    f"image='{escape_sql(body_data.get('image', ''))}', "
+                    f"status='{escape_sql(body_data.get('status', ''))}', "
+                    f"features='{escape_sql(body_data.get('features', ''))}', "
+                    f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
                 )
             elif content_type == 'characters':
-                cursor.execute(
-                    "UPDATE characters SET name=%s, description=%s, image=%s, background_image=%s, "
-                    "status=%s, abilities=%s, updated_at=CURRENT_TIMESTAMP WHERE id=%s",
-                    (
-                        body_data.get('name', ''),
-                        body_data.get('description', ''),
-                        body_data.get('image', ''),
-                        body_data.get('background_image', ''),
-                        body_data.get('status', ''),
-                        body_data.get('abilities', ''),
-                        int(item_id)
-                    )
+                sql = (
+                    f"UPDATE characters SET "
+                    f"name='{escape_sql(body_data.get('name', ''))}', "
+                    f"description='{escape_sql(body_data.get('description', ''))}', "
+                    f"image='{escape_sql(body_data.get('image', ''))}', "
+                    f"background_image='{escape_sql(body_data.get('background_image', ''))}', "
+                    f"status='{escape_sql(body_data.get('status', ''))}', "
+                    f"abilities='{escape_sql(body_data.get('abilities', ''))}', "
+                    f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
                 )
             elif content_type == 'theories':
-                cursor.execute(
-                    "UPDATE theories SET title=%s, description=%s, image=%s, status=%s, evidence=%s, "
-                    "updated_at=CURRENT_TIMESTAMP WHERE id=%s",
-                    (
-                        body_data.get('title', ''),
-                        body_data.get('description', ''),
-                        body_data.get('image', ''),
-                        body_data.get('status', ''),
-                        body_data.get('evidence', ''),
-                        int(item_id)
-                    )
+                sql = (
+                    f"UPDATE theories SET "
+                    f"title='{escape_sql(body_data.get('title', ''))}', "
+                    f"description='{escape_sql(body_data.get('description', ''))}', "
+                    f"image='{escape_sql(body_data.get('image', ''))}', "
+                    f"status='{escape_sql(body_data.get('status', ''))}', "
+                    f"evidence='{escape_sql(body_data.get('evidence', ''))}', "
+                    f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
+                )
+            elif content_type == 'articles':
+                episode_id = int(body_data.get('episodeId', 0))
+                sql = (
+                    f"UPDATE episode_articles SET "
+                    f"episode_id={episode_id}, "
+                    f"title='{escape_sql(body_data.get('title', ''))}', "
+                    f"content='{escape_sql(body_data.get('content', ''))}' "
+                    f"WHERE id={int(item_id)}"
                 )
             
+            cursor.execute(sql)
             conn.commit()
             
             return {
@@ -185,7 +199,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'isBase64Encoded': False
                 }
             
-            cursor.execute(f'DELETE FROM {content_type} WHERE id = {int(item_id)}')
+            table_name = 'episode_articles' if content_type == 'articles' else content_type
+            sql = f'DELETE FROM {table_name} WHERE id = {int(item_id)}'
+            cursor.execute(sql)
             conn.commit()
             
             return {
