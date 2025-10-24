@@ -1,4 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
 
 interface RichTextEditorProps {
   value: string;
@@ -7,127 +9,126 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor = ({ value, onChange, placeholder = 'Введите текст...' }: RichTextEditorProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-  const quillRef = useRef<any>(null);
+  const [imageUrl, setImageUrl] = useState('');
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const insertMarkdown = (before: string, after: string = before) => {
+    const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
+    if (!textarea) return;
 
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'image'],
-      ['clean']
-    ],
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = value.substring(start, end);
+    const newText = value.substring(0, start) + before + selectedText + after + value.substring(end);
+    
+    onChange(newText);
+    
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + before.length, end + before.length);
+    }, 0);
   };
 
-  const formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet', 'indent',
-    'link', 'image'
-  ];
+  const insertImage = () => {
+    if (imageUrl) {
+      const imageMarkdown = `\n![Изображение](${imageUrl})\n`;
+      onChange(value + imageMarkdown);
+      setImageUrl('');
+    }
+  };
 
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const style = document.createElement('style');
-    style.textContent = `
-      .ql-toolbar {
-        background: rgba(31, 41, 55, 0.8);
-        border: 1px solid rgba(6, 182, 212, 0.3);
-        border-radius: 0.5rem 0.5rem 0 0;
-      }
-      .ql-container {
-        background: rgba(31, 41, 55, 0.5);
-        border: 1px solid rgba(6, 182, 212, 0.3);
-        border-top: none;
-        border-radius: 0 0 0.5rem 0.5rem;
-        color: white;
-        min-height: 300px;
-      }
-      .ql-editor {
-        min-height: 300px;
-        color: white;
-      }
-      .ql-editor.ql-blank::before {
-        color: rgba(156, 163, 175, 0.5);
-      }
-      .ql-stroke {
-        stroke: rgba(156, 163, 175, 0.8);
-      }
-      .ql-fill {
-        fill: rgba(156, 163, 175, 0.8);
-      }
-      .ql-toolbar button:hover .ql-stroke {
-        stroke: rgb(6, 182, 212);
-      }
-      .ql-toolbar button:hover .ql-fill {
-        fill: rgb(6, 182, 212);
-      }
-      .ql-toolbar button.ql-active .ql-stroke {
-        stroke: rgb(6, 182, 212);
-      }
-      .ql-toolbar button.ql-active .ql-fill {
-        fill: rgb(6, 182, 212);
-      }
-      .ql-picker-label {
-        color: rgba(156, 163, 175, 0.8);
-      }
-      .ql-picker-label:hover {
-        color: rgb(6, 182, 212);
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [isMounted]);
-
-  if (!isMounted) {
-    return (
-      <div className="w-full min-h-[300px] p-4 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 flex items-center justify-center">
-        Загрузка редактора...
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-wrap gap-2 p-2 bg-gray-800 border border-gray-700 rounded-t-lg">
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => insertMarkdown('# ', '')}
+          className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+          title="Заголовок 1"
+        >
+          <Icon name="Heading1" size={18} />
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => insertMarkdown('## ', '')}
+          className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+          title="Заголовок 2"
+        >
+          <Icon name="Heading2" size={18} />
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => insertMarkdown('**', '**')}
+          className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+          title="Жирный"
+        >
+          <Icon name="Bold" size={18} />
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => insertMarkdown('*', '*')}
+          className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+          title="Курсив"
+        >
+          <Icon name="Italic" size={18} />
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => insertMarkdown('\n- ', '')}
+          className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+          title="Список"
+        >
+          <Icon name="List" size={18} />
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => insertMarkdown('[', '](url)')}
+          className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+          title="Ссылка"
+        >
+          <Icon name="Link" size={18} />
+        </Button>
+        
+        <div className="flex items-center gap-2 ml-auto">
+          <input
+            type="text"
+            placeholder="URL изображения"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            className="px-2 py-1 text-sm bg-gray-900 border border-gray-700 rounded text-white w-48"
+          />
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={insertImage}
+            className="text-gray-300 hover:text-cyan-400 hover:bg-gray-700"
+            title="Вставить изображение"
+          >
+            <Icon name="Image" size={18} />
+          </Button>
+        </div>
       </div>
-    );
-  }
-
-  // Динамический импорт ReactQuill
-  try {
-    const ReactQuill = require('react-quill');
-    require('react-quill/dist/quill.snow.css');
-
-    return (
-      <ReactQuill
-        ref={quillRef}
-        theme="snow"
+      
+      <textarea
         value={value}
-        onChange={onChange}
-        modules={modules}
-        formats={formats}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        className="w-full min-h-[400px] p-4 bg-gray-900 border border-gray-700 border-t-0 rounded-b-lg text-white resize-y focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono text-sm"
       />
-    );
-  } catch (error) {
-    console.error('Error loading ReactQuill:', error);
-    return (
-      <div className="w-full min-h-[300px] p-4 bg-gray-800 border border-gray-700 rounded-lg">
-        <textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="w-full h-full bg-transparent text-white border-none outline-none resize-none"
-        />
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default RichTextEditor;
