@@ -152,6 +152,57 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                     'body': json.dumps({'id': comment_id, 'message': 'Comment created'})
                 }
+            
+            title = body.get('title', '').replace("'", "''")
+            excerpt = body.get('excerpt', '').replace("'", "''")
+            content = body.get('content', '').replace("'", "''")
+            author = body.get('author', '').replace("'", "''")
+            date_val = body.get('date', '').replace("'", "''")
+            read_time = body.get('read_time', '5 мин').replace("'", "''")
+            image = body.get('image', '').replace("'", "''")
+            category = body.get('category', '').replace("'", "''")
+            tags = body.get('tags', [])
+            
+            cur.execute(
+                f"INSERT INTO blog_posts (title, excerpt, content, author, date, read_time, image, category, views, likes) VALUES ('{title}', '{excerpt}', '{content}', '{author}', '{date_val}', '{read_time}', '{image}', '{category}', 0, 0) RETURNING id"
+            )
+            post_id = cur.fetchone()[0]
+            
+            for tag in tags:
+                tag_clean = tag.replace("'", "''")
+                cur.execute(
+                    f"INSERT INTO blog_tags (post_id, tag) VALUES ({post_id}, '{tag_clean}')"
+                )
+            
+            conn.commit()
+            
+            return {
+                'statusCode': 201,
+                'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                'body': json.dumps({'id': post_id, 'message': 'Post created'})
+            }
+        
+        elif method == 'DELETE':
+            query_params = event.get('queryStringParameters') or {}
+            post_id = query_params.get('id')
+            
+            if not post_id:
+                return {
+                    'statusCode': 400,
+                    'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                    'body': json.dumps({'error': 'Post ID required'})
+                }
+            
+            cur.execute(f"DELETE FROM blog_tags WHERE post_id = {int(post_id)}")
+            cur.execute(f"DELETE FROM blog_comments WHERE post_id = {int(post_id)}")
+            cur.execute(f"DELETE FROM blog_posts WHERE id = {int(post_id)}")
+            conn.commit()
+            
+            return {
+                'statusCode': 200,
+                'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                'body': json.dumps({'message': 'Post deleted'})
+            }
         
         return {
             'statusCode': 405,

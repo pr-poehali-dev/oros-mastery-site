@@ -26,10 +26,10 @@ export const useBlogManager = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}?action=list`);
+      const response = await fetch(API_URL);
       if (!response.ok) throw new Error('Ошибка загрузки постов');
       const data = await response.json();
-      setBlogPosts(data.posts || []);
+      setBlogPosts(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ошибка загрузки');
       console.error('Error fetching blog posts:', err);
@@ -42,11 +42,10 @@ export const useBlogManager = () => {
     setLoading(true);
     setError(null);
     try {
-      const action = isEdit ? 'update' : 'create';
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, ...formData })
+        body: JSON.stringify(formData)
       });
       
       if (!response.ok) throw new Error(`Ошибка ${isEdit ? 'обновления' : 'создания'} поста`);
@@ -68,10 +67,8 @@ export const useBlogManager = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', id })
+      const response = await fetch(`${API_URL}?id=${id}`, {
+        method: 'DELETE'
       });
       
       if (!response.ok) throw new Error('Ошибка удаления поста');

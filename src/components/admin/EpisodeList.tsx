@@ -12,6 +12,8 @@ export interface Episode {
   image: string;
   airDate: string;
   videoUrl?: string;
+  likes?: number;
+  views?: number;
 }
 
 interface EpisodeListProps {
@@ -52,6 +54,14 @@ const EpisodeList = ({ episodes, onDelete, onEdit }: EpisodeListProps) => {
                     <span className="flex items-center gap-1">
                       <Icon name="Calendar" size={14} />
                       {episode.airDate}
+                    </span>
+                    <span className="flex items-center gap-1 text-pink-400">
+                      <Icon name="Heart" size={14} />
+                      {episode.likes || 0}
+                    </span>
+                    <span className="flex items-center gap-1 text-blue-400">
+                      <Icon name="Eye" size={14} />
+                      {episode.views || 0}
                     </span>
                     {episode.videoUrl && (
                       <span className="flex items-center gap-1 text-green-400">

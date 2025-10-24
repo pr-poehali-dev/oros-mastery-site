@@ -46,11 +46,11 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             if season:
                 cur.execute(
-                    "SELECT id, title, season, episode, description, image, air_date, video_iframe FROM episodes WHERE season = " + str(int(season)) + " ORDER BY episode"
+                    "SELECT id, title, season, episode, description, image, air_date, video_iframe, likes, views FROM episodes WHERE season = " + str(int(season)) + " ORDER BY episode"
                 )
             else:
                 cur.execute(
-                    "SELECT id, title, season, episode, description, image, air_date, video_iframe FROM episodes ORDER BY season, episode"
+                    "SELECT id, title, season, episode, description, image, air_date, video_iframe, likes, views FROM episodes ORDER BY season, episode"
                 )
             
             episodes = []
@@ -63,7 +63,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'description': row[4],
                     'image': row[5],
                     'airDate': row[6] if row[6] else '',
-                    'videoIframe': row[7] if len(row) > 7 and row[7] else ''
+                    'videoIframe': row[7] if len(row) > 7 and row[7] else '',
+                    'likes': row[8] if len(row) > 8 else 0,
+                    'views': row[9] if len(row) > 9 else 0
                 })
             
             return {
