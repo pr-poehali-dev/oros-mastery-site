@@ -24,7 +24,10 @@ const Universes = () => {
 
   const fetchUniverses = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=universes`);
+      const timestamp = Date.now();
+      const response = await fetch(`${CONTENT_API}?type=universes&_t=${timestamp}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setUniverses(data);
     } catch (error) {

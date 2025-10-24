@@ -26,7 +26,10 @@ const Theories = () => {
 
   const fetchTheories = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=theories`);
+      const timestamp = Date.now();
+      const response = await fetch(`${CONTENT_API}?type=theories&_t=${timestamp}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setTheories(data);
     } catch (error) {

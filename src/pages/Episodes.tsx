@@ -26,7 +26,10 @@ const Episodes = () => {
 
   const fetchEpisodes = async () => {
     try {
-      const response = await fetch(EPISODES_API);
+      const timestamp = Date.now();
+      const response = await fetch(`${EPISODES_API}?_t=${timestamp}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       console.log('Episodes data:', data);
       setEpisodes(data);
