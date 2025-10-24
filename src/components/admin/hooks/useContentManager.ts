@@ -93,14 +93,20 @@ export const useContentManager = () => {
 
   const handleCharacterSubmit = async (formData: CharacterFormData, isEdit: boolean) => {
     try {
+      console.log('handleCharacterSubmit called with:', { formData, isEdit });
       const method = isEdit ? 'PUT' : 'POST';
       const url = isEdit ? `${CONTENT_API}?type=characters&id=${formData.id}` : `${CONTENT_API}?type=characters`;
+      console.log('Request URL:', url, 'Method:', method);
       
-      await fetch(url, {
+      const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
+
+      console.log('Response status:', response.status);
+      const result = await response.json();
+      console.log('Response data:', result);
 
       fetchCharacters();
       setEditingCharacter(null);
