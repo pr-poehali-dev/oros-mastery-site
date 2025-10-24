@@ -132,10 +132,15 @@ const TheoryDetail = () => {
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-4 flex-wrap">
                 {theory.probability && (
-                  <Badge className="bg-green-500/20 text-green-300 border-green-500/30 border px-4 py-1">
-                    {theory.probability === 'confirmed' ? 'Подтверждено' : 
-                     theory.probability === 'high' ? 'Высокая вероятность' :
-                     theory.probability === 'medium' ? 'Средняя вероятность' : 'Низкая вероятность'}
+                  <Badge className={`border px-4 py-1 ${
+                    theory.probability === 'confirmed' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
+                    theory.probability === 'high' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' :
+                    theory.probability === 'medium' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' :
+                    'bg-red-500/20 text-red-300 border-red-500/30'
+                  }`}>
+                    {theory.probability === 'confirmed' ? '✅ Подтверждено' : 
+                     theory.probability === 'high' ? '📈 Высокая вероятность' :
+                     theory.probability === 'medium' ? '➖ Средняя вероятность' : '📉 Низкая вероятность'}
                   </Badge>
                 )}
                 {theory.type && (
