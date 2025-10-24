@@ -129,10 +129,12 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
             <label className="text-white text-sm font-medium mb-2 block">
               Полное описание *
             </label>
-            <RichTextEditor
-              value={form.description}
-              onChange={(value) => setForm({ ...form, description: value })}
+            <Textarea
               placeholder="Полное описание вселенной..."
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              required
+              className="bg-gray-900 border-gray-700 text-white min-h-[150px]"
             />
           </div>
 
