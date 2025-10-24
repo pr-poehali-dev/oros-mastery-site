@@ -171,10 +171,8 @@ const Characters = () => {
     const charSpecies = char.species?.toLowerCase() || '';
     
     const matchesSpecies = selectedSpecies === 'all' || 
-                          charSpecies === selectedSpecies || 
-                          charSpecies.includes(selectedSpecies) ||
-                          (selectedSpecies === 'human' && (charSpecies.includes('человек') || charSpecies === 'human')) ||
-                          (selectedSpecies === 'alien' && (charSpecies.includes('инопланет') || charSpecies === 'alien'));
+                          (selectedSpecies === 'human' && (charSpecies.includes('человек') || charSpecies.includes('human'))) ||
+                          (selectedSpecies === 'alien' && (charSpecies.includes('инопланет') || charSpecies.includes('alien')));
     
     const matchesSearch = searchQuery === '' ||
                          char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -195,13 +193,14 @@ const Characters = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
+      <Breadcrumbs />
       <SEO
         title="Персонажи Rick and Morty - Полный каталог героев"
         description="Познакомьтесь со всеми персонажами Rick and Morty. Рик, Морти, Саммер, семья Смитов и другие герои сериала. Биографии, описания и факты о персонажах."
         keywords="Rick and Morty персонажи, Рик Санчез, Морти Смит, герои, инопланетяне, персонажи Рик и Морти, биографии героев, все персонажи"
       />
       
-      <section className="relative pt-24 pb-24 overflow-hidden bg-gradient-to-br from-cyan-600 via-blue-500 to-purple-600">
+      <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-to-br from-cyan-600 via-blue-500 to-purple-600">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
         
         <div className="container relative z-10 px-4 text-center text-white">
@@ -261,7 +260,8 @@ const Characters = () => {
           {filteredCharacters.map((character) => (
             <Card 
               key={character.id} 
-              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all group flex flex-col"
+              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all group flex flex-col cursor-pointer"
+              onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
             >
               <div className="relative h-64 overflow-hidden">
                 <img 
@@ -302,7 +302,10 @@ const Characters = () => {
                 </p>
                 
                 <Button 
-                  onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/character/${generateSlug(character.id, character.name)}`);
+                  }}
                   className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
                 >
                   Подробнее
