@@ -105,13 +105,33 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     f"'{escape_sql(body_data.get('goals', ''))}') RETURNING id"
                 )
             elif content_type == 'theories':
+                published_date = body_data.get('published_date', '')
+                date_clause = f"'{published_date}'" if published_date else 'NULL'
                 sql = (
-                    f"INSERT INTO theories (title, description, image, status, evidence) "
+                    f"INSERT INTO theories (title, type, probability, author, votes, views, likes, "
+                    f"published_date, summary, full_text, evidence, counter_arguments, "
+                    f"related_episodes, related_characters, impact_level, category, image, "
+                    f"background_image, description, status) "
                     f"VALUES ('{escape_sql(body_data.get('title', ''))}', "
-                    f"'{escape_sql(body_data.get('description', ''))}', "
+                    f"'{escape_sql(body_data.get('type', 'character'))}', "
+                    f"'{escape_sql(body_data.get('probability', 'medium'))}', "
+                    f"'{escape_sql(body_data.get('author', ''))}', "
+                    f"{int(body_data.get('votes', 0))}, "
+                    f"{int(body_data.get('views', 0))}, "
+                    f"{int(body_data.get('likes', 0))}, "
+                    f"{date_clause}, "
+                    f"'{escape_sql(body_data.get('summary', ''))}', "
+                    f"'{escape_sql(body_data.get('full_text', ''))}', "
+                    f"'{escape_sql(body_data.get('evidence', ''))}', "
+                    f"'{escape_sql(body_data.get('counter_arguments', ''))}', "
+                    f"'{escape_sql(body_data.get('related_episodes', ''))}', "
+                    f"'{escape_sql(body_data.get('related_characters', ''))}', "
+                    f"'{escape_sql(body_data.get('impact_level', ''))}', "
+                    f"'{escape_sql(body_data.get('category', ''))}', "
                     f"'{escape_sql(body_data.get('image', ''))}', "
-                    f"'{escape_sql(body_data.get('status', ''))}', "
-                    f"'{escape_sql(body_data.get('evidence', ''))}') RETURNING id"
+                    f"'{escape_sql(body_data.get('background_image', ''))}', "
+                    f"'{escape_sql(body_data.get('description', ''))}', "
+                    f"'{escape_sql(body_data.get('status', 'draft'))}') RETURNING id"
                 )
             elif content_type == 'articles':
                 episode_id = int(body_data.get('episodeId', 0))
@@ -185,13 +205,30 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
                 )
             elif content_type == 'theories':
+                published_date = body_data.get('published_date', '')
+                date_clause = f"'{published_date}'" if published_date else 'NULL'
                 sql = (
                     f"UPDATE theories SET "
                     f"title='{escape_sql(body_data.get('title', ''))}', "
-                    f"description='{escape_sql(body_data.get('description', ''))}', "
-                    f"image='{escape_sql(body_data.get('image', ''))}', "
-                    f"status='{escape_sql(body_data.get('status', ''))}', "
+                    f"type='{escape_sql(body_data.get('type', 'character'))}', "
+                    f"probability='{escape_sql(body_data.get('probability', 'medium'))}', "
+                    f"author='{escape_sql(body_data.get('author', ''))}', "
+                    f"votes={int(body_data.get('votes', 0))}, "
+                    f"views={int(body_data.get('views', 0))}, "
+                    f"likes={int(body_data.get('likes', 0))}, "
+                    f"published_date={date_clause}, "
+                    f"summary='{escape_sql(body_data.get('summary', ''))}', "
+                    f"full_text='{escape_sql(body_data.get('full_text', ''))}', "
                     f"evidence='{escape_sql(body_data.get('evidence', ''))}', "
+                    f"counter_arguments='{escape_sql(body_data.get('counter_arguments', ''))}', "
+                    f"related_episodes='{escape_sql(body_data.get('related_episodes', ''))}', "
+                    f"related_characters='{escape_sql(body_data.get('related_characters', ''))}', "
+                    f"impact_level='{escape_sql(body_data.get('impact_level', ''))}', "
+                    f"category='{escape_sql(body_data.get('category', ''))}', "
+                    f"image='{escape_sql(body_data.get('image', ''))}', "
+                    f"background_image='{escape_sql(body_data.get('background_image', ''))}', "
+                    f"description='{escape_sql(body_data.get('description', ''))}', "
+                    f"status='{escape_sql(body_data.get('status', 'draft'))}', "
                     f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
                 )
             elif content_type == 'articles':
