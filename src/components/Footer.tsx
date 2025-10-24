@@ -17,16 +17,13 @@ const Footer = () => {
               Полный фан-сайт о сериале Rick and Morty. Эпизоды, теории, персонажи и многое другое.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors">
-                <Icon name="Facebook" size={20} />
+              <a href="https://t.me/wubbaRickAndMorty" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors" title="Telegram">
+                <Icon name="Send" size={20} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors">
-                <Icon name="Twitter" size={20} />
+              <a href="https://vk.com/wubbaRickAndMorty" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors" title="ВКонтакте">
+                <Icon name="Share2" size={20} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors">
-                <Icon name="Instagram" size={20} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors">
+              <a href="https://www.youtube.com/channel/UCypoo5_Rg2A2HQQesranCTA" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors" title="YouTube">
                 <Icon name="Youtube" size={20} />
               </a>
             </div>
