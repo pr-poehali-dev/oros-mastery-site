@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 
 interface TheoryFormProps {
@@ -28,6 +30,7 @@ export interface TheoryFormData {
   impact_level?: string;
   category?: string;
   image?: string;
+  background_image?: string;
   description?: string;
   status?: string;
 }
@@ -48,7 +51,8 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
     related_characters: '',
     impact_level: '',
     category: '',
-    image: ''
+    image: '',
+    background_image: ''
   });
 
   useEffect(() => {
@@ -68,7 +72,8 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
         related_characters: editingTheory.related_characters || '',
         impact_level: editingTheory.impact_level || '',
         category: editingTheory.category || '',
-        image: editingTheory.image || ''
+        image: editingTheory.image || '',
+        background_image: editingTheory.background_image || ''
       });
     } else {
       resetForm();
@@ -96,7 +101,8 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
       related_characters: '',
       impact_level: '',
       category: '',
-      image: ''
+      image: '',
+      background_image: ''
     });
   };
 
@@ -165,15 +171,27 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
             </div>
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения</label>
-            <Input
-              type="url"
-              placeholder="https://..."
-              value={form.image}
-              onChange={(e) => setForm({ ...form, image: e.target.value })}
-              className="bg-gray-700 border-gray-600 text-white"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения карточки</label>
+              <Input
+                type="url"
+                placeholder="https://..."
+                value={form.image}
+                onChange={(e) => setForm({ ...form, image: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">URL фона страницы теории</label>
+              <Input
+                type="url"
+                placeholder="https://..."
+                value={form.background_image}
+                onChange={(e) => setForm({ ...form, background_image: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
           </div>
 
           <div>
@@ -189,14 +207,25 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">Полное описание (HTML)*</label>
-            <Textarea
-              required
-              placeholder="<h2>Основная теория</h2><p>Подробное описание...</p>"
-              value={form.full_text}
-              onChange={(e) => setForm({ ...form, full_text: e.target.value })}
-              className="bg-gray-700 border-gray-600 text-white min-h-[200px] font-mono text-sm"
-            />
+            <label className="text-sm font-medium text-gray-300 mb-2 block">Полное описание*</label>
+            <div className="bg-white rounded-md">
+              <ReactQuill
+                theme="snow"
+                value={form.full_text}
+                onChange={(value) => setForm({ ...form, full_text: value })}
+                className="min-h-[300px]"
+                modules={{
+                  toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['blockquote', 'code-block'],
+                    ['link'],
+                    ['clean']
+                  ]
+                }}
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

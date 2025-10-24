@@ -96,6 +96,9 @@ const TheoryDetail = () => {
   }
 
   const evidenceArray = theory.evidence ? theory.evidence.split(',').map((e: string) => e.trim()) : [];
+  const counterArray = theory.counter_arguments ? theory.counter_arguments.split(',').map((c: string) => c.trim()) : [];
+  const episodesArray = theory.related_episodes ? theory.related_episodes.split(',').map((ep: string) => ep.trim()) : [];
+  const charactersArray = theory.related_characters ? theory.related_characters.split(',').map((ch: string) => ch.trim()) : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
@@ -109,14 +112,14 @@ const TheoryDetail = () => {
       />
 
       <section className="relative pt-32 pb-16 bg-gradient-to-br from-purple-600 via-indigo-500 to-pink-600 overflow-hidden">
-        {theory.image && (
+        {(theory.background_image || theory.image) && (
           <img 
-            src={theory.image} 
+            src={theory.background_image || theory.image} 
             alt={theory.title}
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
         <div className="container mx-auto px-4 relative z-10">
           <Link to="/theories">
             <Button variant="ghost" className="text-white hover:bg-white/20 mb-6">
@@ -127,14 +130,31 @@ const TheoryDetail = () => {
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              {theory.status && (
-                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 mb-4 border px-4 py-1">
-                  {theory.status}
-                </Badge>
-              )}
+              <div className="flex items-center gap-3 mb-4 flex-wrap">
+                {theory.probability && (
+                  <Badge className="bg-green-500/20 text-green-300 border-green-500/30 border px-4 py-1">
+                    {theory.probability === 'confirmed' ? 'Подтверждено' : 
+                     theory.probability === 'high' ? 'Высокая вероятность' :
+                     theory.probability === 'medium' ? 'Средняя вероятность' : 'Низкая вероятность'}
+                  </Badge>
+                )}
+                {theory.type && (
+                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 border px-4 py-1">
+                    {theory.type === 'character' ? 'Персонажи' :
+                     theory.type === 'multiverse' ? 'Мультивселенная' :
+                     theory.type === 'science' ? 'Наука' : 'Будущее'}
+                  </Badge>
+                )}
+              </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-4 leading-tight">
                 {theory.title}
               </h1>
+              {theory.author && (
+                <p className="text-gray-300 text-lg flex items-center gap-2">
+                  <Icon name="User" size={18} />
+                  Автор: {theory.author}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -143,19 +163,36 @@ const TheoryDetail = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-2xl text-white flex items-center gap-2">
-                  <Icon name="FileText" size={24} className="text-cyan-400" />
-                  Описание теории
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="prose prose-invert max-w-none">
-                <div className="text-gray-300 whitespace-pre-wrap">
-                  {theory.description}
-                </div>
-              </CardContent>
-            </Card>
+            {theory.summary && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-2xl text-white flex items-center gap-2">
+                    <Icon name="Sparkles" size={24} className="text-yellow-400" />
+                    Краткое описание
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 text-lg">{theory.summary}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {theory.full_text && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-2xl text-white flex items-center gap-2">
+                    <Icon name="FileText" size={24} className="text-cyan-400" />
+                    Полное описание теории
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="prose prose-invert max-w-none">
+                  <div 
+                    className="text-gray-300"
+                    dangerouslySetInnerHTML={{ __html: theory.full_text }}
+                  />
+                </CardContent>
+              </Card>
+            )}
 
             <CommentSection entityType="theory" entityId={theory.id} />
           </div>
@@ -175,6 +212,69 @@ const TheoryDetail = () => {
                       <li key={index} className="flex items-start gap-2 text-gray-300">
                         <Icon name="ChevronRight" size={16} className="text-green-400 mt-1 shrink-0" />
                         <span>{evidence}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {counterArray.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="XCircle" size={20} className="text-red-400" />
+                    Контраргументы
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {counterArray.map((counter: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <Icon name="ChevronRight" size={16} className="text-red-400 mt-1 shrink-0" />
+                        <span>{counter}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {episodesArray.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Film" size={20} className="text-cyan-400" />
+                    Связанные эпизоды
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {episodesArray.map((episode: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <Icon name="Dot" size={16} className="text-cyan-400 mt-1 shrink-0" />
+                        <span>{episode}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {charactersArray.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Users" size={20} className="text-purple-400" />
+                    Связанные персонажи
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {charactersArray.map((character: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <Icon name="Dot" size={16} className="text-purple-400 mt-1 shrink-0" />
+                        <span>{character}</span>
                       </li>
                     ))}
                   </ul>
