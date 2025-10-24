@@ -314,9 +314,12 @@ const Characters = () => {
                   {character.shortDescription || character.description?.substring(0, 120) + '...' || character.bio?.substring(0, 120) + '...'}
                 </p>
                 
-                {character.personality && character.personality.length > 0 && (
+                {character.personality && (
                   <div className="flex flex-wrap gap-2">
-                    {character.personality.map((trait, idx) => (
+                    {(Array.isArray(character.personality) 
+                      ? character.personality 
+                      : character.personality.split(',').map((t: string) => t.trim())
+                    ).map((trait: string, idx: number) => (
                       <Badge key={idx} variant="outline" className="border-cyan-500/30 text-cyan-300 text-xs">
                         {trait}
                       </Badge>
