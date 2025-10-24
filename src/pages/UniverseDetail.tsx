@@ -117,7 +117,7 @@ const UniverseDetail = () => {
                   Описание
                 </CardTitle>
               </CardHeader>
-              <CardContent className="prose prose-invert max-w-none">
+              <CardContent className="prose prose-invert max-w-none [&_h2]:text-white [&_h4]:text-white">
                 <div className="text-gray-300 whitespace-pre-wrap">
                   {universe.description}
                 </div>
