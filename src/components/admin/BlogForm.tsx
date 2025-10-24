@@ -264,6 +264,7 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
                 className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
