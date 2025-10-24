@@ -95,10 +95,11 @@ const EpisodeDetail = () => {
 
   const handleNavigate = async (direction: 'prev' | 'next') => {
     try {
-      const response = await fetch(`${API_URL}?action=get_navigation&current_id=${id}&direction=${direction}`);
+      const response = await fetch(`${API_URL}?id=${id}&action=get_navigation&current_id=${id}&direction=${direction}`);
       const data = await response.json();
       if (data.episode) {
         navigate(`/episode/${generateSlug(data.episode.id, data.episode.title)}`);
+        window.scrollTo(0, 0);
       }
     } catch (error) {
       console.error('Navigation error:', error);
