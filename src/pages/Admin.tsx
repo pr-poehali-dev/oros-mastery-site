@@ -210,7 +210,7 @@ const Admin = () => {
               onCancel={() => setEditingBlogPost(null)}
             />
             <BlogList 
-              blogPosts={blogPosts}
+              posts={blogPosts}
               onEdit={setEditingBlogPost}
               onDelete={handleDeleteBlogPost}
             />

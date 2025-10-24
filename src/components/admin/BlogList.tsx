@@ -1,98 +1,113 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
-
-export interface BlogPost {
-  id: number;
-  title: string;
-  excerpt: string;
-  content: string;
-  author: string;
-  date?: string;
-  tags: string[];
-  image: string;
-}
+import type { BlogPost } from './hooks/useBlogManager';
 
 interface BlogListProps {
   posts: BlogPost[];
-  onDelete: (id: number) => void;
   onEdit: (post: BlogPost) => void;
+  onDelete: (id: number) => void;
+  loading?: boolean;
 }
 
-const BlogList = ({ posts, onDelete, onEdit }: BlogListProps) => {
+const BlogList = ({ posts, onEdit, onDelete, loading }: BlogListProps) => {
+  if (loading) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-8 text-center text-gray-400">
+          Загрузка...
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-8 text-center text-gray-400">
+          <Icon name="FileText" size={48} className="mx-auto mb-4 opacity-50" />
+          <p>Нет статей</p>
+          <p className="text-sm mt-2">Создайте первую статью для блога</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+    <Card className="bg-gray-800/50 border-gray-700">
       <CardHeader>
-        <CardTitle className="text-2xl text-white flex items-center gap-2">
-          <Icon name="FileText" size={24} className="text-orange-400" />
-          Опубликованные статьи ({posts.length})
+        <CardTitle className="text-xl text-white flex items-center gap-2">
+          <Icon name="List" size={24} className="text-orange-400" />
+          Статьи блога ({posts.length})
         </CardTitle>
-        <CardDescription className="text-gray-300">
-          Редактировать или удалить статьи
-        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-          {posts.length === 0 ? (
-            <div className="text-center py-8 text-gray-400">
-              <Icon name="Inbox" size={48} className="mx-auto mb-2 opacity-50" />
-              <p>Статей пока нет</p>
-            </div>
-          ) : (
-            posts.map((post) => (
-              <Card key={post.id} className="bg-gray-900/50 border-gray-700">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-white mb-2 line-clamp-1">
-                        {post.title}
-                      </h3>
-                      <p className="text-sm text-gray-400 mb-3 line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Badge variant="outline" className="border-orange-500/30 text-orange-300 text-xs">
-                          <Icon name="User" size={12} className="mr-1" />
-                          {post.author}
-                        </Badge>
-                        {post.tags && post.tags.length > 0 && (
-                          post.tags.slice(0, 3).map((tag, idx) => (
-                            <Badge 
-                              key={idx} 
-                              variant="outline" 
-                              className="border-cyan-500/30 text-cyan-300 text-xs"
-                            >
-                              {tag}
-                            </Badge>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => onEdit(post)}
-                        className="bg-blue-500 hover:bg-blue-600 h-8 px-3"
-                      >
-                        <Icon name="Edit" size={14} className="mr-1" />
-                        Изменить
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onDelete(post.id)}
-                        className="border-red-500/50 text-red-400 hover:bg-red-500/10 h-8 px-3"
-                      >
-                        <Icon name="Trash2" size={14} className="mr-1" />
-                        Удалить
-                      </Button>
-                    </div>
+        <div className="space-y-3">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="p-4 bg-gray-900/50 border border-gray-700 rounded-lg hover:border-cyan-500/50 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-white mb-1 truncate">
+                    {post.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm mb-2 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex flex-wrap gap-3 text-xs text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <Icon name="User" size={14} />
+                      {post.author}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Icon name="Calendar" size={14} />
+                      {post.date}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Icon name="Clock" size={14} />
+                      {post.read_time}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Icon name="Tag" size={14} />
+                      {post.category}
+                    </span>
+                    {post.views !== undefined && (
+                      <span className="flex items-center gap-1">
+                        <Icon name="Eye" size={14} />
+                        {post.views}
+                      </span>
+                    )}
+                    {post.likes !== undefined && (
+                      <span className="flex items-center gap-1">
+                        <Icon name="Heart" size={14} />
+                        {post.likes}
+                      </span>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
+                </div>
+                <div className="flex gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onEdit(post)}
+                    className="border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+                  >
+                    <Icon name="Edit" size={16} />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => post.id && onDelete(post.id)}
+                    className="border-red-500 text-red-400 hover:bg-red-500/10"
+                  >
+                    <Icon name="Trash2" size={16} />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>

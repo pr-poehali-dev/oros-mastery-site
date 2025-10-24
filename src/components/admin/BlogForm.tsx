@@ -4,72 +4,54 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
-import RichTextEditor from '@/components/ui/RichTextEditor';
+import type { BlogPost } from './hooks/useBlogManager';
 
 interface BlogFormProps {
-  onSubmit: (formData: BlogFormData, isEdit: boolean) => Promise<void>;
-  initialData?: BlogFormData | null;
+  onSubmit: (formData: BlogPost, isEdit: boolean) => Promise<void>;
+  initialData?: BlogPost | null;
   onCancel?: () => void;
 }
 
-export interface BlogFormData {
-  id?: number;
-  title: string;
-  content: string;
-  excerpt: string;
-  tags: string;
-  author: string;
-  image: string;
-  category: string;
-  date?: string;
-  readTime?: string;
-  views?: number;
-  likes?: number;
-}
-
 const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
-  const [form, setForm] = useState<BlogFormData>(initialData || {
+  const [form, setForm] = useState<BlogPost>(initialData || {
     title: '',
     content: '',
     excerpt: '',
-    tags: '',
     author: 'Админ',
     image: '',
     category: '',
     date: new Date().toISOString().split('T')[0],
-    readTime: '5 мин',
+    read_time: '5 мин',
     views: 0,
     likes: 0
   });
-  const [imageUrl, setImageUrl] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const isEdit = !!initialData;
+  const isEdit = !!initialData?.id;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(form, isEdit);
-    if (!isEdit) {
-      setForm({
-        title: '',
-        content: '',
-        excerpt: '',
-        tags: '',
-        author: 'Админ',
-        image: '',
-        category: '',
-        date: new Date().toISOString().split('T')[0],
-        readTime: '5 мин',
-        views: 0,
-        likes: 0
-      });
-    }
-  };
-
-  const insertImage = () => {
-    if (imageUrl) {
-      const imageMarkdown = `\n![Изображение](${imageUrl})\n`;
-      setForm({ ...form, content: form.content + imageMarkdown });
-      setImageUrl('');
+    setSubmitting(true);
+    try {
+      await onSubmit(form, isEdit);
+      if (!isEdit) {
+        setForm({
+          title: '',
+          content: '',
+          excerpt: '',
+          author: 'Админ',
+          image: '',
+          category: '',
+          date: new Date().toISOString().split('T')[0],
+          read_time: '5 мин',
+          views: 0,
+          likes: 0
+        });
+      }
+    } catch (error) {
+      console.error('Form submit error:', error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -116,22 +98,12 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
             <label className="text-white text-sm font-medium mb-2 block">
               Содержание *
             </label>
-            <RichTextEditor
+            <Textarea
+              placeholder="Полный текст статьи (поддерживается Markdown)..."
               value={form.content}
-              onChange={(value) => setForm({ ...form, content: value })}
-              placeholder="Полный текст статьи..."
-            />
-          </div>
-
-          <div>
-            <label className="text-white text-sm font-medium mb-2 block">
-              Теги (через запятую)
-            </label>
-            <Input
-              placeholder="Например: теории, персонажи, анализ"
-              value={form.tags}
-              onChange={(e) => setForm({ ...form, tags: e.target.value })}
-              className="bg-gray-900 border-gray-700 text-white"
+              onChange={(e) => setForm({ ...form, content: e.target.value })}
+              required
+              className="bg-gray-900 border-gray-700 text-white min-h-[300px] font-mono text-sm"
             />
           </div>
 
@@ -177,7 +149,7 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-white text-sm font-medium mb-2 block">
-                Категория
+                Категория *
               </label>
               <select
                 value={form.category}
@@ -200,17 +172,21 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
               </label>
               <Input
                 placeholder="5 мин"
-                value={form.readTime}
-                onChange={(e) => setForm({ ...form, readTime: e.target.value })}
+                value={form.read_time}
+                onChange={(e) => setForm({ ...form, read_time: e.target.value })}
                 className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
           </div>
 
           <div className="flex gap-2">
-            <Button type="submit" className="flex-1 bg-orange-500 hover:bg-orange-600">
+            <Button 
+              type="submit" 
+              className="flex-1 bg-orange-500 hover:bg-orange-600"
+              disabled={submitting}
+            >
               <Icon name="Check" size={20} className="mr-2" />
-              {isEdit ? 'Сохранить изменения' : 'Опубликовать статью'}
+              {submitting ? 'Сохранение...' : (isEdit ? 'Сохранить изменения' : 'Опубликовать статью')}
             </Button>
             {isEdit && onCancel && (
               <Button 
@@ -218,6 +194,7 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
                 onClick={onCancel}
                 variant="outline"
                 className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                disabled={submitting}
               >
                 Отмена
               </Button>
