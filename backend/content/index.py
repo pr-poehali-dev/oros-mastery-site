@@ -7,13 +7,13 @@ from typing import Dict, Any
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
     Business: Универсальный CRUD API для всего контента (вселенные, персонажи, теории)
-    Args: event - dict с httpMethod, body, queryStringParameters, pathParams
+    Args: event - dict с httpMethod, body, queryStringParameters
           context - объект с request_id
     Returns: HTTP response dict с данными контента
     '''
     method: str = event.get('httpMethod', 'GET')
     params = event.get('queryStringParameters') or {}
-    content_type = params.get('type', 'universes')  # universes, characters, theories, articles
+    content_type = params.get('type', 'universes')
     
     # CORS preflight
     if method == 'OPTIONS':
@@ -25,7 +25,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400'
             },
-            'body': ''
+            'body': '',
+            'isBase64Encoded': False
         }
     
     # Подключение к БД
@@ -35,29 +36,13 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     try:
         if method == 'GET':
             item_id = params.get('id')
-            episode_id = params.get('episodeId')
             
-            if content_type == 'articles':
-                if episode_id:
-                    cursor.execute(
-                        "SELECT a.*, e.title as episode_title, e.season, e.episode "
-                        "FROM episode_articles a JOIN episodes e ON a.episode_id = e.id "
-                        "WHERE a.episode_id = " + str(int(episode_id)) + " ORDER BY a.created_at DESC"
-                    )
-                else:
-                    cursor.execute(
-                        "SELECT a.*, e.title as episode_title, e.season, e.episode "
-                        "FROM episode_articles a JOIN episodes e ON a.episode_id = e.id "
-                        "ORDER BY a.created_at DESC"
-                    )
-                items = cursor.fetchall()
-                result = [dict(i) for i in items]
-            elif item_id:
-                cursor.execute(f'SELECT * FROM {content_type} WHERE id = ' + str(int(item_id)))
+            if item_id:
+                cursor.execute(f'SELECT * FROM {content_type} WHERE id = {int(item_id)}')
                 item = cursor.fetchone()
                 result = dict(item) if item else None
             else:
-                cursor.execute(f'SELECT * FROM {content_type} ORDER BY id ASC')
+                cursor.execute(f'SELECT * FROM {content_type} ORDER BY created_at DESC')
                 items = cursor.fetchall()
                 result = [dict(i) for i in items]
             
@@ -67,7 +52,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 },
-                'body': json.dumps(result, default=str)
+                'body': json.dumps(result, default=str),
+                'isBase64Encoded': False
             }
         
         elif method == 'POST':
@@ -76,48 +62,39 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             if content_type == 'universes':
                 cursor.execute(
                     "INSERT INTO universes (name, description, image, status, features) "
-                    "VALUES ('" + body_data['name'].replace("'", "''") + "', "
-                    "'" + body_data['description'].replace("'", "''") + "', "
-                    "'" + body_data.get('image', '').replace("'", "''") + "', "
-                    "'" + body_data.get('status', '').replace("'", "''") + "', "
-                    "'" + body_data.get('features', '').replace("'", "''") + "') "
-                    "RETURNING id"
+                    "VALUES (%s, %s, %s, %s, %s) RETURNING id",
+                    (
+                        body_data.get('name', ''),
+                        body_data.get('description', ''),
+                        body_data.get('image', ''),
+                        body_data.get('status', ''),
+                        body_data.get('features', '')
+                    )
                 )
             elif content_type == 'characters':
                 cursor.execute(
-                    "INSERT INTO characters (name, role, species, status, bio, full_bio, image, abilities) "
-                    "VALUES ('" + body_data['name'].replace("'", "''") + "', "
-                    "'" + body_data['role'].replace("'", "''") + "', "
-                    "'" + body_data['species'].replace("'", "''") + "', "
-                    "'" + body_data.get('status', '').replace("'", "''") + "', "
-                    "'" + body_data['bio'].replace("'", "''") + "', "
-                    "'" + body_data.get('full_bio', body_data['bio']).replace("'", "''") + "', "
-                    "'" + body_data.get('image', '').replace("'", "''") + "', "
-                    "'" + body_data.get('abilities', '').replace("'", "''") + "') "
-                    "RETURNING id"
+                    "INSERT INTO characters (name, description, image, background_image, status, abilities) "
+                    "VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+                    (
+                        body_data.get('name', ''),
+                        body_data.get('description', ''),
+                        body_data.get('image', ''),
+                        body_data.get('background_image', ''),
+                        body_data.get('status', ''),
+                        body_data.get('abilities', '')
+                    )
                 )
             elif content_type == 'theories':
                 cursor.execute(
-                    "INSERT INTO theories (title, type, probability, author, votes, summary, full_text, "
-                    "evidence, counter_arguments, image) "
-                    "VALUES ('" + body_data['title'].replace("'", "''") + "', "
-                    "'" + body_data['type'].replace("'", "''") + "', "
-                    "'" + body_data['probability'].replace("'", "''") + "', "
-                    "'" + body_data['author'].replace("'", "''") + "', 0, "
-                    "'" + body_data['summary'].replace("'", "''") + "', "
-                    "'" + body_data['fullText'].replace("'", "''") + "', "
-                    "'" + body_data.get('evidence', '').replace("'", "''") + "', "
-                    "'" + body_data.get('counterArguments', '').replace("'", "''") + "', "
-                    "'" + body_data.get('image', '').replace("'", "''") + "') "
-                    "RETURNING id"
-                )
-            elif content_type == 'articles':
-                cursor.execute(
-                    "INSERT INTO episode_articles (episode_id, title, content) "
-                    "VALUES (" + str(int(body_data['episodeId'])) + ", "
-                    "'" + body_data['title'].replace("'", "''") + "', "
-                    "'" + body_data['content'].replace("'", "''") + "') "
-                    "RETURNING id"
+                    "INSERT INTO theories (title, description, image, status, evidence) "
+                    "VALUES (%s, %s, %s, %s, %s) RETURNING id",
+                    (
+                        body_data.get('title', ''),
+                        body_data.get('description', ''),
+                        body_data.get('image', ''),
+                        body_data.get('status', ''),
+                        body_data.get('evidence', '')
+                    )
                 )
             
             new_id = cursor.fetchone()['id']
@@ -129,7 +106,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 },
-                'body': json.dumps({'id': new_id, 'message': f'{content_type.title()[:-1]} created'})
+                'body': json.dumps({'id': new_id, 'message': f'{content_type} created'}),
+                'isBase64Encoded': False
             }
         
         elif method == 'PUT':
@@ -138,58 +116,51 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 return {
                     'statusCode': 400,
                     'headers': {'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'error': 'ID required'})
+                    'body': json.dumps({'error': 'ID required'}),
+                    'isBase64Encoded': False
                 }
             
             body_data = json.loads(event.get('body', '{}'))
             
             if content_type == 'universes':
                 cursor.execute(
-                    "UPDATE universes SET "
-                    "name = '" + body_data['name'].replace("'", "''") + "', "
-                    "description = '" + body_data['description'].replace("'", "''") + "', "
-                    "image = '" + body_data.get('image', '').replace("'", "''") + "', "
-                    "status = '" + body_data.get('status', '').replace("'", "''") + "', "
-                    "features = '" + body_data.get('features', '').replace("'", "''") + "', "
-                    "updated_at = CURRENT_TIMESTAMP "
-                    "WHERE id = " + str(int(item_id))
+                    "UPDATE universes SET name=%s, description=%s, image=%s, status=%s, features=%s, "
+                    "updated_at=CURRENT_TIMESTAMP WHERE id=%s",
+                    (
+                        body_data.get('name', ''),
+                        body_data.get('description', ''),
+                        body_data.get('image', ''),
+                        body_data.get('status', ''),
+                        body_data.get('features', ''),
+                        int(item_id)
+                    )
                 )
             elif content_type == 'characters':
                 cursor.execute(
-                    "UPDATE characters SET "
-                    "name = '" + body_data['name'].replace("'", "''") + "', "
-                    "role = '" + body_data['role'].replace("'", "''") + "', "
-                    "species = '" + body_data['species'].replace("'", "''") + "', "
-                    "status = '" + body_data.get('status', '').replace("'", "''") + "', "
-                    "bio = '" + body_data['bio'].replace("'", "''") + "', "
-                    "full_bio = '" + body_data.get('full_bio', body_data['bio']).replace("'", "''") + "', "
-                    "image = '" + body_data.get('image', '').replace("'", "''") + "', "
-                    "abilities = '" + body_data.get('abilities', '').replace("'", "''") + "', "
-                    "updated_at = CURRENT_TIMESTAMP "
-                    "WHERE id = " + str(int(item_id))
+                    "UPDATE characters SET name=%s, description=%s, image=%s, background_image=%s, "
+                    "status=%s, abilities=%s, updated_at=CURRENT_TIMESTAMP WHERE id=%s",
+                    (
+                        body_data.get('name', ''),
+                        body_data.get('description', ''),
+                        body_data.get('image', ''),
+                        body_data.get('background_image', ''),
+                        body_data.get('status', ''),
+                        body_data.get('abilities', ''),
+                        int(item_id)
+                    )
                 )
             elif content_type == 'theories':
                 cursor.execute(
-                    "UPDATE theories SET "
-                    "title = '" + body_data['title'].replace("'", "''") + "', "
-                    "type = '" + body_data['type'].replace("'", "''") + "', "
-                    "probability = '" + body_data['probability'].replace("'", "''") + "', "
-                    "author = '" + body_data['author'].replace("'", "''") + "', "
-                    "summary = '" + body_data['summary'].replace("'", "''") + "', "
-                    "full_text = '" + body_data['fullText'].replace("'", "''") + "', "
-                    "evidence = '" + body_data.get('evidence', '').replace("'", "''") + "', "
-                    "counter_arguments = '" + body_data.get('counterArguments', '').replace("'", "''") + "', "
-                    "image = '" + body_data.get('image', '').replace("'", "''") + "', "
-                    "updated_at = CURRENT_TIMESTAMP "
-                    "WHERE id = " + str(int(item_id))
-                )
-            elif content_type == 'articles':
-                cursor.execute(
-                    "UPDATE episode_articles SET "
-                    "episode_id = " + str(int(body_data['episodeId'])) + ", "
-                    "title = '" + body_data['title'].replace("'", "''") + "', "
-                    "content = '" + body_data['content'].replace("'", "''") + "' "
-                    "WHERE id = " + str(int(item_id))
+                    "UPDATE theories SET title=%s, description=%s, image=%s, status=%s, evidence=%s, "
+                    "updated_at=CURRENT_TIMESTAMP WHERE id=%s",
+                    (
+                        body_data.get('title', ''),
+                        body_data.get('description', ''),
+                        body_data.get('image', ''),
+                        body_data.get('status', ''),
+                        body_data.get('evidence', ''),
+                        int(item_id)
+                    )
                 )
             
             conn.commit()
@@ -200,7 +171,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 },
-                'body': json.dumps({'message': f'{content_type.title()[:-1]} updated'})
+                'body': json.dumps({'message': f'{content_type} updated'}),
+                'isBase64Encoded': False
             }
         
         elif method == 'DELETE':
@@ -209,11 +181,11 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 return {
                     'statusCode': 400,
                     'headers': {'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'error': 'ID required'})
+                    'body': json.dumps({'error': 'ID required'}),
+                    'isBase64Encoded': False
                 }
             
-            table_name = 'episode_articles' if content_type == 'articles' else content_type
-            cursor.execute(f'DELETE FROM {table_name} WHERE id = ' + str(int(item_id)))
+            cursor.execute(f'DELETE FROM {content_type} WHERE id = {int(item_id)}')
             conn.commit()
             
             return {
@@ -222,16 +194,28 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 },
-                'body': json.dumps({'message': f'{content_type.title()[:-1]} deleted'})
-            }
-        
-        else:
-            return {
-                'statusCode': 405,
-                'headers': {'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'error': 'Method not allowed'})
+                'body': json.dumps({'message': f'{content_type} deleted'}),
+                'isBase64Encoded': False
             }
     
+    except Exception as e:
+        conn.rollback()
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({'error': str(e)}),
+            'isBase64Encoded': False
+        }
     finally:
         cursor.close()
         conn.close()
+    
+    return {
+        'statusCode': 405,
+        'headers': {'Access-Control-Allow-Origin': '*'},
+        'body': json.dumps({'error': 'Method not allowed'}),
+        'isBase64Encoded': False
+    }
