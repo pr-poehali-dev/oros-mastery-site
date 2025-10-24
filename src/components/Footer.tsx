@@ -135,12 +135,6 @@ const Footer = () => {
                   Политика конфиденциальности
                 </a>
               </li>
-              <li>
-                <Link to="/login" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm flex items-center gap-2">
-                  <Icon name="Lock" size={14} />
-                  Админ-панель
-                </Link>
-              </li>
             </ul>
             <div className="mt-6 p-4 bg-gradient-to-r from-cyan-900/20 to-green-900/20 border border-cyan-500/30 rounded-lg">
               <p className="text-cyan-400 text-xs font-semibold mb-1">Wubba Lubba Dub Dub!</p>

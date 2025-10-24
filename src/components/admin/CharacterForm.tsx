@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 
 interface CharacterFormProps {
   onSubmit: (formData: CharacterFormData, isEdit: boolean) => Promise<void>;
@@ -14,55 +15,80 @@ interface CharacterFormProps {
 export interface CharacterFormData {
   id?: number;
   name: string;
+  shortDescription?: string;
   role: string;
   species: string;
   status: string;
   bio: string;
   image: string;
   abilities: string;
+  age?: string;
+  gender?: string;
+  origin?: string;
+  affiliation?: string;
+  firstAppearance?: string;
+  voiceActor?: string;
+  personality?: string;
 }
 
 const CharacterForm = ({ onSubmit, editingCharacter, onCancelEdit }: CharacterFormProps) => {
   const [form, setForm] = useState<CharacterFormData>({
     name: '',
+    shortDescription: '',
     role: '',
     species: '',
     status: '',
     bio: '',
     image: '',
-    abilities: ''
+    abilities: '',
+    age: '',
+    gender: '',
+    origin: '',
+    affiliation: '',
+    firstAppearance: '',
+    voiceActor: '',
+    personality: ''
   });
 
   useEffect(() => {
     if (editingCharacter) {
-      setForm(editingCharacter);
+      setForm({
+        ...editingCharacter,
+        shortDescription: editingCharacter.shortDescription || '',
+        age: editingCharacter.age || '',
+        gender: editingCharacter.gender || '',
+        origin: editingCharacter.origin || '',
+        affiliation: editingCharacter.affiliation || '',
+        firstAppearance: editingCharacter.firstAppearance || '',
+        voiceActor: editingCharacter.voiceActor || '',
+        personality: editingCharacter.personality || ''
+      });
     }
   }, [editingCharacter]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSubmit(form, !!editingCharacter);
-    setForm({
-      name: '',
-      role: '',
-      species: '',
-      status: '',
-      bio: '',
-      image: '',
-      abilities: ''
-    });
-    if (onCancelEdit) onCancelEdit();
+    resetForm();
   };
 
-  const handleCancel = () => {
+  const resetForm = () => {
     setForm({
       name: '',
+      shortDescription: '',
       role: '',
       species: '',
       status: '',
       bio: '',
       image: '',
-      abilities: ''
+      abilities: '',
+      age: '',
+      gender: '',
+      origin: '',
+      affiliation: '',
+      firstAppearance: '',
+      voiceActor: '',
+      personality: ''
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -93,6 +119,18 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancelEdit }: CharacterFo
             />
           </div>
 
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              Краткое описание
+            </label>
+            <Textarea
+              placeholder="Краткое описание для карточки (1-2 предложения)"
+              value={form.shortDescription}
+              onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white min-h-[60px]"
+            />
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-white text-sm font-medium mb-2 block">
@@ -120,28 +158,121 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancelEdit }: CharacterFo
             </div>
           </div>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Статус
+              </label>
+              <select
+                value={form.status}
+                onChange={(e) => setForm({ ...form, status: e.target.value })}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              >
+                <option value="">Выберите статус</option>
+                <option value="Жив">Жив</option>
+                <option value="Мертв">Мертв</option>
+                <option value="Неизвестно">Неизвестно</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Пол
+              </label>
+              <select
+                value={form.gender}
+                onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              >
+                <option value="">Выберите пол</option>
+                <option value="Мужской">Мужской</option>
+                <option value="Женский">Женский</option>
+                <option value="Неизвестно">Неизвестно</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Возраст
+              </label>
+              <Input
+                placeholder="Например: 70+"
+                value={form.age}
+                onChange={(e) => setForm({ ...form, age: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Происхождение
+              </label>
+              <Input
+                placeholder="Например: Вселенная C-137"
+                value={form.origin}
+                onChange={(e) => setForm({ ...form, origin: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Принадлежность
+              </label>
+              <Input
+                placeholder="Например: Независимый"
+                value={form.affiliation}
+                onChange={(e) => setForm({ ...form, affiliation: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Первое появление
+              </label>
+              <Input
+                placeholder="Например: Pilot (S1E1)"
+                value={form.firstAppearance}
+                onChange={(e) => setForm({ ...form, firstAppearance: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Статус
+              Актёр озвучки
             </label>
             <Input
-              placeholder="Например: Живой"
-              value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value })}
+              placeholder="Например: Justin Roiland"
+              value={form.voiceActor}
+              onChange={(e) => setForm({ ...form, voiceActor: e.target.value })}
               className="bg-gray-900 border-gray-700 text-white"
             />
           </div>
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Биография *
+              Черты характера (через запятую)
             </label>
             <Textarea
-              placeholder="Краткая биография персонажа..."
+              placeholder="Например: Гениальный, Циничный, Пьющий"
+              value={form.personality}
+              onChange={(e) => setForm({ ...form, personality: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white min-h-[60px]"
+            />
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              Полная биография *
+            </label>
+            <RichTextEditor
               value={form.bio}
-              onChange={(e) => setForm({ ...form, bio: e.target.value })}
-              required
-              className="bg-gray-900 border-gray-700 text-white min-h-[100px]"
+              onChange={(value) => setForm({ ...form, bio: value })}
+              placeholder="Полная биография персонажа..."
             />
           </div>
 
@@ -150,7 +281,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancelEdit }: CharacterFo
               Способности (через запятую)
             </label>
             <Textarea
-              placeholder="Например: Гениальный интеллект, Изобретательность, Портальная пушка"
+              placeholder="Например: Гениальный интеллект, Изобретательность, Боевые навыки"
               value={form.abilities}
               onChange={(e) => setForm({ ...form, abilities: e.target.value })}
               className="bg-gray-900 border-gray-700 text-white min-h-[80px]"
@@ -178,7 +309,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancelEdit }: CharacterFo
             {editingCharacter && (
               <Button 
                 type="button" 
-                onClick={handleCancel} 
+                onClick={resetForm} 
                 variant="outline"
                 className="border-gray-600 text-gray-300 hover:bg-gray-700"
               >

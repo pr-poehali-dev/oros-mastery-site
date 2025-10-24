@@ -168,9 +168,13 @@ const Characters = () => {
   ];
 
   const filteredCharacters = displayCharacters.filter(char => {
-    const matchesSpecies = selectedSpecies === 'all' || char.species === selectedSpecies;
-    const matchesSearch = char.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         char.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const charSpecies = char.species?.toLowerCase() || '';
+    const charRole = char.role?.toLowerCase() || '';
+    const matchesSpecies = selectedSpecies === 'all' || charSpecies === selectedSpecies || charRole.includes(selectedSpecies);
+    const matchesSearch = char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         char.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         char.bio?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         char.shortDescription?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSpecies && matchesSearch;
   });
 
@@ -280,7 +284,9 @@ const Characters = () => {
               </CardHeader>
               
               <CardContent>
-                <p className="text-gray-300 text-sm mb-4">{character.description}</p>
+                <p className="text-gray-300 text-sm mb-4">
+                  {character.shortDescription || character.description?.substring(0, 120) + '...' || character.bio?.substring(0, 120) + '...'}
+                </p>
                 
                 {character.personality && character.personality.length > 0 && (
                   <div className="flex flex-wrap gap-2">

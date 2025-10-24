@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 
 interface UniverseFormProps {
   onSubmit: (formData: UniverseFormData, isEdit: boolean) => Promise<void>;
@@ -14,47 +15,74 @@ interface UniverseFormProps {
 export interface UniverseFormData {
   id?: number;
   name: string;
+  shortDescription?: string;
   description: string;
   image: string;
+  backgroundImage?: string;
   status: string;
+  dangerLevel?: string;
+  coordinates?: string;
+  discoveryDate?: string;
+  population?: string;
+  technology?: string;
   features: string;
+  relatedCharacters?: string;
 }
 
 const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormProps) => {
   const [form, setForm] = useState<UniverseFormData>({
     name: '',
+    shortDescription: '',
     description: '',
     image: '',
+    backgroundImage: '',
     status: '',
-    features: ''
+    dangerLevel: '',
+    coordinates: '',
+    discoveryDate: '',
+    population: '',
+    technology: '',
+    features: '',
+    relatedCharacters: ''
   });
 
   useEffect(() => {
     if (editingUniverse) {
-      setForm(editingUniverse);
+      setForm({
+        ...editingUniverse,
+        shortDescription: editingUniverse.shortDescription || '',
+        backgroundImage: editingUniverse.backgroundImage || '',
+        dangerLevel: editingUniverse.dangerLevel || '',
+        coordinates: editingUniverse.coordinates || '',
+        discoveryDate: editingUniverse.discoveryDate || '',
+        population: editingUniverse.population || '',
+        technology: editingUniverse.technology || '',
+        relatedCharacters: editingUniverse.relatedCharacters || ''
+      });
     }
   }, [editingUniverse]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSubmit(form, !!editingUniverse);
-    setForm({
-      name: '',
-      description: '',
-      image: '',
-      status: '',
-      features: ''
-    });
-    if (onCancelEdit) onCancelEdit();
+    resetForm();
   };
 
-  const handleCancel = () => {
+  const resetForm = () => {
     setForm({
       name: '',
+      shortDescription: '',
       description: '',
       image: '',
+      backgroundImage: '',
       status: '',
-      features: ''
+      dangerLevel: '',
+      coordinates: '',
+      discoveryDate: '',
+      population: '',
+      technology: '',
+      features: '',
+      relatedCharacters: ''
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -87,27 +115,113 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Статус
+              Краткое описание
             </label>
-            <Input
-              placeholder="Например: Активная"
-              value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value })}
-              className="bg-gray-900 border-gray-700 text-white"
+            <Textarea
+              placeholder="Краткое описание для карточки (1-2 предложения)"
+              value={form.shortDescription}
+              onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white min-h-[60px]"
             />
           </div>
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Описание *
+              Полное описание *
             </label>
-            <Textarea
-              placeholder="Краткое описание вселенной..."
+            <RichTextEditor
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              required
-              className="bg-gray-900 border-gray-700 text-white min-h-[100px]"
+              onChange={(value) => setForm({ ...form, description: value })}
+              placeholder="Полное описание вселенной..."
             />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Координаты
+              </label>
+              <Input
+                placeholder="Например: C-137"
+                value={form.coordinates}
+                onChange={(e) => setForm({ ...form, coordinates: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Статус
+              </label>
+              <select
+                value={form.status}
+                onChange={(e) => setForm({ ...form, status: e.target.value })}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              >
+                <option value="">Выберите статус</option>
+                <option value="Активна">Активна</option>
+                <option value="Уничтожена">Уничтожена</option>
+                <option value="Недоступна">Недоступна</option>
+                <option value="Заброшена">Заброшена</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Уровень опасности
+              </label>
+              <select
+                value={form.dangerLevel}
+                onChange={(e) => setForm({ ...form, dangerLevel: e.target.value })}
+                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              >
+                <option value="">Выберите уровень</option>
+                <option value="Низкий">Низкий</option>
+                <option value="Средний">Средний</option>
+                <option value="Высокий">Высокий</option>
+                <option value="Критический">Критический</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Дата открытия
+              </label>
+              <Input
+                placeholder="Например: 2013"
+                value={form.discoveryDate}
+                onChange={(e) => setForm({ ...form, discoveryDate: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Население
+              </label>
+              <Input
+                placeholder="Например: 7 миллиардов"
+                value={form.population}
+                onChange={(e) => setForm({ ...form, population: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Технологический уровень
+              </label>
+              <Input
+                placeholder="Например: Высокотехнологичная"
+                value={form.technology}
+                onChange={(e) => setForm({ ...form, technology: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
           </div>
 
           <div>
@@ -124,13 +238,37 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              URL изображения *
+              Связанные персонажи (ID через запятую)
+            </label>
+            <Input
+              placeholder="Например: 1, 2, 3"
+              value={form.relatedCharacters}
+              onChange={(e) => setForm({ ...form, relatedCharacters: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white"
+            />
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              URL изображения карточки *
             </label>
             <Input
               placeholder="https://..."
               value={form.image}
               onChange={(e) => setForm({ ...form, image: e.target.value })}
               required
+              className="bg-gray-900 border-gray-700 text-white"
+            />
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              URL фонового изображения
+            </label>
+            <Input
+              placeholder="https://..."
+              value={form.backgroundImage}
+              onChange={(e) => setForm({ ...form, backgroundImage: e.target.value })}
               className="bg-gray-900 border-gray-700 text-white"
             />
           </div>
@@ -143,7 +281,7 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
             {editingUniverse && (
               <Button 
                 type="button" 
-                onClick={handleCancel} 
+                onClick={resetForm} 
                 variant="outline"
                 className="border-gray-600 text-gray-300 hover:bg-gray-700"
               >

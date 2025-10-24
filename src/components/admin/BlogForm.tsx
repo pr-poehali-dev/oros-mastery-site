@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 
 interface BlogFormProps {
   onSubmit: (formData: BlogFormData, isEdit: boolean) => Promise<void>;
@@ -113,34 +114,13 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Содержание * (поддерживает Markdown)
+              Содержание *
             </label>
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="URL картинки для вставки"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  className="bg-gray-900 border-gray-700 text-white flex-1"
-                />
-                <Button 
-                  type="button" 
-                  onClick={insertImage}
-                  className="bg-purple-500 hover:bg-purple-600"
-                >
-                  <Icon name="Image" size={16} className="mr-2" />
-                  Вставить картинку
-                </Button>
-              </div>
-              <Textarea
-                placeholder="Полный текст статьи... Используйте ![alt](url) для картинок"
-                value={form.content}
-                onChange={(e) => setForm({ ...form, content: e.target.value })}
-                required
-                className="bg-gray-900 border-gray-700 text-white min-h-[300px] font-mono text-sm"
-              />
-              <p className="text-xs text-gray-400">💡 Форматирование: **жирный**, *курсив*, # Заголовок, ![alt](url) - картинка</p>
-            </div>
+            <RichTextEditor
+              value={form.content}
+              onChange={(value) => setForm({ ...form, content: value })}
+              placeholder="Полный текст статьи..."
+            />
           </div>
 
           <div>

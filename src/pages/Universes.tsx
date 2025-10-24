@@ -224,7 +224,7 @@ const Universes = () => {
                 </div>
                 <CardTitle className="text-2xl text-white">{universe.name}</CardTitle>
                 <CardDescription className="text-gray-400">
-                  {universe.description}
+                  {universe.shortDescription || universe.description?.substring(0, 120) + '...'}
                 </CardDescription>
               </CardHeader>
             </Card>
