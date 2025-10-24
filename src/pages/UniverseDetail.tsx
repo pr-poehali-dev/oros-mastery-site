@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import CommentSection from '@/components/CommentSection';
 import ReactMarkdown from 'react-markdown';
+import { generateSlug } from '@/utils/slugify';
 
 const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
@@ -203,22 +204,22 @@ const UniverseDetail = () => {
                     {relatedCharacters.map((char) => (
                       <Link 
                         key={char.id} 
-                        to={`/character/${char.id}-${char.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        to={`/character/${generateSlug(char.id, char.name)}`}
                         className="flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors group"
                       >
                         {char.image && (
                           <img 
                             src={char.image} 
                             alt={char.name}
-                            className="w-12 h-12 rounded-full object-cover"
+                            className="w-12 h-12 rounded-full object-cover border-2 border-gray-700 group-hover:border-cyan-500 transition-colors"
                           />
                         )}
                         <div className="flex-1">
                           <p className="text-white font-semibold group-hover:text-cyan-400 transition-colors">
                             {char.name}
                           </p>
-                          {char.status && (
-                            <p className="text-sm text-gray-400">{char.status}</p>
+                          {char.role && (
+                            <p className="text-sm text-gray-400">{char.role}</p>
                           )}
                         </div>
                         <Icon name="ChevronRight" size={16} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
