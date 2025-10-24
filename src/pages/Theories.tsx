@@ -17,6 +17,7 @@ const Theories = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
+  const [selectedProbability, setSelectedProbability] = useState('all');
   const [theories, setTheories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -177,8 +178,17 @@ const Theories = () => {
     { id: 'future', name: 'Будущее', icon: 'TrendingUp' }
   ];
 
+  const probabilities = [
+    { id: 'all', name: 'Все', icon: 'Filter' },
+    { id: 'confirmed', name: 'Подтверждено', icon: 'CheckCircle2' },
+    { id: 'high', name: 'Высокая', icon: 'TrendingUp' },
+    { id: 'medium', name: 'Средняя', icon: 'Minus' },
+    { id: 'low', name: 'Низкая', icon: 'TrendingDown' }
+  ];
+
   const filteredTheories = displayTheories.filter(theory => {
     const matchesType = selectedType === 'all' || theory.type === selectedType;
+    const matchesProbability = selectedProbability === 'all' || theory.probability === selectedProbability;
     
     const matchesSearch = searchQuery === '' ||
                          theory.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -186,7 +196,7 @@ const Theories = () => {
                          theory.fullText?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          theory.full_text?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    return matchesType && matchesSearch;
+    return matchesType && matchesProbability && matchesSearch;
   });
 
   const getProbabilityColor = (probability: string) => {
@@ -256,22 +266,48 @@ const Theories = () => {
             />
           </div>
 
-          <div className="flex gap-2 flex-wrap">
-            {types.map(type => (
-              <Button
-                key={type.id}
-                onClick={() => setSelectedType(type.id)}
-                variant={selectedType === type.id ? 'default' : 'outline'}
-                className={
-                  selectedType === type.id
-                    ? 'bg-gradient-to-r from-green-600 to-cyan-600 text-white border-0'
-                    : 'border-gray-700 text-gray-300 hover:bg-gray-800'
-                }
-              >
-                <Icon name={type.icon as any} size={16} className="mr-2" />
-                {type.name}
-              </Button>
-            ))}
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-sm font-medium text-gray-400 mb-2">Тип теории</h3>
+              <div className="flex gap-2 flex-wrap">
+                {types.map(type => (
+                  <Button
+                    key={type.id}
+                    onClick={() => setSelectedType(type.id)}
+                    variant={selectedType === type.id ? 'default' : 'outline'}
+                    className={
+                      selectedType === type.id
+                        ? 'bg-gradient-to-r from-green-600 to-cyan-600 text-white border-0'
+                        : 'border-gray-700 text-gray-300 hover:bg-gray-800'
+                    }
+                  >
+                    <Icon name={type.icon as any} size={16} className="mr-2" />
+                    {type.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-medium text-gray-400 mb-2">Вероятность</h3>
+              <div className="flex gap-2 flex-wrap">
+                {probabilities.map(prob => (
+                  <Button
+                    key={prob.id}
+                    onClick={() => setSelectedProbability(prob.id)}
+                    variant={selectedProbability === prob.id ? 'default' : 'outline'}
+                    className={
+                      selectedProbability === prob.id
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0'
+                        : 'border-gray-700 text-gray-300 hover:bg-gray-800'
+                    }
+                  >
+                    <Icon name={prob.icon as any} size={16} className="mr-2" />
+                    {prob.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 

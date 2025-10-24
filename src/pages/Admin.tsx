@@ -194,6 +194,8 @@ const Admin = () => {
           <TabsContent value="theories" className="space-y-6">
             <TheoryForm 
               editingTheory={editingTheory}
+              episodes={episodes}
+              characters={characters}
               onSubmit={handleTheorySubmit}
               onCancel={() => setEditingTheory(null)}
             />

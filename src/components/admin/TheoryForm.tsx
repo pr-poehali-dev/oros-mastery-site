@@ -12,6 +12,8 @@ interface TheoryFormProps {
   onSubmit: (formData: TheoryFormData, isEdit: boolean) => Promise<void>;
   editingTheory?: TheoryFormData & { id?: number } | null;
   onCancel?: () => void;
+  episodes?: Array<{id: number; title: string}>;
+  characters?: Array<{id: number; name: string}>;
 }
 
 export interface TheoryFormData {
@@ -35,7 +37,7 @@ export interface TheoryFormData {
   status?: string;
 }
 
-const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
+const TheoryForm = ({ onSubmit, editingTheory, onCancel, episodes = [], characters = [] }: TheoryFormProps) => {
   const [form, setForm] = useState<TheoryFormData>({
     id: undefined,
     title: '',
@@ -255,22 +257,60 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Связанные эпизоды (через запятую)</label>
-              <Input
-                placeholder="Close Rick-counters, Tales From the Citadel"
-                value={form.related_episodes}
-                onChange={(e) => setForm({ ...form, related_episodes: e.target.value })}
-                className="bg-gray-700 border-gray-600 text-white"
-              />
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Связанные эпизоды</label>
+              <div className="bg-gray-700 border border-gray-600 rounded-md p-3 max-h-48 overflow-y-auto space-y-2">
+                {episodes.length > 0 ? episodes.map(episode => {
+                  const isSelected = form.related_episodes?.split(',').map(e => e.trim()).includes(episode.title) || false;
+                  return (
+                    <label key={episode.id} className="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(e) => {
+                          const currentEpisodes = form.related_episodes?.split(',').map(ep => ep.trim()).filter(ep => ep) || [];
+                          if (e.target.checked) {
+                            setForm({ ...form, related_episodes: [...currentEpisodes, episode.title].join(', ') });
+                          } else {
+                            setForm({ ...form, related_episodes: currentEpisodes.filter(ep => ep !== episode.title).join(', ') });
+                          }
+                        }}
+                        className="rounded border-gray-500"
+                      />
+                      <span className="text-sm">{episode.title}</span>
+                    </label>
+                  );
+                }) : (
+                  <p className="text-gray-400 text-sm">Эпизоды не найдены</p>
+                )}
+              </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Связанные персонажи (через запятую)</label>
-              <Input
-                placeholder="Морти С-137, Злой Морти, Рик С-137"
-                value={form.related_characters}
-                onChange={(e) => setForm({ ...form, related_characters: e.target.value })}
-                className="bg-gray-700 border-gray-600 text-white"
-              />
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Связанные персонажи</label>
+              <div className="bg-gray-700 border border-gray-600 rounded-md p-3 max-h-48 overflow-y-auto space-y-2">
+                {characters.length > 0 ? characters.map(character => {
+                  const isSelected = form.related_characters?.split(',').map(c => c.trim()).includes(character.name) || false;
+                  return (
+                    <label key={character.id} className="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(e) => {
+                          const currentCharacters = form.related_characters?.split(',').map(ch => ch.trim()).filter(ch => ch) || [];
+                          if (e.target.checked) {
+                            setForm({ ...form, related_characters: [...currentCharacters, character.name].join(', ') });
+                          } else {
+                            setForm({ ...form, related_characters: currentCharacters.filter(ch => ch !== character.name).join(', ') });
+                          }
+                        }}
+                        className="rounded border-gray-500"
+                      />
+                      <span className="text-sm">{character.name}</span>
+                    </label>
+                  );
+                }) : (
+                  <p className="text-gray-400 text-sm">Персонажи не найдены</p>
+                )}
+              </div>
             </div>
           </div>
 
