@@ -177,7 +177,7 @@ const Episodes = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                 <Badge className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-green-500 text-white border-0">
-                  S{episode.season}E{episode.episode}
+                  С{episode.season}Э{episode.episode}
                 </Badge>
                 <Badge className={`absolute top-4 right-4 ${getRatingColor(episode.rating)}`}>
                   ⭐ {episode.rating}

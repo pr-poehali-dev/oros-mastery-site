@@ -51,8 +51,33 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'body': json.dumps({'error': 'Episode ID required'})
                 }
             
+            action = query_params.get('action')
+            
+            if action == 'get_navigation':
+                current_id = int(query_params.get('current_id', 0))
+                direction = query_params.get('direction', 'next')
+                
+                if direction == 'next':
+                    cur.execute("SELECT id, title FROM episodes WHERE id > " + str(current_id) + " ORDER BY id ASC LIMIT 1")
+                else:
+                    cur.execute("SELECT id, title FROM episodes WHERE id < " + str(current_id) + " ORDER BY id DESC LIMIT 1")
+                
+                nav_row = cur.fetchone()
+                if nav_row:
+                    return {
+                        'statusCode': 200,
+                        'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                        'body': json.dumps({'episode': {'id': nav_row[0], 'title': nav_row[1]}})
+                    }
+                else:
+                    return {
+                        'statusCode': 404,
+                        'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                        'body': json.dumps({'error': 'No more episodes'})
+                    }
+            
             cur.execute(
-                "SELECT id, title, season, episode, description, image, air_date, video_iframe FROM episodes WHERE id = " + str(int(episode_id))
+                "SELECT id, title, season, episode, description, image, air_date, video_iframe, fun_facts FROM episodes WHERE id = " + str(int(episode_id))
             )
             row = cur.fetchone()
             
@@ -71,7 +96,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'description': row[4],
                 'image': row[5],
                 'airDate': row[6] if row[6] else '',
-                'videoIframe': row[7] if len(row) > 7 and row[7] else ''
+                'videoIframe': row[7] if len(row) > 7 and row[7] else '',
+                'funFacts': row[8] if len(row) > 8 and row[8] else ''
             }
             
             cur.execute(
@@ -89,7 +115,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 })
             
             cur.execute(
-                "SELECT id, title, content, created_at FROM episode_articles WHERE episode_id = " + str(int(episode_id)) + " ORDER BY created_at DESC"
+                "SELECT ea.id, ea.title, ea.content, ea.created_at FROM episode_articles ea LEFT JOIN episode_article_links eal ON ea.id = eal.article_id WHERE eal.episode_id = " + str(int(episode_id)) + " OR ea.episode_id = " + str(int(episode_id)) + " ORDER BY ea.created_at DESC"
             )
             articles = []
             for article_row in cur.fetchall():

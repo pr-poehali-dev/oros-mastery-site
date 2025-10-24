@@ -21,6 +21,8 @@ export interface EpisodeFormData {
   videoUrl: string;
   videoIframe: string;
   airDate: string;
+  funFacts: string;
+  linkedArticles: number[];
 }
 
 const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProps) => {
@@ -32,7 +34,9 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
     image: '',
     videoUrl: '',
     videoIframe: '',
-    airDate: ''
+    airDate: '',
+    funFacts: '',
+    linkedArticles: []
   });
 
   useEffect(() => {
@@ -52,7 +56,9 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
       image: '',
       videoUrl: '',
       videoIframe: '',
-      airDate: ''
+      airDate: '',
+      funFacts: '',
+      linkedArticles: []
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -66,7 +72,9 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
       image: '',
       videoUrl: '',
       videoIframe: '',
-      airDate: ''
+      airDate: '',
+      funFacts: '',
+      linkedArticles: []
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -188,6 +196,19 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
               className="bg-gray-900 border-gray-700 text-white min-h-[100px] font-mono text-sm"
             />
             <p className="text-xs text-gray-400 mt-1">💡 Вставьте полный код iframe с YouTube, VK или другого видеохостинга</p>
+          </div>
+
+          <div>
+            <label className="text-white text-sm font-medium mb-2 block">
+              Интересные факты (опционально)
+            </label>
+            <Textarea
+              placeholder="Введите интересные факты об эпизоде, каждый с новой строки..."
+              value={form.funFacts}
+              onChange={(e) => setForm({ ...form, funFacts: e.target.value })}
+              className="bg-gray-900 border-gray-700 text-white min-h-[100px]"
+            />
+            <p className="text-xs text-gray-400 mt-1">💡 Каждый факт с новой строки</p>
           </div>
 
           <div className="flex gap-3">

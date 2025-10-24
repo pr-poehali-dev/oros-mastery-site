@@ -82,9 +82,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             image = body.get('image', '').replace("'", "''")
             air_date = body.get('airDate', '').replace("'", "''")
             video_iframe = body.get('videoIframe', '').replace("'", "''")
+            fun_facts = body.get('funFacts', '').replace("'", "''")
             
             cur.execute(
-                f"INSERT INTO episodes (title, season, episode, description, image, air_date, video_iframe) VALUES ('{title}', {season}, {episode}, '{description}', '{image}', '{air_date}', '{video_iframe}') RETURNING id"
+                f"INSERT INTO episodes (title, season, episode, description, image, air_date, video_iframe, fun_facts) VALUES ('{title}', {season}, {episode}, '{description}', '{image}', '{air_date}', '{video_iframe}', '{fun_facts}') RETURNING id"
             )
             episode_id = cur.fetchone()[0]
             conn.commit()
@@ -115,10 +116,18 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             image = body.get('image', '').replace("'", "''")
             air_date = body.get('airDate', '').replace("'", "''")
             video_iframe = body.get('videoIframe', '').replace("'", "''")
+            fun_facts = body.get('funFacts', '').replace("'", "''")
+            linked_articles = body.get('linkedArticles', [])
             
             cur.execute(
-                f"UPDATE episodes SET title='{title}', season={season}, episode={episode}, description='{description}', image='{image}', air_date='{air_date}', video_iframe='{video_iframe}' WHERE id={int(episode_id)}"
+                f"UPDATE episodes SET title='{title}', season={season}, episode={episode}, description='{description}', image='{image}', air_date='{air_date}', video_iframe='{video_iframe}', fun_facts='{fun_facts}' WHERE id={int(episode_id)}"
             )
+            
+            cur.execute(f"DELETE FROM episode_article_links WHERE episode_id={int(episode_id)}")
+            for article_id in linked_articles:
+                cur.execute(
+                    f"INSERT INTO episode_article_links (episode_id, article_id) VALUES ({int(episode_id)}, {int(article_id)}) ON CONFLICT DO NOTHING"
+                )
             conn.commit()
             
             return {

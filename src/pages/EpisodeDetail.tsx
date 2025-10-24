@@ -18,6 +18,7 @@ interface Episode {
   image: string;
   airDate: string;
   videoIframe?: string;
+  funFacts?: string;
 }
 
 interface Comment {
@@ -92,28 +93,15 @@ const EpisodeDetail = () => {
     }
   };
 
-  const handleNavigate = (direction: 'prev' | 'next') => {
-    const currentId = id;
-    const newId = direction === 'prev' ? currentId - 1 : currentId + 1;
-    if (newId > 0 && newId <= 12) {
-      const episodes = [
-        { id: 1, title: 'Pilot' },
-        { id: 2, title: 'Lawnmower Dog' },
-        { id: 3, title: 'Anatomy Park' },
-        { id: 4, title: 'M. Night Shaym-Aliens!' },
-        { id: 5, title: 'Meeseeks and Destroy' },
-        { id: 6, title: 'Rick Potion #9' },
-        { id: 7, title: 'Raising Gazorpazorp' },
-        { id: 8, title: 'Rixty Minutes' },
-        { id: 9, title: 'Something Ricked This Way Comes' },
-        { id: 10, title: 'Close Rick-counters of the Rick Kind' },
-        { id: 11, title: 'Ricksy Business' },
-        { id: 12, title: 'A Rickle in Time' }
-      ];
-      const nextEpisode = episodes.find(ep => ep.id === newId);
-      if (nextEpisode) {
-        navigate(`/episode/${generateSlug(nextEpisode.id, nextEpisode.title)}`);
+  const handleNavigate = async (direction: 'prev' | 'next') => {
+    try {
+      const response = await fetch(`${API_URL}?action=get_navigation&current_id=${id}&direction=${direction}`);
+      const data = await response.json();
+      if (data.episode) {
+        navigate(`/episode/${generateSlug(data.episode.id, data.episode.title)}`);
       }
+    } catch (error) {
+      console.error('Navigation error:', error);
     }
   };
 
@@ -174,7 +162,7 @@ const EpisodeDetail = () => {
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-green-500 text-white text-sm rounded-full">
-                    S{episode.season}E{episode.episode}
+                    Сезон {episode.season}, Эпизод {episode.episode}
                   </span>
                   <span className="text-gray-300">{episode.airDate}</span>
                 </div>
@@ -186,7 +174,6 @@ const EpisodeDetail = () => {
             <div className="flex justify-between gap-4">
               <Button
                 onClick={() => handleNavigate('prev')}
-                disabled={parseInt(id || '1') <= 1}
                 className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50"
               >
                 <Icon name="ChevronLeft" size={20} className="mr-2" />
@@ -194,7 +181,6 @@ const EpisodeDetail = () => {
               </Button>
               <Button
                 onClick={() => handleNavigate('next')}
-                disabled={parseInt(id || '1') >= 12}
                 className="flex-1 bg-gradient-to-r from-cyan-600 to-green-600 hover:from-cyan-700 hover:to-green-700 disabled:opacity-50"
               >
                 Следующий эпизод
@@ -202,10 +188,22 @@ const EpisodeDetail = () => {
               </Button>
             </div>
 
+            {episode.funFacts && (
+              <Card className="bg-gray-800/50 border-yellow-500/30 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Icon name="Sparkles" size={24} className="text-yellow-400" />
+                  <h2 className="text-2xl font-bold text-yellow-400">Интересные факты</h2>
+                </div>
+                <div className="text-gray-300 leading-relaxed whitespace-pre-line">
+                  {episode.funFacts}
+                </div>
+              </Card>
+            )}
+
             {articles.map((article) => (
               <Card key={article.id} className="bg-gray-800/50 border-green-500/30 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Icon name="Lightbulb" size={24} className="text-yellow-400" />
+                  <Icon name="Lightbulb" size={24} className="text-green-400" />
                   <h2 className="text-2xl font-bold text-green-400">{article.title}</h2>
                 </div>
                 <div className="text-gray-300 leading-relaxed whitespace-pre-line">
