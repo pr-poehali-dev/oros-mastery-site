@@ -167,7 +167,7 @@ const Characters = () => {
     }
   ];
 
-  const displayCharacters = characters.length > 0 ? characters : fallbackCharacters;
+  const displayCharacters = characters;
 
   const species = [
     { id: 'all', name: 'Все', icon: 'Users' },
