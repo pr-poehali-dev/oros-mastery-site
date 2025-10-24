@@ -239,10 +239,10 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Связанные персонажи (ID через запятую)
+              Связанные персонажи (имена через запятую)
             </label>
             <Input
-              placeholder="Например: 1, 2, 3"
+              placeholder="Например: Рик С-137, Морти С-137, Бёрдперсон"
               value={form.relatedCharacters}
               onChange={(e) => setForm({ ...form, relatedCharacters: e.target.value })}
               className="bg-gray-900 border-gray-700 text-white"

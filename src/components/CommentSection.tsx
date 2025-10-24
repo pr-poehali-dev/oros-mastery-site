@@ -93,7 +93,7 @@ const CommentSection = ({ entityType, entityId }: CommentSectionProps) => {
       </div>
 
       <Card className="p-6 mb-8 bg-gray-800 border-gray-700">
-        <h3 className="text-xl font-bold mb-4">Добавить комментарий</h3>
+        <h3 className="text-xl font-bold mb-4 text-white">Добавить комментарий</h3>
         <input
           type="text"
           placeholder="Ваше имя"

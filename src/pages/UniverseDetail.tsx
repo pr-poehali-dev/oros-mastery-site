@@ -117,10 +117,11 @@ const UniverseDetail = () => {
                   Описание
                 </CardTitle>
               </CardHeader>
-              <CardContent className="prose prose-invert max-w-none [&_h2]:text-white [&_h4]:text-white">
-                <div className="text-gray-300 whitespace-pre-wrap">
-                  {universe.description}
-                </div>
+              <CardContent className="prose prose-invert max-w-none">
+                <div 
+                  className="text-gray-300 [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white [&_strong]:text-white [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-2"
+                  dangerouslySetInnerHTML={{ __html: universe.description }}
+                />
               </CardContent>
             </Card>
 
@@ -128,6 +129,77 @@ const UniverseDetail = () => {
           </div>
 
           <div className="space-y-6">
+            <Card className="bg-gray-800/50 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl text-white flex items-center gap-2">
+                  <Icon name="Info" size={20} className="text-cyan-400" />
+                  Информация
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {universe.coordinates && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Координаты</p>
+                    <p className="text-white font-semibold">{universe.coordinates}</p>
+                  </div>
+                )}
+                {universe.status && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Статус</p>
+                    <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
+                      {universe.status}
+                    </Badge>
+                  </div>
+                )}
+                {universe.danger_level && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Уровень опасности</p>
+                    <Badge className="bg-red-500/20 text-red-300 border-red-500/30">
+                      {universe.danger_level}
+                    </Badge>
+                  </div>
+                )}
+                {universe.discovery_date && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Дата открытия</p>
+                    <p className="text-white font-semibold">{universe.discovery_date}</p>
+                  </div>
+                )}
+                {universe.population && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Население</p>
+                    <p className="text-white font-semibold">{universe.population}</p>
+                  </div>
+                )}
+                {universe.technology && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Технологический уровень</p>
+                    <p className="text-white font-semibold">{universe.technology}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {universe.related_characters && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Users" size={20} className="text-cyan-400" />
+                    Связанные персонажи
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {universe.related_characters.split(',').map((char: string, idx: number) => (
+                      <Badge key={idx} variant="outline" className="text-gray-300">
+                        {char.trim()}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {featuresArray.length > 0 && (
               <Card className="bg-gray-800/50 border-gray-700">
                 <CardHeader>
