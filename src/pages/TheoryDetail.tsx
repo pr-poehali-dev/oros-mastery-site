@@ -217,20 +217,6 @@ const TheoryDetail = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {theory.summary && (
-              <Card className="bg-gray-800/50 border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-white flex items-center gap-2">
-                    <Icon name="Sparkles" size={24} className="text-yellow-400" />
-                    Краткое описание
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-300 text-lg">{theory.summary}</p>
-                </CardContent>
-              </Card>
-            )}
-
             {theory.full_text && (
               <Card className="bg-gray-800/50 border-gray-700">
                 <CardHeader>
