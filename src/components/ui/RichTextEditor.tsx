@@ -1,6 +1,4 @@
-import { useRef, useEffect } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { useRef, useEffect, useState } from 'react';
 
 interface RichTextEditorProps {
   value: string;
@@ -9,7 +7,12 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor = ({ value, onChange, placeholder = 'Введите текст...' }: RichTextEditorProps) => {
-  const quillRef = useRef<ReactQuill>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const quillRef = useRef<any>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const modules = {
     toolbar: [
@@ -30,6 +33,8 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Введите тек�
   ];
 
   useEffect(() => {
+    if (!isMounted) return;
+
     const style = document.createElement('style');
     style.textContent = `
       .ql-toolbar {
@@ -80,21 +85,49 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Введите тек�
     document.head.appendChild(style);
 
     return () => {
-      document.head.removeChild(style);
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
-  }, []);
+  }, [isMounted]);
 
-  return (
-    <ReactQuill
-      ref={quillRef}
-      theme="snow"
-      value={value}
-      onChange={onChange}
-      modules={modules}
-      formats={formats}
-      placeholder={placeholder}
-    />
-  );
+  if (!isMounted) {
+    return (
+      <div className="w-full min-h-[300px] p-4 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 flex items-center justify-center">
+        Загрузка редактора...
+      </div>
+    );
+  }
+
+  // Динамический импорт ReactQuill
+  try {
+    const ReactQuill = require('react-quill');
+    require('react-quill/dist/quill.snow.css');
+
+    return (
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        formats={formats}
+        placeholder={placeholder}
+      />
+    );
+  } catch (error) {
+    console.error('Error loading ReactQuill:', error);
+    return (
+      <div className="w-full min-h-[300px] p-4 bg-gray-800 border border-gray-700 rounded-lg">
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="w-full h-full bg-transparent text-white border-none outline-none resize-none"
+        />
+      </div>
+    );
+  }
 };
 
 export default RichTextEditor;
