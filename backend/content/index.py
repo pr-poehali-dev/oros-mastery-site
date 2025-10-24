@@ -152,6 +152,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     f"description='{escape_sql(body_data.get('description', ''))}', "
                     f"image='{escape_sql(body_data.get('image', ''))}', "
                     f"background_image='{escape_sql(body_data.get('background_image', ''))}', "
+                    f"avatar_image='{escape_sql(body_data.get('avatar_image', ''))}', "
                     f"status='{escape_sql(body_data.get('status', ''))}', "
                     f"abilities='{escape_sql(body_data.get('abilities', ''))}', "
                     f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"

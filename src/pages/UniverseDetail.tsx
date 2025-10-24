@@ -207,9 +207,9 @@ const UniverseDetail = () => {
                         to={`/character/${generateSlug(char.id, char.name)}`}
                         className="flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors group"
                       >
-                        {char.image && (
+                        {char.avatar_image && (
                           <img 
-                            src={char.image} 
+                            src={char.avatar_image} 
                             alt={char.name}
                             className="w-12 h-12 rounded-full object-cover border-2 border-gray-700 group-hover:border-cyan-500 transition-colors"
                           />

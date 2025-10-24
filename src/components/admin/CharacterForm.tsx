@@ -21,6 +21,7 @@ export interface CharacterFormData {
   full_bio?: string;
   image: string;
   background_image?: string;
+  avatar_image?: string;
   status: string;
   abilities: string;
   origin?: string;
@@ -42,6 +43,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
     full_bio: '',
     image: '',
     background_image: '',
+    avatar_image: '',
     status: '',
     abilities: '',
     origin: '',
@@ -65,6 +67,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
         full_bio: editingCharacter.full_bio || '',
         image: editingCharacter.image || '',
         background_image: editingCharacter.background_image || '',
+        avatar_image: editingCharacter.avatar_image || '',
         status: editingCharacter.status || '',
         abilities: editingCharacter.abilities || '',
         origin: editingCharacter.origin || '',
@@ -96,6 +99,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
       full_bio: '',
       image: '',
       background_image: '',
+      avatar_image: '',
       status: '',
       abilities: '',
       origin: '',
@@ -280,18 +284,19 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
             />
           </div>
 
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения (карточка)*</label>
+            <Input
+              type="url"
+              placeholder="https://..."
+              value={form.image}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
+              className="bg-gray-700 border-gray-600 text-white"
+              required
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения (карточка)*</label>
-              <Input
-                type="url"
-                placeholder="https://..."
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
-                className="bg-gray-700 border-gray-600 text-white"
-                required
-              />
-            </div>
             <div>
               <label className="text-sm font-medium text-gray-300 mb-2 block">URL фоновой картинки (для карточки)</label>
               <Input
@@ -299,6 +304,16 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
                 placeholder="https://..."
                 value={form.background_image}
                 onChange={(e) => setForm({ ...form, background_image: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">URL аватара (круглая иконка)</label>
+              <Input
+                type="url"
+                placeholder="https://..."
+                value={form.avatar_image}
+                onChange={(e) => setForm({ ...form, avatar_image: e.target.value })}
                 className="bg-gray-700 border-gray-600 text-white"
               />
             </div>
