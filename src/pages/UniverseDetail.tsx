@@ -64,7 +64,7 @@ const UniverseDetail = () => {
   const featuresArray = universe.features ? universe.features.split(',').map((f: string) => f.trim()) : [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
       <Breadcrumbs />
       <SEO
