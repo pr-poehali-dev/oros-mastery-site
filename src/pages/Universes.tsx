@@ -157,14 +157,16 @@ const Universes = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
-      <Breadcrumbs />
       <SEO
         title="Вселенные Rick and Morty - Гид по мультивселенной"
         description="Исследуйте все вселенные Rick and Morty. Цитадель Риков, Кроненберг-вселенная и другие измерения мультивселенной. Полный каталог всех вселенных и измерений."
         keywords="Rick and Morty вселенные, измерения, C-137, Цитадель Риков, мультивселенная, вселенная Рик и Морти, все измерения, каталог вселенных"
       />
+      <div className="pt-20">
+        <Breadcrumbs />
+      </div>
       
-      <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-600">
+      <section className="relative pt-12 pb-24 overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-600">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
         
         <div className="absolute inset-0">
