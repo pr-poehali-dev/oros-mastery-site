@@ -76,7 +76,7 @@ const CharacterDetail = () => {
 
       <div className="relative h-96 overflow-hidden">
         <img 
-          src={character.image} 
+          src={character.background_image || character.image} 
           alt={character.name}
           className="w-full h-full object-cover"
         />

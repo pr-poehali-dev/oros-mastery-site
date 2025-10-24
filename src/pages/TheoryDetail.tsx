@@ -108,8 +108,15 @@ const TheoryDetail = () => {
         ogType="article"
       />
 
-      <section className="relative pt-32 pb-16 bg-gradient-to-br from-purple-600 via-indigo-500 to-pink-600">
-        <div className="absolute inset-0 bg-black/30"></div>
+      <section className="relative pt-32 pb-16 bg-gradient-to-br from-purple-600 via-indigo-500 to-pink-600 overflow-hidden">
+        {theory.image && (
+          <img 
+            src={theory.image} 
+            alt={theory.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        <div className="absolute inset-0 bg-black/50"></div>
         <div className="container mx-auto px-4 relative z-10">
           <Link to="/theories">
             <Button variant="ghost" className="text-white hover:bg-white/20 mb-6">
