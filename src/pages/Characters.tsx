@@ -168,11 +168,11 @@ const Characters = () => {
   ];
 
   const filteredCharacters = displayCharacters.filter(char => {
-    const charSpecies = char.species?.toLowerCase() || '';
+    const charSpecies = (char.species || '').toLowerCase();
     
     const matchesSpecies = selectedSpecies === 'all' || 
-                          (selectedSpecies === 'human' && (charSpecies.includes('человек') || charSpecies.includes('human'))) ||
-                          (selectedSpecies === 'alien' && (charSpecies.includes('инопланет') || charSpecies.includes('alien')));
+                          (selectedSpecies === 'human' && charSpecies === 'человек') ||
+                          (selectedSpecies === 'alien' && charSpecies === 'инопланетянин');
     
     const matchesSearch = searchQuery === '' ||
                          char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
