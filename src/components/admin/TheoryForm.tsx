@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
-import RichTextEditor from '@/components/ui/RichTextEditor';
+
 
 interface TheoryFormProps {
   onSubmit: (formData: TheoryFormData, isEdit: boolean) => Promise<void>;
