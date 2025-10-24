@@ -169,16 +169,18 @@ const Characters = () => {
 
   const filteredCharacters = displayCharacters.filter(char => {
     const charSpecies = char.species?.toLowerCase() || '';
-    const charStatus = char.status?.toLowerCase() || '';
     
     const matchesSpecies = selectedSpecies === 'all' || 
                           charSpecies === selectedSpecies || 
-                          (selectedSpecies === 'human' && charStatus.includes('человек')) ||
-                          (selectedSpecies === 'alien' && charStatus.includes('инопланет'));
+                          charSpecies.includes(selectedSpecies) ||
+                          (selectedSpecies === 'human' && (charSpecies.includes('человек') || charSpecies === 'human')) ||
+                          (selectedSpecies === 'alien' && (charSpecies.includes('инопланет') || charSpecies === 'alien'));
     
     const matchesSearch = searchQuery === '' ||
                          char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         char.bio?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          char.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         char.role?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          char.status?.toLowerCase().includes(searchQuery.toLowerCase());
     
     return matchesSpecies && matchesSearch;
@@ -260,18 +262,36 @@ const Characters = () => {
           {filteredCharacters.map((character) => (
             <Card 
               key={character.id} 
-              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer"
+              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer group"
               onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
             >
               <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={character.image} 
-                  alt={character.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                {character.background_image ? (
+                  <>
+                    <img 
+                      src={character.background_image} 
+                      alt={character.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"></div>
+                    <img 
+                      src={character.image} 
+                      alt={character.name}
+                      className="absolute bottom-4 left-4 w-20 h-20 rounded-full object-cover border-4 border-gray-800"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <img 
+                      src={character.image} 
+                      alt={character.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                  </>
+                )}
                 <Badge className={`absolute top-4 right-4 ${getStatusColor(character.status)}`}>
-                  {character.status === 'alive' ? 'Жив' : 'Погиб'}
+                  {character.status === 'alive' || character.status?.toLowerCase().includes('жив') ? 'Жив' : character.status?.toLowerCase().includes('мертв') ? 'Погиб' : character.status}
                 </Badge>
               </div>
               

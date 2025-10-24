@@ -1,0 +1,2 @@
+ALTER TABLE characters 
+ADD COLUMN IF NOT EXISTS background_image VARCHAR(500);

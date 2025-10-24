@@ -20,6 +20,7 @@ export interface CharacterFormData {
   bio?: string;
   full_bio?: string;
   image: string;
+  background_image?: string;
   status: string;
   abilities: string;
   origin?: string;
@@ -40,6 +41,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
     bio: '',
     full_bio: '',
     image: '',
+    background_image: '',
     status: '',
     abilities: '',
     origin: '',
@@ -62,6 +64,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
         bio: editingCharacter.bio || '',
         full_bio: editingCharacter.full_bio || '',
         image: editingCharacter.image || '',
+        background_image: editingCharacter.background_image || '',
         status: editingCharacter.status || '',
         abilities: editingCharacter.abilities || '',
         origin: editingCharacter.origin || '',
@@ -92,6 +95,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
       bio: '',
       full_bio: '',
       image: '',
+      background_image: '',
       status: '',
       abilities: '',
       origin: '',
@@ -276,16 +280,28 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
             />
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения (карточка)*</label>
-            <Input
-              type="url"
-              placeholder="https://..."
-              value={form.image}
-              onChange={(e) => setForm({ ...form, image: e.target.value })}
-              className="bg-gray-700 border-gray-600 text-white"
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения (карточка)*</label>
+              <Input
+                type="url"
+                placeholder="https://..."
+                value={form.image}
+                onChange={(e) => setForm({ ...form, image: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">URL фоновой картинки (для карточки)</label>
+              <Input
+                type="url"
+                placeholder="https://..."
+                value={form.background_image}
+                onChange={(e) => setForm({ ...form, background_image: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">
