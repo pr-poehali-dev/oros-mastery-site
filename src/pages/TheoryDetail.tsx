@@ -135,7 +135,7 @@ const TheoryDetail = () => {
         ogType="article"
       />
       <div className="pt-20">
-        <Breadcrumbs />
+        <Breadcrumbs customLabel={theory.title} />
       </div>
 
       <section className="relative pt-12 pb-16 bg-gradient-to-br from-purple-600 via-indigo-500 to-pink-600 overflow-hidden">

@@ -146,7 +146,7 @@ const EpisodeDetail = () => {
         seasonNumber={episode.season}
       />
       <div className="pt-20">
-        <Breadcrumbs />
+        <Breadcrumbs customLabel={episode.title} />
       </div>
       <div className="container mx-auto px-4 pt-12 pb-12">
         <Link to="/">

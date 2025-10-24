@@ -85,7 +85,7 @@ const UniverseDetail = () => {
         ogType="article"
       />
       <div className="pt-20">
-        <Breadcrumbs />
+        <Breadcrumbs customLabel={universe.name} />
       </div>
 
       <div className="relative h-96 overflow-hidden">

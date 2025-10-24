@@ -75,7 +75,7 @@ const CharacterDetail = () => {
         ogType="article"
       />
       <div className="pt-20">
-        <Breadcrumbs />
+        <Breadcrumbs customLabel={character.name} />
       </div>
 
       <div className="relative h-96 overflow-hidden">
