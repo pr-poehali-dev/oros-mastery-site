@@ -19,6 +19,7 @@ const Characters = () => {
   const [selectedSpecies, setSelectedSpecies] = useState('all');
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [availableSpecies, setAvailableSpecies] = useState<string[]>([]);
 
   useEffect(() => {
     fetchCharacters();
@@ -29,6 +30,13 @@ const Characters = () => {
       const response = await fetch(`${CONTENT_API}?type=characters`);
       const data = await response.json();
       setCharacters(data);
+      
+      const uniqueSpecies = Array.from(new Set(
+        data
+          .map((char: any) => char.species)
+          .filter((species: string) => species && species.trim() !== '')
+      )) as string[];
+      setAvailableSpecies(uniqueSpecies);
     } catch (error) {
       console.error('Error fetching characters:', error);
     } finally {
@@ -163,16 +171,17 @@ const Characters = () => {
 
   const species = [
     { id: 'all', name: 'Все', icon: 'Users' },
-    { id: 'human', name: 'Люди', icon: 'User' },
-    { id: 'alien', name: 'Инопланетяне', icon: 'Rocket' }
+    ...availableSpecies.map(spec => ({
+      id: spec,
+      name: spec,
+      icon: spec.toLowerCase() === 'человек' ? 'User' : 'Rocket'
+    }))
   ];
 
   const filteredCharacters = displayCharacters.filter(char => {
-    const charSpecies = (char.species || '').toLowerCase();
+    const charSpecies = char.species || '';
     
-    const matchesSpecies = selectedSpecies === 'all' || 
-                          (selectedSpecies === 'human' && charSpecies === 'человек') ||
-                          (selectedSpecies === 'alien' && charSpecies === 'инопланетянин');
+    const matchesSpecies = selectedSpecies === 'all' || charSpecies === selectedSpecies;
     
     const matchesSearch = searchQuery === '' ||
                          char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
