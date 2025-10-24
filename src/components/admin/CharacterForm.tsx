@@ -36,6 +36,7 @@ export interface CharacterFormData {
 
 const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormProps) => {
   const [form, setForm] = useState<CharacterFormData>({
+    id: undefined,
     name: '',
     role: '',
     species: '',
@@ -87,11 +88,11 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSubmit(form, !!form.id);
-    resetForm();
   };
 
   const resetForm = () => {
     setForm({
+      id: undefined,
       name: '',
       role: '',
       species: '',
