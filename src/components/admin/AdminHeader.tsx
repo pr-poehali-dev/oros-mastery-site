@@ -30,7 +30,7 @@ const AdminHeader = () => {
             <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400">
               Панель администратора
             </h1>
-            <p className="text-gray-400 mt-1">Управление контентом Rick and Morty</p>
+            <p className="text-gray-400 mt-1">Управление контентом Рик и Морти</p>
           </div>
         </div>
         

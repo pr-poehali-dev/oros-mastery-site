@@ -72,9 +72,9 @@ const Episodes = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Эпизоды Rick and Morty - Полный каталог всех сезонов"
-        description="Все эпизоды Rick and Morty с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала. Полный каталог всех серий и сезонов."
-        keywords="Rick and Morty эпизоды, все серии, сезоны, смотреть онлайн, описание эпизодов, каталог серий Рик и Морти, рейтинги эпизодов"
+        title="Эпизоды Рик и Морти - Полный каталог всех сезонов"
+        description="Все эпизоды Рик и Морти с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала. Полный каталог всех серий и сезонов."
+        keywords="Рик и Морти эпизоды, все серии, сезоны, смотреть онлайн, описание эпизодов, каталог серий Рик и Морти, рейтинги эпизодов"
       />
       <div className="pt-20">
         <Breadcrumbs />
@@ -94,7 +94,7 @@ const Episodes = () => {
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Полная коллекция серий Rick and Morty с описаниями и рейтингами
+            Полная коллекция серий Рик и Морти с описаниями и рейтингами
           </p>
 
           <div className="flex justify-center gap-4 flex-wrap">
@@ -213,7 +213,7 @@ const Episodes = () => {
           <Card className="bg-gray-800/60 backdrop-blur-sm border-gray-700/50 p-8 max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold text-gray-100 mb-4 text-center">Хотите узнать больше?</h3>
             <p className="text-gray-400 text-center mb-6">
-              Читайте наш блог с глубоким анализом эпизодов, теориями фанатов и интересными фактами о Rick and Morty
+              Читайте наш блог с глубоким анализом эпизодов, теориями фанатов и интересными фактами о Рик и Морти
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               <Link to="/blog" className="h-full">

@@ -203,9 +203,9 @@ const Characters = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Персонажи Rick and Morty - Полный каталог героев"
-        description="Познакомьтесь со всеми персонажами Rick and Morty. Рик, Морти, Саммер, семья Смитов и другие герои сериала. Биографии, описания и факты о персонажах."
-        keywords="Rick and Morty персонажи, Рик Санчез, Морти Смит, герои, инопланетяне, персонажи Рик и Морти, биографии героев, все персонажи"
+        title="Персонажи Рик и Морти - Полный каталог героев"
+        description="Познакомьтесь со всеми персонажами Рик и Морти. Рик, Морти, Саммер, семья Смитов и другие герои сериала. Биографии, описания и факты о персонажах."
+        keywords="Рик и Морти персонажи, Рик Санчез, Морти Смит, герои, инопланетяне, персонажи Рик и Морти, биографии героев, все персонажи"
       />
       <div className="pt-20">
         <Breadcrumbs />
@@ -341,7 +341,7 @@ const Characters = () => {
           <Card className="bg-gray-800/60 backdrop-blur-sm border-gray-700/50 p-8 max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold text-gray-100 mb-4 text-center">Продолжай исследование</h3>
             <p className="text-gray-400 text-center mb-6">
-              Узнай больше о вселенной Rick and Morty - смотри эпизоды, читай теории и открывай новые миры
+              Узнай больше о вселенной Рик и Морти - смотри эпизоды, читай теории и открывай новые миры
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               <Link to="/episodes" className="h-full">

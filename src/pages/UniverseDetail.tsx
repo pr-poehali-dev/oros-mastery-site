@@ -78,10 +78,10 @@ const UniverseDetail = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
       <SEO
-        title={`${universe.name} | Rick and Morty`}
+        title={`${universe.name} | Рик и Морти`}
         description={universe.description?.substring(0, 160)}
         image={universe.image}
-        keywords={`Rick and Morty, ${universe.name}, вселенная, измерение, мультивселенная`}
+        keywords={`Рик и Морти, ${universe.name}, вселенная, измерение, мультивселенная`}
         ogType="article"
       />
       <div className="pt-20">

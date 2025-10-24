@@ -128,7 +128,7 @@ const EpisodeDetail = () => {
         title={`${episode.title} - S${episode.season}E${episode.episode}`}
         description={episode.description}
         image={episode.image}
-        keywords={`Rick and Morty, ${episode.title}, сезон ${episode.season}, эпизод ${episode.episode}, смотреть онлайн`}
+        keywords={`Рик и Морти, ${episode.title}, сезон ${episode.season}, эпизод ${episode.episode}, смотреть онлайн`}
         ogType="article"
         episodeNumber={episode.episode}
         seasonNumber={episode.season}

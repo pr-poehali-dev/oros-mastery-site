@@ -25,7 +25,7 @@ const Navigation = () => {
           <Link to="/" className="flex items-center gap-2 group">
             <img 
               src="https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/6f97f817-22a0-4b87-bd11-3733b5f22ff6.jpg" 
-              alt="Rick and Morty Logo"
+              alt="Рик и Морти Logo"
               className="w-12 h-12 rounded-full object-cover group-hover:scale-110 transition-transform border-2 border-cyan-500"
             />
             <span className="text-xl font-bold text-cyan-400 hidden sm:block">

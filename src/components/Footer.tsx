@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold text-cyan-400">Rick & Morty</span>
             </div>
             <p className="text-gray-300 text-sm mb-4">
-              Полный фан-сайт о сериале Rick and Morty. Эпизоды, теории, персонажи и многое другое.
+              Полный фан-сайт о сериале Рик и Морти. Эпизоды, теории, персонажи и многое другое.
             </p>
             <div className="flex gap-3">
               <a href="https://t.me/wubbaRickAndMorty" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/20 flex items-center justify-center text-cyan-400 transition-colors" title="Telegram">

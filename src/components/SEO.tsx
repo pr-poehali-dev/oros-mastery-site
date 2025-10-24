@@ -16,7 +16,7 @@ interface SEOProps {
 const SEO = ({
   title,
   description,
-  keywords = 'Рик и Морти, Rick and Morty, эпизоды, блог, теории, анализ, мультсериал',
+  keywords = 'Рик и Морти, Рик и Морти, эпизоды, блог, теории, анализ, мультсериал',
   image = 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg',
   url = window.location.href,
   ogType = 'website',
@@ -28,13 +28,13 @@ const SEO = ({
   const type = ogType;
   const isEpisode = episodeNumber !== undefined && seasonNumber !== undefined;
   useEffect(() => {
-    document.title = `${title} | Rick and Morty Fan Site`;
+    document.title = `${title} | Рик и Морти фан-сайт`;
     document.documentElement.lang = 'ru';
     
     const metaTags = [
       { name: 'description', content: description },
       { name: 'keywords', content: keywords },
-      { name: 'author', content: author || 'Rick and Morty Fan Site' },
+      { name: 'author', content: author || 'Рик и Морти фан-сайт' },
       
       { property: 'og:type', content: type },
       { property: 'og:title', content: title },
@@ -43,7 +43,7 @@ const SEO = ({
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       { property: 'og:url', content: url },
-      { property: 'og:site_name', content: 'Rick and Morty Fan Site' },
+      { property: 'og:site_name', content: 'Рик и Морти фан-сайт' },
       { property: 'og:locale', content: 'ru_RU' },
       
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -100,7 +100,7 @@ const SEO = ({
           'seasonNumber': seasonNumber,
           'partOfSeries': {
             '@type': 'TVSeries',
-            'name': 'Rick and Morty'
+            'name': 'Рик и Морти'
           }
         },
         'image': {
@@ -126,12 +126,12 @@ const SEO = ({
         ...(type === 'article' && {
           'author': {
             '@type': 'Person',
-            'name': author || 'Rick and Morty Fan Site'
+            'name': author || 'Рик и Морти фан-сайт'
           },
           'datePublished': publishedTime,
           'publisher': {
             '@type': 'Organization',
-            'name': 'Rick and Morty Fan Site',
+            'name': 'Рик и Морти фан-сайт',
             'logo': {
               '@type': 'ImageObject',
               'url': 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg'

@@ -126,7 +126,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
           {editingCharacter ? 'Редактировать персонажа' : 'Добавить персонажа'}
         </CardTitle>
         <CardDescription className="text-gray-400">
-          {editingCharacter ? 'Обновите информацию о персонаже' : 'Создайте нового персонажа Rick and Morty'}
+          {editingCharacter ? 'Обновите информацию о персонаже' : 'Создайте нового персонажа Рик и Морти'}
         </CardDescription>
       </CardHeader>
       <CardContent>

@@ -74,8 +74,8 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <SEO
         title="Главная"
-        description="Rick and Morty Fan Site - смотрите эпизоды, читайте блог, обсуждайте теории. Полная база эпизодов сериала Рик и Морти с описаниями, комментариями и интересными фактами."
-        keywords="Рик и Морти, Rick and Morty, эпизоды, смотреть онлайн, блог, теории, фан-сайт, сериал, мультсериал, Adult Swim"
+        description="Рик и Морти фан-сайт - смотрите эпизоды, читайте блог, обсуждайте теории. Полная база эпизодов сериала Рик и Морти с описаниями, комментариями и интересными фактами."
+        keywords="Рик и Морти, Рик и Морти, эпизоды, смотреть онлайн, блог, теории, фан-сайт, сериал, мультсериал, Adult Swim"
       />
       <Navigation />
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-cyan-600 via-green-500 to-blue-600">
@@ -101,7 +101,7 @@ const Index = () => {
           </Badge>
           
           <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-            Rick and Morty
+            Рик и Морти
             <span className="block text-green-400 mt-2 text-5xl md:text-6xl">Universe Portal</span>
           </h1>
           
