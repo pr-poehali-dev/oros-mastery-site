@@ -182,7 +182,7 @@ const BlogPost = () => {
 
           <CardContent className="p-8 md:p-12">
             <div 
-              className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-white prose-li:text-white prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline"
+              className="prose prose-invert max-w-none [&_*]:text-white prose-headings:text-white prose-p:text-white prose-li:text-white prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline"
               dangerouslySetInnerHTML={{ __html: article.content }}
             />
 
