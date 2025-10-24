@@ -15,7 +15,7 @@ interface BlogFormProps {
 }
 
 const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
-  const [form, setForm] = useState<BlogPost>(initialData || {
+  const [form, setForm] = useState<BlogPost>({
     title: '',
     content: '',
     excerpt: '',
@@ -27,6 +27,12 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
     views: 0,
     likes: 0
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm(initialData);
+    }
+  }, [initialData]);
   const [submitting, setSubmitting] = useState(false);
 
   const isEdit = !!initialData?.id;
@@ -87,13 +93,22 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
             <label className="text-white text-sm font-medium mb-2 block">
               Краткое описание *
             </label>
-            <Textarea
-              placeholder="Краткое описание статьи..."
-              value={form.excerpt}
-              onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-              required
-              className="bg-gray-900 border-gray-700 text-white min-h-[80px]"
-            />
+            <div className="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden">
+              <ReactQuill
+                theme="snow"
+                value={form.excerpt}
+                onChange={(value) => setForm({ ...form, excerpt: value })}
+                className="[&_.ql-editor]:min-h-[80px] [&_.ql-editor]:text-white [&_.ql-toolbar]:bg-gray-800 [&_.ql-toolbar]:border-gray-700 [&_.ql-container]:border-0 [&_.ql-editor]:bg-gray-900"
+                modules={{
+                  toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link'],
+                    ['clean']
+                  ]
+                }}
+              />
+            </div>
           </div>
 
           <div>
@@ -187,6 +202,34 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
                 placeholder="5 мин"
                 value={form.read_time}
                 onChange={(e) => setForm({ ...form, read_time: e.target.value })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Просмотры
+              </label>
+              <Input
+                type="number"
+                placeholder="0"
+                value={form.views || 0}
+                onChange={(e) => setForm({ ...form, views: parseInt(e.target.value) || 0 })}
+                className="bg-gray-900 border-gray-700 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-white text-sm font-medium mb-2 block">
+                Лайки
+              </label>
+              <Input
+                type="number"
+                placeholder="0"
+                value={form.likes || 0}
+                onChange={(e) => setForm({ ...form, likes: parseInt(e.target.value) || 0 })}
                 className="bg-gray-900 border-gray-700 text-white"
               />
             </div>

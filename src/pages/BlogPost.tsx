@@ -181,27 +181,10 @@ const BlogPost = () => {
           </div>
 
           <CardContent className="p-8 md:p-12">
-            <div className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-white prose-li:text-white prose-strong:text-white">
-              {article.content.split('\n').map((line, idx) => {
-                const trimmed = line.trim();
-                
-                if (!trimmed) return null;
-                
-                if (trimmed.startsWith('## ')) {
-                  return <h2 key={idx} className="text-2xl font-bold text-white mt-8 mb-4">{trimmed.replace('## ', '')}</h2>;
-                }
-                
-                if (trimmed.startsWith('### ')) {
-                  return <h3 key={idx} className="text-xl font-bold text-white mt-6 mb-3">{trimmed.replace('### ', '')}</h3>;
-                }
-                
-                if (trimmed.startsWith('# ')) {
-                  return <h1 key={idx} className="text-3xl font-bold text-white mt-10 mb-5">{trimmed.replace('# ', '')}</h1>;
-                }
-                
-                return <p key={idx} className="text-white mb-4 leading-relaxed">{trimmed}</p>;
-              })}
-            </div>
+            <div 
+              className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-white prose-li:text-white prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline"
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
 
             <div className="mt-12 pt-8 border-t border-gray-700">
               <div className="flex flex-col gap-6">

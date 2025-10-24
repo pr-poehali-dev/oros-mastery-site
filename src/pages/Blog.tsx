@@ -310,7 +310,7 @@ const Blog = () => {
                       {post.title}
                     </CardTitle>
                     <CardDescription className="text-gray-400 leading-relaxed">
-                      {post.excerpt}
+                      {post.excerpt?.replace(/<[^>]*>/g, '') || post.excerpt}
                     </CardDescription>
                   </CardHeader>
 
