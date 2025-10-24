@@ -301,14 +301,34 @@ const Theories = () => {
                   <div className="flex-1">
                     <CardTitle className="text-2xl text-white mb-2">{theory.title}</CardTitle>
                     <CardDescription className="text-gray-300 flex items-center gap-3 flex-wrap">
-                      <span className="flex items-center gap-1">
-                        <Icon name="User" size={14} />
-                        {theory.author}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Icon name="ThumbsUp" size={14} />
-                        {theory.votes.toLocaleString()} голосов
-                      </span>
+                      {theory.author && (
+                        <span className="flex items-center gap-1">
+                          <Icon name="User" size={14} />
+                          {theory.author}
+                        </span>
+                      )}
+                      {theory.published_date && (
+                        <span className="flex items-center gap-1">
+                          <Icon name="Calendar" size={14} />
+                          {new Date(theory.published_date).toLocaleDateString('ru-RU', { 
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                          })}
+                        </span>
+                      )}
+                      {theory.views !== undefined && (
+                        <span className="flex items-center gap-1">
+                          <Icon name="Eye" size={14} />
+                          {theory.views.toLocaleString()}
+                        </span>
+                      )}
+                      {theory.likes !== undefined && (
+                        <span className="flex items-center gap-1">
+                          <Icon name="Heart" size={14} />
+                          {theory.likes.toLocaleString()}
+                        </span>
+                      )}
                     </CardDescription>
                   </div>
                   {!theory.image && (

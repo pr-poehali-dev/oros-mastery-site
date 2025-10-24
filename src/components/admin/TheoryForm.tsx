@@ -23,6 +23,9 @@ export interface TheoryFormData {
   probability: string;
   author: string;
   votes?: number;
+  views?: number;
+  likes?: number;
+  published_date?: string;
   summary: string;
   full_text: string;
   evidence: string;
@@ -45,6 +48,9 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel, episodes = [], characte
     probability: 'medium',
     author: '',
     votes: 0,
+    views: 0,
+    likes: 0,
+    published_date: new Date().toISOString().split('T')[0],
     summary: '',
     full_text: '',
     evidence: '',
@@ -66,6 +72,9 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel, episodes = [], characte
         probability: editingTheory.probability || 'medium',
         author: editingTheory.author || '',
         votes: editingTheory.votes || 0,
+        views: editingTheory.views || 0,
+        likes: editingTheory.likes || 0,
+        published_date: editingTheory.published_date || new Date().toISOString().split('T')[0],
         summary: editingTheory.summary || '',
         full_text: editingTheory.full_text || '',
         evidence: editingTheory.evidence || '',
@@ -95,6 +104,9 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel, episodes = [], characte
       probability: 'medium',
       author: '',
       votes: 0,
+      views: 0,
+      likes: 0,
+      published_date: new Date().toISOString().split('T')[0],
       summary: '',
       full_text: '',
       evidence: '',
@@ -168,6 +180,52 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel, episodes = [], characte
                 placeholder="Фанатское сообщество"
                 value={form.author}
                 onChange={(e) => setForm({ ...form, author: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Дата публикации*</label>
+              <Input
+                required
+                type="date"
+                value={form.published_date}
+                onChange={(e) => setForm({ ...form, published_date: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Просмотры</label>
+              <Input
+                type="number"
+                min="0"
+                placeholder="0"
+                value={form.views}
+                onChange={(e) => setForm({ ...form, views: parseInt(e.target.value) || 0 })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Лайки</label>
+              <Input
+                type="number"
+                min="0"
+                placeholder="0"
+                value={form.likes}
+                onChange={(e) => setForm({ ...form, likes: parseInt(e.target.value) || 0 })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Голоса</label>
+              <Input
+                type="number"
+                min="0"
+                placeholder="0"
+                value={form.votes}
+                onChange={(e) => setForm({ ...form, votes: parseInt(e.target.value) || 0 })}
                 className="bg-gray-700 border-gray-600 text-white"
               />
             </div>

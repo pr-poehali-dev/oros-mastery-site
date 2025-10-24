@@ -179,12 +179,36 @@ const TheoryDetail = () => {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-4 leading-tight">
                 {theory.title}
               </h1>
-              {theory.author && (
-                <p className="text-gray-300 text-lg flex items-center gap-2">
-                  <Icon name="User" size={18} />
-                  Автор: {theory.author}
-                </p>
-              )}
+              <div className="flex flex-wrap items-center gap-4 text-gray-300">
+                {theory.author && (
+                  <div className="flex items-center gap-2">
+                    <Icon name="User" size={18} />
+                    <span>{theory.author}</span>
+                  </div>
+                )}
+                {theory.published_date && (
+                  <div className="flex items-center gap-2">
+                    <Icon name="Calendar" size={18} />
+                    <span>{new Date(theory.published_date).toLocaleDateString('ru-RU', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}</span>
+                  </div>
+                )}
+                {theory.views !== undefined && (
+                  <div className="flex items-center gap-2">
+                    <Icon name="Eye" size={18} />
+                    <span>{theory.views.toLocaleString()} просмотров</span>
+                  </div>
+                )}
+                {theory.likes !== undefined && (
+                  <div className="flex items-center gap-2">
+                    <Icon name="Heart" size={18} />
+                    <span>{theory.likes.toLocaleString()} лайков</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
