@@ -261,8 +261,7 @@ const Characters = () => {
           {filteredCharacters.map((character) => (
             <Card 
               key={character.id} 
-              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer group"
-              onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
+              className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all group flex flex-col"
             >
               <div className="relative h-64 overflow-hidden">
                 <img 
@@ -278,35 +277,37 @@ const Characters = () => {
               
               <CardHeader>
                 <CardTitle className="text-2xl text-white">{character.name}</CardTitle>
-                <CardDescription className="text-gray-400 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <Icon name="MapPin" size={14} />
-                    <span>{character.origin}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Icon name="Briefcase" size={14} />
-                    <span>{character.occupation}</span>
-                  </div>
-                </CardDescription>
+                {(character.role || character.origin) && (
+                  <CardDescription className="text-gray-400 space-y-1">
+                    {character.role && (
+                      <div className="flex items-center gap-2">
+                        <Icon name="Star" size={14} />
+                        <span>{character.role}</span>
+                      </div>
+                    )}
+                    {character.origin && (
+                      <div className="flex items-center gap-2">
+                        <Icon name="MapPin" size={14} />
+                        <span>{character.origin}</span>
+                      </div>
+                    )}
+                  </CardDescription>
+                )}
               </CardHeader>
               
-              <CardContent>
-                <p className="text-gray-300 text-sm mb-4">
-                  {character.shortDescription || character.description?.substring(0, 120) + '...' || character.bio?.substring(0, 120) + '...'}
+              <CardContent className="flex-grow flex flex-col">
+                <p className="text-gray-300 text-sm mb-4 flex-grow line-clamp-3">
+                  {(character.bio || character.description || 'Описание отсутствует').substring(0, 150)}
+                  {(character.bio || character.description || '').length > 150 ? '...' : ''}
                 </p>
                 
-                {character.personality && (
-                  <div className="flex flex-wrap gap-2">
-                    {(Array.isArray(character.personality) 
-                      ? character.personality 
-                      : character.personality.split(',').map((t: string) => t.trim())
-                    ).map((trait: string, idx: number) => (
-                      <Badge key={idx} variant="outline" className="border-cyan-500/30 text-cyan-300 text-xs">
-                        {trait}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                <Button 
+                  onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
+                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+                >
+                  Подробнее
+                  <Icon name="ArrowRight" size={16} className="ml-2" />
+                </Button>
               </CardContent>
             </Card>
           ))}
