@@ -83,13 +83,26 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 )
             elif content_type == 'characters':
                 sql = (
-                    f"INSERT INTO characters (name, description, image, background_image, status, abilities) "
+                    f"INSERT INTO characters (name, role, species, bio, full_bio, image, background_image, avatar_image, "
+                    f"status, abilities, origin, first_appearance, occupation, affiliation, family, notable_episodes, personality, goals) "
                     f"VALUES ('{escape_sql(body_data.get('name', ''))}', "
-                    f"'{escape_sql(body_data.get('description', ''))}', "
+                    f"'{escape_sql(body_data.get('role', ''))}', "
+                    f"'{escape_sql(body_data.get('species', ''))}', "
+                    f"'{escape_sql(body_data.get('bio', ''))}', "
+                    f"'{escape_sql(body_data.get('full_bio', ''))}', "
                     f"'{escape_sql(body_data.get('image', ''))}', "
                     f"'{escape_sql(body_data.get('background_image', ''))}', "
+                    f"'{escape_sql(body_data.get('avatar_image', ''))}', "
                     f"'{escape_sql(body_data.get('status', ''))}', "
-                    f"'{escape_sql(body_data.get('abilities', ''))}') RETURNING id"
+                    f"'{escape_sql(body_data.get('abilities', ''))}', "
+                    f"'{escape_sql(body_data.get('origin', ''))}', "
+                    f"'{escape_sql(body_data.get('first_appearance', ''))}', "
+                    f"'{escape_sql(body_data.get('occupation', ''))}', "
+                    f"'{escape_sql(body_data.get('affiliation', ''))}', "
+                    f"'{escape_sql(body_data.get('family', ''))}', "
+                    f"'{escape_sql(body_data.get('notable_episodes', ''))}', "
+                    f"'{escape_sql(body_data.get('personality', ''))}', "
+                    f"'{escape_sql(body_data.get('goals', ''))}') RETURNING id"
                 )
             elif content_type == 'theories':
                 sql = (
@@ -149,12 +162,23 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 sql = (
                     f"UPDATE characters SET "
                     f"name='{escape_sql(body_data.get('name', ''))}', "
-                    f"description='{escape_sql(body_data.get('description', ''))}', "
+                    f"role='{escape_sql(body_data.get('role', ''))}', "
+                    f"species='{escape_sql(body_data.get('species', ''))}', "
+                    f"bio='{escape_sql(body_data.get('bio', ''))}', "
+                    f"full_bio='{escape_sql(body_data.get('full_bio', ''))}', "
                     f"image='{escape_sql(body_data.get('image', ''))}', "
                     f"background_image='{escape_sql(body_data.get('background_image', ''))}', "
                     f"avatar_image='{escape_sql(body_data.get('avatar_image', ''))}', "
                     f"status='{escape_sql(body_data.get('status', ''))}', "
                     f"abilities='{escape_sql(body_data.get('abilities', ''))}', "
+                    f"origin='{escape_sql(body_data.get('origin', ''))}', "
+                    f"first_appearance='{escape_sql(body_data.get('first_appearance', ''))}', "
+                    f"occupation='{escape_sql(body_data.get('occupation', ''))}', "
+                    f"affiliation='{escape_sql(body_data.get('affiliation', ''))}', "
+                    f"family='{escape_sql(body_data.get('family', ''))}', "
+                    f"notable_episodes='{escape_sql(body_data.get('notable_episodes', ''))}', "
+                    f"personality='{escape_sql(body_data.get('personality', ''))}', "
+                    f"goals='{escape_sql(body_data.get('goals', ''))}', "
                     f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
                 )
             elif content_type == 'theories':

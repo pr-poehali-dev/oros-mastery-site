@@ -6,12 +6,23 @@ import Icon from '@/components/ui/icon';
 export interface Character {
   id: number;
   name: string;
-  role: string;
-  species: string;
-  status: string;
-  bio: string;
+  role?: string;
+  species?: string;
+  status?: string;
+  bio?: string;
+  full_bio?: string;
   image: string;
-  abilities: string;
+  background_image?: string;
+  avatar_image?: string;
+  abilities?: string;
+  origin?: string;
+  first_appearance?: string;
+  occupation?: string;
+  affiliation?: string;
+  family?: string;
+  notable_episodes?: string;
+  personality?: string;
+  goals?: string;
 }
 
 interface CharacterListProps {
