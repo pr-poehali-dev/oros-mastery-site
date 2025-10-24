@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 
 interface UniverseFormProps {
@@ -129,12 +130,10 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
             <label className="text-white text-sm font-medium mb-2 block">
               Полное описание *
             </label>
-            <Textarea
-              placeholder="Полное описание вселенной..."
+            <RichTextEditor
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              required
-              className="bg-gray-900 border-gray-700 text-white min-h-[150px]"
+              onChange={(value) => setForm({ ...form, description: value })}
+              placeholder="Полное описание вселенной с форматированием..."
             />
           </div>
 
