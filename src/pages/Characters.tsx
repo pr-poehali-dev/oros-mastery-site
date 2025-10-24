@@ -169,12 +169,18 @@ const Characters = () => {
 
   const filteredCharacters = displayCharacters.filter(char => {
     const charSpecies = char.species?.toLowerCase() || '';
-    const charRole = char.role?.toLowerCase() || '';
-    const matchesSpecies = selectedSpecies === 'all' || charSpecies === selectedSpecies || charRole.includes(selectedSpecies);
-    const matchesSearch = char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const charStatus = char.status?.toLowerCase() || '';
+    
+    const matchesSpecies = selectedSpecies === 'all' || 
+                          charSpecies === selectedSpecies || 
+                          (selectedSpecies === 'human' && charStatus.includes('человек')) ||
+                          (selectedSpecies === 'alien' && charStatus.includes('инопланет'));
+    
+    const matchesSearch = searchQuery === '' ||
+                         char.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          char.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         char.bio?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         char.shortDescription?.toLowerCase().includes(searchQuery.toLowerCase());
+                         char.status?.toLowerCase().includes(searchQuery.toLowerCase());
+    
     return matchesSpecies && matchesSearch;
   });
 
