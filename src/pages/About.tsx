@@ -274,23 +274,40 @@ const About = () => {
         {/* CTA */}
         <Card className="bg-gradient-to-r from-cyan-500/10 to-green-500/10 border-cyan-500/50">
           <CardContent className="p-8 md:p-12 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Присоединяйтесь к нашему сообществу!</h2>
-            <p className="text-gray-300 text-lg mb-6 max-w-2xl mx-auto">
-              Станьте частью крупнейшего русскоязычного сообщества фанатов Rick and Morty. 
-              Обсуждайте теории, делитесь мнениями и будьте в курсе всех новостей.
+            <h2 className="text-3xl font-bold text-white mb-4">Следите за новостями в соцсетях!</h2>
+            <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
+              Подписывайтесь на наши страницы, чтобы быть в курсе последних новостей, теорий и обновлений о Rick and Morty.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="https://t.me/+QgiLIa1gFRY4Y2Iy" target="_blank" rel="noopener noreferrer">
-                <Badge className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 text-base cursor-pointer">
-                  <Icon name="MessageCircle" size={20} className="mr-2" />
-                  Telegram сообщество
-                </Badge>
+            <div className="flex gap-4 justify-center">
+              <a 
+                href="https://t.me/wubbaRickAndMorty" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center w-20 h-20 rounded-2xl bg-gray-800 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500 text-cyan-400 transition-all group"
+                title="Telegram"
+              >
+                <Icon name="Send" size={28} className="mb-1 group-hover:scale-110 transition-transform" />
+                <span className="text-xs text-gray-400">Telegram</span>
               </a>
-              <a href="/contact">
-                <Badge className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 text-base cursor-pointer">
-                  <Icon name="Mail" size={20} className="mr-2" />
-                  Связаться с нами
-                </Badge>
+              <a 
+                href="https://vk.com/wubbaRickAndMorty" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center w-20 h-20 rounded-2xl bg-gray-800 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500 text-cyan-400 transition-all group"
+                title="ВКонтакте"
+              >
+                <Icon name="Share2" size={28} className="mb-1 group-hover:scale-110 transition-transform" />
+                <span className="text-xs text-gray-400">ВКонтакте</span>
+              </a>
+              <a 
+                href="https://www.youtube.com/channel/UCypoo5_Rg2A2HQQesranCTA" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center w-20 h-20 rounded-2xl bg-gray-800 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500 text-cyan-400 transition-all group"
+                title="YouTube"
+              >
+                <Icon name="Youtube" size={28} className="mb-1 group-hover:scale-110 transition-transform" />
+                <span className="text-xs text-gray-400">YouTube</span>
               </a>
             </div>
           </CardContent>
