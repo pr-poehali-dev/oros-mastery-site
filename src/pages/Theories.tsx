@@ -178,9 +178,18 @@ const Theories = () => {
   ];
 
   const filteredTheories = displayTheories.filter(theory => {
-    const matchesType = selectedType === 'all' || theory.type === selectedType;
-    const matchesSearch = theory.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         theory.summary.toLowerCase().includes(searchQuery.toLowerCase());
+    const theoryType = theory.type?.toLowerCase() || '';
+    const theoryStatus = theory.status?.toLowerCase() || '';
+    
+    const matchesType = selectedType === 'all' || 
+                       theoryType === selectedType ||
+                       theoryStatus.includes(selectedType);
+    
+    const matchesSearch = searchQuery === '' ||
+                         theory.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         theory.summary?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         theory.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    
     return matchesType && matchesSearch;
   });
 
