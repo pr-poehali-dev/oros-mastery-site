@@ -169,6 +169,7 @@ const Admin = () => {
               editingUniverse={editingUniverse}
               onSubmit={handleUniverseSubmit}
               onCancel={() => setEditingUniverse(null)}
+              characters={characters}
             />
             <UniverseList 
               universes={universes}

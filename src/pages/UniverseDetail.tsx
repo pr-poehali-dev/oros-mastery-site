@@ -18,6 +18,7 @@ const UniverseDetail = () => {
   const id = slug ? parseInt(slug.split('-')[0]) : 1;
 
   const [universe, setUniverse] = useState<any>(null);
+  const [relatedCharacters, setRelatedCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,6 +30,15 @@ const UniverseDetail = () => {
       const response = await fetch(`${CONTENT_API}?type=universes&id=${id}`);
       const data = await response.json();
       setUniverse(data);
+      
+      if (data.related_characters) {
+        const charIds = data.related_characters.split(',').map((id: string) => id.trim());
+        const charPromises = charIds.map((charId: string) => 
+          fetch(`${CONTENT_API}?type=characters&id=${charId}`).then(r => r.json())
+        );
+        const chars = await Promise.all(charPromises);
+        setRelatedCharacters(chars.filter(c => c && c.id));
+      }
     } catch (error) {
       console.error('Error fetching universe:', error);
     } finally {
@@ -180,7 +190,7 @@ const UniverseDetail = () => {
               </CardContent>
             </Card>
 
-            {universe.related_characters && (
+            {relatedCharacters.length > 0 && (
               <Card className="bg-gray-800/50 border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl text-white flex items-center gap-2">
@@ -189,11 +199,30 @@ const UniverseDetail = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {universe.related_characters.split(',').map((char: string, idx: number) => (
-                      <Badge key={idx} variant="outline" className="text-gray-300">
-                        {char.trim()}
-                      </Badge>
+                  <div className="space-y-3">
+                    {relatedCharacters.map((char) => (
+                      <Link 
+                        key={char.id} 
+                        to={`/character/${char.id}-${char.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors group"
+                      >
+                        {char.image && (
+                          <img 
+                            src={char.image} 
+                            alt={char.name}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        )}
+                        <div className="flex-1">
+                          <p className="text-white font-semibold group-hover:text-cyan-400 transition-colors">
+                            {char.name}
+                          </p>
+                          {char.status && (
+                            <p className="text-sm text-gray-400">{char.status}</p>
+                          )}
+                        </div>
+                        <Icon name="ChevronRight" size={16} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
+                      </Link>
                     ))}
                   </div>
                 </CardContent>

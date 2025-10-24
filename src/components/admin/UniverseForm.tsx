@@ -7,10 +7,16 @@ import Icon from '@/components/ui/icon';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 
 
+interface Character {
+  id: number;
+  name: string;
+}
+
 interface UniverseFormProps {
   onSubmit: (formData: UniverseFormData, isEdit: boolean) => Promise<void>;
   editingUniverse?: UniverseFormData & { id?: number } | null;
   onCancelEdit?: () => void;
+  characters: Character[];
 }
 
 export interface UniverseFormData {
@@ -30,7 +36,7 @@ export interface UniverseFormData {
   relatedCharacters?: string;
 }
 
-const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormProps) => {
+const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit, characters }: UniverseFormProps) => {
   const [form, setForm] = useState<UniverseFormData>({
     name: '',
     shortDescription: '',
@@ -46,6 +52,7 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
     features: '',
     relatedCharacters: ''
   });
+  const [selectedCharacters, setSelectedCharacters] = useState<number[]>([]);
 
   useEffect(() => {
     if (editingUniverse) {
@@ -60,13 +67,29 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
         technology: editingUniverse.technology || '',
         relatedCharacters: editingUniverse.relatedCharacters || ''
       });
+      if (editingUniverse.relatedCharacters) {
+        const ids = editingUniverse.relatedCharacters.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+        setSelectedCharacters(ids);
+      }
     }
   }, [editingUniverse]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(form, !!editingUniverse);
+    const formWithCharacters = {
+      ...form,
+      relatedCharacters: selectedCharacters.join(',')
+    };
+    await onSubmit(formWithCharacters, !!editingUniverse);
     resetForm();
+  };
+
+  const toggleCharacter = (charId: number) => {
+    if (selectedCharacters.includes(charId)) {
+      setSelectedCharacters(selectedCharacters.filter(id => id !== charId));
+    } else {
+      setSelectedCharacters([...selectedCharacters, charId]);
+    }
   };
 
   const resetForm = () => {
@@ -85,6 +108,7 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
       features: '',
       relatedCharacters: ''
     });
+    setSelectedCharacters([]);
     if (onCancelEdit) onCancelEdit();
   };
 
@@ -239,14 +263,35 @@ const UniverseForm = ({ onSubmit, editingUniverse, onCancelEdit }: UniverseFormP
 
           <div>
             <label className="text-white text-sm font-medium mb-2 block">
-              Связанные персонажи (имена через запятую)
+              Связанные персонажи
             </label>
-            <Input
-              placeholder="Например: Рик С-137, Морти С-137, Бёрдперсон"
-              value={form.relatedCharacters}
-              onChange={(e) => setForm({ ...form, relatedCharacters: e.target.value })}
-              className="bg-gray-900 border-gray-700 text-white"
-            />
+            <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto">
+              {characters.length === 0 ? (
+                <p className="text-gray-400 text-sm">Нет доступных персонажей. Создайте персонажей во вкладке "Персонажи".</p>
+              ) : (
+                <div className="space-y-2">
+                  {characters.map((char) => (
+                    <label 
+                      key={char.id} 
+                      className="flex items-center gap-3 p-2 hover:bg-gray-800 rounded cursor-pointer transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedCharacters.includes(char.id)}
+                        onChange={() => toggleCharacter(char.id)}
+                        className="w-4 h-4 rounded border-gray-600 text-indigo-500 focus:ring-indigo-500"
+                      />
+                      <span className="text-white">{char.name}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+            {selectedCharacters.length > 0 && (
+              <p className="text-sm text-gray-400 mt-2">
+                Выбрано: {selectedCharacters.length} {selectedCharacters.length === 1 ? 'персонаж' : 'персонажа'}
+              </p>
+            )}
           </div>
 
           <div>
