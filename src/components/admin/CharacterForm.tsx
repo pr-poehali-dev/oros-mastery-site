@@ -86,7 +86,7 @@ const CharacterForm = ({ onSubmit, editingCharacter, onCancel }: CharacterFormPr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(form, !!editingCharacter?.id);
+    await onSubmit(form, !!form.id);
     resetForm();
   };
 
