@@ -40,22 +40,7 @@ const Episodes = () => {
     }
   };
 
-  const fallbackEpisodes = [
-    { id: 1, season: 1, episode: 1, title: 'Pilot', rating: 8.2, airDate: '2 дек 2013', description: 'Рик переезжает к семье своей дочери и берет Морти в первое приключение.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
-    { id: 2, season: 1, episode: 2, title: 'Lawnmower Dog', rating: 8.5, airDate: '9 дек 2013', description: 'Рик делает собаку Снаффлса умной, а Морти застревает во сне.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
-    { id: 3, season: 1, episode: 3, title: 'Anatomy Park', rating: 8.3, airDate: '16 дек 2013', description: 'Морти попадает внутрь бездомного по имени Рубен.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
-    { id: 4, season: 1, episode: 4, title: 'M. Night Shaym-Aliens!', rating: 8.4, airDate: '13 янв 2014', description: 'Рика похищают инопланетяне-охотники.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
-    { id: 5, season: 1, episode: 5, title: 'Meeseeks and Destroy', rating: 8.7, airDate: '20 янв 2014', description: 'Рик дает семье коробку Мизиксов.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
-    { id: 6, season: 1, episode: 6, title: 'Rick Potion #9', rating: 9.1, airDate: '27 янв 2014', description: 'Морти просит Рика сделать любовное зелье.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
-    { id: 7, season: 1, episode: 7, title: 'Raising Gazorpazorp', rating: 8.2, airDate: '10 мар 2014', description: 'Морти становится отцом инопланетного ребенка.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
-    { id: 8, season: 1, episode: 8, title: 'Rixty Minutes', rating: 9.0, airDate: '17 мар 2014', description: 'Рик подключает межвселенское кабельное телевидение.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
-    { id: 9, season: 1, episode: 9, title: 'Something Ricked This Way Comes', rating: 8.6, airDate: '24 мар 2014', description: 'Саммер устраивается на работу к Дьяволу.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
-    { id: 10, season: 1, episode: 10, title: 'Close Rick-counters of the Rick Kind', rating: 9.3, airDate: '7 апр 2014', description: 'Рика обвиняют в убийстве других Риков.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg' },
-    { id: 11, season: 1, episode: 11, title: 'Ricksy Business', rating: 8.9, airDate: '14 апр 2014', description: 'Рик устраивает межвселенскую вечеринку.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg' },
-    { id: 12, season: 2, episode: 1, title: 'A Rickle in Time', rating: 9.2, airDate: '26 июл 2015', description: 'Время расколото на множество реальностей.', image: 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/b9f7c54d-44b3-419e-a414-f00ff618c62e.jpg' },
-  ];
-
-  const displayEpisodes = episodes.length > 0 ? episodes : fallbackEpisodes;
+  const displayEpisodes = episodes;
 
   // Получаем уникальные сезоны динамически
   const uniqueSeasons = Array.from(new Set(displayEpisodes.map(e => e.season))).sort((a, b) => a - b);
