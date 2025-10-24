@@ -10,7 +10,9 @@ export const useEpisodesManager = () => {
 
   const fetchEpisodes = async () => {
     try {
-      const response = await fetch(EPISODES_API);
+      const response = await fetch(`${EPISODES_API}?_t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setEpisodes(data);
     } catch (error) {

@@ -388,7 +388,7 @@ const Blog = () => {
                   Подпишись на рассылку и получай уведомления о новых теориях, разборах эпизодов и интересных фактах.
                 </p>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <Input
                     type="email"
                     placeholder="Твой email"
@@ -398,6 +398,48 @@ const Blog = () => {
                     <Icon name="Mail" className="mr-2" size={18} />
                     Подписаться
                   </Button>
+                  
+                  <div className="pt-4 border-t border-gray-700">
+                    <p className="text-gray-400 text-sm mb-3">Или следи за нами в соцсетях:</p>
+                    <div className="flex gap-3">
+                      <a 
+                        href="https://t.me/ricknmorty_ru" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                        aria-label="Telegram"
+                      >
+                        <Icon name="Send" size={18} />
+                      </a>
+                      <a 
+                        href="https://vk.com/rickandmorty" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                        aria-label="VK"
+                      >
+                        <Icon name="MessageCircle" size={18} />
+                      </a>
+                      <a 
+                        href="https://twitter.com/RickandMorty" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                        aria-label="Twitter/X"
+                      >
+                        <Icon name="Twitter" size={18} />
+                      </a>
+                      <a 
+                        href="https://www.youtube.com/@adultswim" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                        aria-label="YouTube"
+                      >
+                        <Icon name="Youtube" size={18} />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
               

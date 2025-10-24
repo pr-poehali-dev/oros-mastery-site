@@ -26,7 +26,9 @@ export const useBlogManager = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(`${API_URL}?_t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       if (!response.ok) throw new Error('Ошибка загрузки постов');
       const data = await response.json();
       setBlogPosts(Array.isArray(data) ? data : []);

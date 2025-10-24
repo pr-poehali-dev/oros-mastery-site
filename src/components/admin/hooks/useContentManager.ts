@@ -22,7 +22,9 @@ export const useContentManager = () => {
 
   const fetchUniverses = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=universes`);
+      const response = await fetch(`${CONTENT_API}?type=universes&_t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setUniverses(data);
     } catch (error) {
@@ -32,7 +34,9 @@ export const useContentManager = () => {
 
   const fetchCharacters = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=characters`);
+      const response = await fetch(`${CONTENT_API}?type=characters&_t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setCharacters(data);
     } catch (error) {
@@ -42,7 +46,9 @@ export const useContentManager = () => {
 
   const fetchTheories = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=theories`);
+      const response = await fetch(`${CONTENT_API}?type=theories&_t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setTheories(data);
     } catch (error) {
@@ -52,7 +58,9 @@ export const useContentManager = () => {
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=articles`);
+      const response = await fetch(`${CONTENT_API}?type=articles&_t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setArticles(data);
     } catch (error) {

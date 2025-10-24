@@ -133,11 +133,54 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-            <div className="mt-6 p-4 bg-gradient-to-r from-cyan-900/20 to-green-900/20 border border-cyan-500/30 rounded-lg">
-              <p className="text-cyan-400 text-xs font-semibold mb-1">Wubba Lubba Dub Dub!</p>
-              <p className="text-gray-300 text-xs">
-                Фан-сайт Rick and Morty © 2025
-              </p>
+            <div className="mt-6 space-y-4">
+              <div>
+                <h4 className="text-white text-sm font-semibold mb-3">Мы в соцсетях</h4>
+                <div className="flex gap-3">
+                  <a 
+                    href="https://t.me/ricknmorty_ru" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                    aria-label="Telegram"
+                  >
+                    <Icon name="Send" size={16} />
+                  </a>
+                  <a 
+                    href="https://vk.com/rickandmorty" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                    aria-label="VK"
+                  >
+                    <Icon name="MessageCircle" size={16} />
+                  </a>
+                  <a 
+                    href="https://twitter.com/RickandMorty" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                    aria-label="Twitter/X"
+                  >
+                    <Icon name="Twitter" size={16} />
+                  </a>
+                  <a 
+                    href="https://www.youtube.com/@adultswim" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-700 hover:bg-cyan-400 text-gray-300 hover:text-gray-900 transition-all"
+                    aria-label="YouTube"
+                  >
+                    <Icon name="Youtube" size={16} />
+                  </a>
+                </div>
+              </div>
+              <div className="p-4 bg-gradient-to-r from-cyan-900/20 to-green-900/20 border border-cyan-500/30 rounded-lg">
+                <p className="text-cyan-400 text-xs font-semibold mb-1">Wubba Lubba Dub Dub!</p>
+                <p className="text-gray-300 text-xs">
+                  Фан-сайт Rick and Morty © 2025
+                </p>
+              </div>
             </div>
           </div>
         </div>
