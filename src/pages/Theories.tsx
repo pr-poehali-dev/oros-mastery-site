@@ -178,17 +178,13 @@ const Theories = () => {
   ];
 
   const filteredTheories = displayTheories.filter(theory => {
-    const theoryType = theory.type?.toLowerCase() || '';
-    const theoryStatus = theory.status?.toLowerCase() || '';
-    
-    const matchesType = selectedType === 'all' || 
-                       theoryType === selectedType ||
-                       theoryStatus.includes(selectedType);
+    const matchesType = selectedType === 'all' || theory.type === selectedType;
     
     const matchesSearch = searchQuery === '' ||
                          theory.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          theory.summary?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         theory.description?.toLowerCase().includes(searchQuery.toLowerCase());
+                         theory.fullText?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         theory.full_text?.toLowerCase().includes(searchQuery.toLowerCase());
     
     return matchesType && matchesSearch;
   });
