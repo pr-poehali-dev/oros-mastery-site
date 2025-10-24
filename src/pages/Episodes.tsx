@@ -28,6 +28,7 @@ const Episodes = () => {
     try {
       const response = await fetch(EPISODES_API);
       const data = await response.json();
+      console.log('Episodes data:', data);
       setEpisodes(data);
     } catch (error) {
       console.error('Error fetching episodes:', error);
@@ -165,9 +166,12 @@ const Episodes = () => {
             >
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={episode.image} 
+                  src={episode.image || 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop'} 
                   alt={episode.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                 <Badge className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-green-500 text-white border-0">
