@@ -162,11 +162,13 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             read_time = body.get('read_time', '5 мин').replace("'", "''")
             image = body.get('image', '').replace("'", "''")
             category = body.get('category', '').replace("'", "''")
+            views = int(body.get('views', 0))
+            likes = int(body.get('likes', 0))
             tags = body.get('tags', [])
             
             if post_id:
                 cur.execute(
-                    f"UPDATE blog_posts SET title='{title}', excerpt='{excerpt}', content='{content}', author='{author}', date='{date_val}', read_time='{read_time}', image='{image}', category='{category}' WHERE id={int(post_id)}"
+                    f"UPDATE blog_posts SET title='{title}', excerpt='{excerpt}', content='{content}', author='{author}', date='{date_val}', read_time='{read_time}', image='{image}', category='{category}', views={views}, likes={likes} WHERE id={int(post_id)}"
                 )
                 cur.execute(f"DELETE FROM blog_tags WHERE post_id = {int(post_id)}")
                 for tag in tags:
