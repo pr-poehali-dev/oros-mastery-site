@@ -3,16 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 
-export interface Theory {
+import { TheoryFormData } from './TheoryForm';
+
+export interface Theory extends TheoryFormData {
   id: number;
-  title: string;
-  type: string;
-  probability: string;
-  author: string;
-  summary: string;
-  fullText: string;
-  evidence: string;
-  counterArguments: string;
 }
 
 interface TheoryListProps {

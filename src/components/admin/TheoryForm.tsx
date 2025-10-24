@@ -15,19 +15,40 @@ interface TheoryFormProps {
 export interface TheoryFormData {
   id?: number;
   title: string;
-  description: string;
-  image?: string;
-  status: string;
+  type: string;
+  probability: string;
+  author: string;
+  votes?: number;
+  summary: string;
+  full_text: string;
   evidence: string;
+  counter_arguments: string;
+  related_episodes?: string;
+  related_characters?: string;
+  impact_level?: string;
+  category?: string;
+  image?: string;
+  description?: string;
+  status?: string;
 }
 
 const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
   const [form, setForm] = useState<TheoryFormData>({
+    id: undefined,
     title: '',
-    description: '',
-    image: '',
-    status: '',
-    evidence: ''
+    type: 'character',
+    probability: 'medium',
+    author: '',
+    votes: 0,
+    summary: '',
+    full_text: '',
+    evidence: '',
+    counter_arguments: '',
+    related_episodes: '',
+    related_characters: '',
+    impact_level: '',
+    category: '',
+    image: ''
   });
 
   useEffect(() => {
@@ -35,10 +56,19 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
       setForm({
         id: editingTheory.id,
         title: editingTheory.title || '',
-        description: editingTheory.description || '',
-        image: editingTheory.image || '',
-        status: editingTheory.status || '',
-        evidence: editingTheory.evidence || ''
+        type: editingTheory.type || 'character',
+        probability: editingTheory.probability || 'medium',
+        author: editingTheory.author || '',
+        votes: editingTheory.votes || 0,
+        summary: editingTheory.summary || '',
+        full_text: editingTheory.full_text || '',
+        evidence: editingTheory.evidence || '',
+        counter_arguments: editingTheory.counter_arguments || '',
+        related_episodes: editingTheory.related_episodes || '',
+        related_characters: editingTheory.related_characters || '',
+        impact_level: editingTheory.impact_level || '',
+        category: editingTheory.category || '',
+        image: editingTheory.image || ''
       });
     } else {
       resetForm();
@@ -47,17 +77,26 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(form, !!editingTheory?.id);
-    resetForm();
+    await onSubmit(form, !!form.id);
   };
 
   const resetForm = () => {
     setForm({
+      id: undefined,
       title: '',
-      description: '',
-      image: '',
-      status: '',
-      evidence: ''
+      type: 'character',
+      probability: 'medium',
+      author: '',
+      votes: 0,
+      summary: '',
+      full_text: '',
+      evidence: '',
+      counter_arguments: '',
+      related_episodes: '',
+      related_characters: '',
+      impact_level: '',
+      category: '',
+      image: ''
     });
   };
 
@@ -85,47 +124,125 @@ const TheoryForm = ({ onSubmit, editingTheory, onCancel }: TheoryFormProps) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Статус</label>
-              <Input
-                placeholder="Подтверждено / Вероятно / Опровергнуто"
-                value={form.status}
-                onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="bg-gray-700 border-gray-600 text-white"
-              />
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Тип теории*</label>
+              <select
+                required
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value })}
+                className="w-full bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+              >
+                <option value="character">Персонажи</option>
+                <option value="multiverse">Мультивселенная</option>
+                <option value="science">Наука</option>
+                <option value="future">Будущее</option>
+              </select>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения</label>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Вероятность*</label>
+              <select
+                required
+                value={form.probability}
+                onChange={(e) => setForm({ ...form, probability: e.target.value })}
+                className="w-full bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+              >
+                <option value="confirmed">Подтверждено</option>
+                <option value="high">Высокая</option>
+                <option value="medium">Средняя</option>
+                <option value="low">Низкая</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Автор*</label>
               <Input
-                type="url"
-                placeholder="https://..."
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
+                required
+                placeholder="Фанатское сообщество"
+                value={form.author}
+                onChange={(e) => setForm({ ...form, author: e.target.value })}
                 className="bg-gray-700 border-gray-600 text-white"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">Описание теории*</label>
-            <Textarea
-              required
-              placeholder="Подробное описание теории..."
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="bg-gray-700 border-gray-600 text-white min-h-[200px]"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">Доказательства (через запятую)</label>
-            <Textarea
-              placeholder="Знание технологий Рика, Схожие черты характера"
-              value={form.evidence}
-              onChange={(e) => setForm({ ...form, evidence: e.target.value })}
+            <label className="text-sm font-medium text-gray-300 mb-2 block">URL изображения</label>
+            <Input
+              type="url"
+              placeholder="https://..."
+              value={form.image}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
               className="bg-gray-700 border-gray-600 text-white"
             />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">Краткое описание*</label>
+            <Textarea
+              required
+              placeholder="Краткое описание теории в 1-2 предложения..."
+              value={form.summary}
+              onChange={(e) => setForm({ ...form, summary: e.target.value })}
+              className="bg-gray-700 border-gray-600 text-white"
+              rows={2}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">Полное описание (HTML)*</label>
+            <Textarea
+              required
+              placeholder="<h2>Основная теория</h2><p>Подробное описание...</p>"
+              value={form.full_text}
+              onChange={(e) => setForm({ ...form, full_text: e.target.value })}
+              className="bg-gray-700 border-gray-600 text-white min-h-[200px] font-mono text-sm"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Доказательства (через запятую)*</label>
+              <Textarea
+                required
+                placeholder="Знание технологий Рика, Схожие черты характера"
+                value={form.evidence}
+                onChange={(e) => setForm({ ...form, evidence: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={3}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Контраргументы (через запятую)*</label>
+              <Textarea
+                required
+                placeholder="Разные биографии, Временные парадоксы"
+                value={form.counter_arguments}
+                onChange={(e) => setForm({ ...form, counter_arguments: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={3}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Связанные эпизоды (через запятую)</label>
+              <Input
+                placeholder="Close Rick-counters, Tales From the Citadel"
+                value={form.related_episodes}
+                onChange={(e) => setForm({ ...form, related_episodes: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Связанные персонажи (через запятую)</label>
+              <Input
+                placeholder="Морти С-137, Злой Морти, Рик С-137"
+                value={form.related_characters}
+                onChange={(e) => setForm({ ...form, related_characters: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">
