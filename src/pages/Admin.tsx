@@ -12,6 +12,7 @@ import UniverseForm from '@/components/admin/UniverseForm';
 import UniverseList from '@/components/admin/UniverseList';
 import CharacterForm from '@/components/admin/CharacterForm';
 import CharacterList from '@/components/admin/CharacterList';
+import CharacterImport from '@/components/admin/CharacterImport';
 import TheoryForm from '@/components/admin/TheoryForm';
 import TheoryList from '@/components/admin/TheoryList';
 import ArticleForm from '@/components/admin/ArticleForm';
@@ -179,6 +180,7 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="characters" className="space-y-6">
+            <CharacterImport onComplete={fetchCharacters} />
             <CharacterForm 
               editingCharacter={editingCharacter}
               onSubmit={handleCharacterSubmit}
