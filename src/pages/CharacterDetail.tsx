@@ -61,6 +61,8 @@ const CharacterDetail = () => {
   }
 
   const abilitiesArray = character.abilities ? character.abilities.split(',').map((a: string) => a.trim()) : [];
+  const familyArray = character.family ? character.family.split(',').map((f: string) => f.trim()) : [];
+  const episodesArray = character.notable_episodes ? character.notable_episodes.split(',').map((e: string) => e.trim()) : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
@@ -117,9 +119,10 @@ const CharacterDetail = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="prose prose-invert max-w-none">
-                <div className="text-gray-300 whitespace-pre-wrap">
-                  {character.description}
-                </div>
+                <div 
+                  className="text-gray-300 [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white [&_strong]:text-white [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-2"
+                  dangerouslySetInnerHTML={{ __html: character.full_bio || character.bio || character.description }}
+                />
               </CardContent>
             </Card>
 
@@ -127,6 +130,104 @@ const CharacterDetail = () => {
           </div>
 
           <div className="space-y-6">
+            <Card className="bg-gray-800/50 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl text-white flex items-center gap-2">
+                  <Icon name="Info" size={20} className="text-cyan-400" />
+                  Информация
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {character.species && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Вид</p>
+                    <p className="text-white font-semibold">{character.species}</p>
+                  </div>
+                )}
+                {character.status && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Статус</p>
+                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                      {character.status}
+                    </Badge>
+                  </div>
+                )}
+                {character.origin && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Происхождение</p>
+                    <p className="text-white font-semibold">{character.origin}</p>
+                  </div>
+                )}
+                {character.occupation && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Род деятельности</p>
+                    <p className="text-white font-semibold">{character.occupation}</p>
+                  </div>
+                )}
+                {character.affiliation && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Принадлежность</p>
+                    <p className="text-white font-semibold">{character.affiliation}</p>
+                  </div>
+                )}
+                {character.first_appearance && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Первое появление</p>
+                    <p className="text-white font-semibold">{character.first_appearance}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {familyArray.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Users" size={20} className="text-cyan-400" />
+                    Семья
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {familyArray.map((member: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <Icon name="ChevronRight" size={16} className="text-cyan-400 mt-1 shrink-0" />
+                        <span>{member}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {character.personality && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Heart" size={20} className="text-cyan-400" />
+                    Личность
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 leading-relaxed">{character.personality}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {character.goals && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Target" size={20} className="text-cyan-400" />
+                    Цели и мотивация
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 leading-relaxed">{character.goals}</p>
+                </CardContent>
+              </Card>
+            )}
+
             {abilitiesArray.length > 0 && (
               <Card className="bg-gray-800/50 border-gray-700">
                 <CardHeader>
@@ -141,6 +242,27 @@ const CharacterDetail = () => {
                       <li key={index} className="flex items-start gap-2 text-gray-300">
                         <Icon name="ChevronRight" size={16} className="text-cyan-400 mt-1 shrink-0" />
                         <span>{ability}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {episodesArray.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <Icon name="Film" size={20} className="text-cyan-400" />
+                    Ключевые эпизоды
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {episodesArray.map((episode: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <Icon name="Play" size={16} className="text-cyan-400 mt-1 shrink-0" />
+                        <span>{episode}</span>
                       </li>
                     ))}
                   </ul>
