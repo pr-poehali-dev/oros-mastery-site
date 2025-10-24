@@ -39,17 +39,27 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
   ];
 
   pathnames.forEach((value, index) => {
-    const path = `/${pathnames.slice(0, index + 1).join('/')}`;
     const isLast = index === pathnames.length - 1;
     
     if (isLast && customLabel) {
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
       breadcrumbs.push({ label: customLabel, path });
-    } else if (value.includes('-')) {
-      const words = value.split('-').slice(1).join(' ').replace(/-/g, ' ');
-      const label = words.charAt(0).toUpperCase() + words.slice(1);
+    } else if (breadcrumbNameMap[value]) {
+      const sectionMap: { [key: string]: string } = {
+        'universe': '/universes',
+        'character': '/characters',
+        'theory': '/theories',
+        'episode': '/episodes'
+      };
+      const path = sectionMap[value] || `/${pathnames.slice(0, index + 1).join('/')}`;
+      const label = breadcrumbNameMap[value];
       breadcrumbs.push({ label, path });
+    } else if (value.includes('-')) {
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+      breadcrumbs.push({ label: '', path });
     } else {
-      const label = breadcrumbNameMap[value] || value;
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+      const label = value.charAt(0).toUpperCase() + value.slice(1);
       breadcrumbs.push({ label, path });
     }
   });
