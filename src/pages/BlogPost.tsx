@@ -108,7 +108,6 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
-      <Breadcrumbs customLabel={article.title} />
       <SEO
         title={article.title}
         description={article.excerpt}
@@ -118,7 +117,10 @@ const BlogPost = () => {
         author={article.author}
         publishedTime={article.date}
       />
-      <div className="container mx-auto px-4 max-w-4xl pt-24 pb-12">
+      <div className="pt-20">
+        <Breadcrumbs customLabel={article.title} />
+      </div>
+      <div className="container mx-auto px-4 max-w-4xl pt-12 pb-12">
         <Button 
           onClick={() => navigate('/blog')} 
           variant="ghost" 

@@ -136,7 +136,6 @@ const EpisodeDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
-      <Breadcrumbs />
       <SEO
         title={`${episode.title} - S${episode.season}E${episode.episode}`}
         description={episode.description}
@@ -146,7 +145,10 @@ const EpisodeDetail = () => {
         episodeNumber={episode.episode}
         seasonNumber={episode.season}
       />
-      <div className="container mx-auto px-4 pt-24 pb-12">
+      <div className="pt-20">
+        <Breadcrumbs />
+      </div>
+      <div className="container mx-auto px-4 pt-12 pb-12">
         <Link to="/">
           <Button variant="ghost" className="text-cyan-400 hover:text-cyan-300 mb-6">
             <Icon name="ArrowLeft" size={20} className="mr-2" />

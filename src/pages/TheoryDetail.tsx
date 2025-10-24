@@ -128,15 +128,17 @@ const TheoryDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
-      <Breadcrumbs />
       <SEO
         title={`${theory.title} | Rick and Morty`}
         description={theory.description?.substring(0, 160)}
         keywords={`Rick and Morty, ${theory.title}, теория, фан-теория`}
         ogType="article"
       />
+      <div className="pt-20">
+        <Breadcrumbs />
+      </div>
 
-      <section className="relative pt-32 pb-16 bg-gradient-to-br from-purple-600 via-indigo-500 to-pink-600 overflow-hidden">
+      <section className="relative pt-12 pb-16 bg-gradient-to-br from-purple-600 via-indigo-500 to-pink-600 overflow-hidden">
         {(theory.background_image || theory.image) && (
           <img 
             src={theory.background_image || theory.image} 

@@ -67,7 +67,6 @@ const CharacterDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
-      <Breadcrumbs />
       <SEO
         title={`${character.name} | Rick and Morty`}
         description={character.description?.substring(0, 160)}
@@ -75,6 +74,9 @@ const CharacterDetail = () => {
         keywords={`Rick and Morty, ${character.name}, персонаж`}
         ogType="article"
       />
+      <div className="pt-20">
+        <Breadcrumbs />
+      </div>
 
       <div className="relative h-96 overflow-hidden">
         <img 
