@@ -153,6 +153,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'body': json.dumps({'id': comment_id, 'message': 'Comment created'})
                 }
             
+            post_id = body.get('id')
             title = body.get('title', '').replace("'", "''")
             excerpt = body.get('excerpt', '').replace("'", "''")
             content = body.get('content', '').replace("'", "''")
@@ -163,24 +164,41 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             category = body.get('category', '').replace("'", "''")
             tags = body.get('tags', [])
             
-            cur.execute(
-                f"INSERT INTO blog_posts (title, excerpt, content, author, date, read_time, image, category, views, likes) VALUES ('{title}', '{excerpt}', '{content}', '{author}', '{date_val}', '{read_time}', '{image}', '{category}', 0, 0) RETURNING id"
-            )
-            post_id = cur.fetchone()[0]
-            
-            for tag in tags:
-                tag_clean = tag.replace("'", "''")
+            if post_id:
                 cur.execute(
-                    f"INSERT INTO blog_tags (post_id, tag) VALUES ({post_id}, '{tag_clean}')"
+                    f"UPDATE blog_posts SET title='{title}', excerpt='{excerpt}', content='{content}', author='{author}', date='{date_val}', read_time='{read_time}', image='{image}', category='{category}' WHERE id={int(post_id)}"
                 )
-            
-            conn.commit()
-            
-            return {
-                'statusCode': 201,
-                'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
-                'body': json.dumps({'id': post_id, 'message': 'Post created'})
-            }
+                cur.execute(f"DELETE FROM blog_tags WHERE post_id = {int(post_id)}")
+                for tag in tags:
+                    tag_clean = tag.replace("'", "''")
+                    cur.execute(
+                        f"INSERT INTO blog_tags (post_id, tag) VALUES ({int(post_id)}, '{tag_clean}')"
+                    )
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                    'body': json.dumps({'id': post_id, 'message': 'Post updated'})
+                }
+            else:
+                cur.execute(
+                    f"INSERT INTO blog_posts (title, excerpt, content, author, date, read_time, image, category, views, likes) VALUES ('{title}', '{excerpt}', '{content}', '{author}', '{date_val}', '{read_time}', '{image}', '{category}', 0, 0) RETURNING id"
+                )
+                new_post_id = cur.fetchone()[0]
+                
+                for tag in tags:
+                    tag_clean = tag.replace("'", "''")
+                    cur.execute(
+                        f"INSERT INTO blog_tags (post_id, tag) VALUES ({new_post_id}, '{tag_clean}')"
+                    )
+                
+                conn.commit()
+                
+                return {
+                    'statusCode': 201,
+                    'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                    'body': json.dumps({'id': new_post_id, 'message': 'Post created'})
+                }
         
         elif method == 'DELETE':
             query_params = event.get('queryStringParameters') or {}

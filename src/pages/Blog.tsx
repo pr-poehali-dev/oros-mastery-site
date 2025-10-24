@@ -282,8 +282,9 @@ const Blog = () => {
               {filteredPosts.map((post, index) => (
                 <Card 
                   key={`${post.id}-${post.title}-${index}`} 
-                  className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col"
+                  className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col cursor-pointer"
                   style={{ animationDelay: `${index * 0.1}s` }}
+                  onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
                 >
                   <div className="relative overflow-hidden aspect-video">
                     <img 
@@ -314,24 +315,26 @@ const Blog = () => {
                   </CardHeader>
 
                   <CardContent className="mt-auto">
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                      <div className="flex items-center gap-2">
-                        <Icon name="User" size={14} />
-                        <span>{post.author}</span>
+                    <div className="flex items-center justify-between text-sm text-gray-400 mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1">
+                          <Icon name="Eye" size={14} />
+                          {post.views || 0}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Icon name="Heart" size={14} />
+                          {post.likes || 0}
+                        </span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Icon name="Calendar" size={14} />
                         {post.date}
                       </div>
                     </div>
-
-                    <Button 
-                      className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
-                      onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
-                    >
-                      Читать полностью
-                      <Icon name="ArrowRight" className="ml-2" size={16} />
-                    </Button>
+                    <div className="text-xs text-gray-500 mb-4">
+                      <Icon name="User" size={12} className="inline mr-1" />
+                      {post.author}
+                    </div>
                   </CardContent>
                 </Card>
               ))}

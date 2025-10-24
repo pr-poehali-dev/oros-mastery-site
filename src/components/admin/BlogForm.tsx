@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import type { BlogPost } from './hooks/useBlogManager';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface BlogFormProps {
   onSubmit: (formData: BlogPost, isEdit: boolean) => Promise<void>;
@@ -98,13 +100,24 @@ const BlogForm = ({ onSubmit, initialData, onCancel }: BlogFormProps) => {
             <label className="text-white text-sm font-medium mb-2 block">
               Содержание *
             </label>
-            <Textarea
-              placeholder="Полный текст статьи (поддерживается Markdown)..."
-              value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              required
-              className="bg-gray-900 border-gray-700 text-white min-h-[300px] font-mono text-sm"
-            />
+            <div className="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden">
+              <ReactQuill
+                theme="snow"
+                value={form.content}
+                onChange={(value) => setForm({ ...form, content: value })}
+                className="[&_.ql-editor]:min-h-[300px] [&_.ql-editor]:text-white [&_.ql-toolbar]:bg-gray-800 [&_.ql-toolbar]:border-gray-700 [&_.ql-container]:border-0 [&_.ql-editor]:bg-gray-900"
+                modules={{
+                  toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image'],
+                    ['clean']
+                  ]
+                }}
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
