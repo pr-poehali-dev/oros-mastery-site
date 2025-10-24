@@ -32,8 +32,8 @@ const BlogPost = () => {
   const fetchArticle = async () => {
     try {
       const [blogResponse, articlesResponse] = await Promise.all([
-        fetch(BLOG_API),
-        fetch(`${CONTENT_API}?type=articles`)
+        fetch(`${BLOG_API}?_t=${Date.now()}`, { cache: 'no-store' }),
+        fetch(`${CONTENT_API}?type=articles&_t=${Date.now()}`, { cache: 'no-store' })
       ]);
       
       const blogData = await blogResponse.json();
