@@ -106,7 +106,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cur = conn.cursor()
         
         # Base URL for the site
-        base_url = 'https://yoursite.poehali.dev'
+        base_url = 'https://rickmorty.poehali.dev'
         today = datetime.now().strftime('%Y-%m-%d')
         
         # Fetch blog posts
