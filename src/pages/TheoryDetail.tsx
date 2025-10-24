@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import CommentSection from '@/components/CommentSection';
+import { generateSlug } from '@/utils/slugify';
 
 const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
@@ -19,9 +20,13 @@ const TheoryDetail = () => {
   const [theory, setTheory] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [episodes, setEpisodes] = useState<any[]>([]);
+  const [characters, setCharacters] = useState<any[]>([]);
 
   useEffect(() => {
     fetchTheory();
+    fetchEpisodes();
+    fetchCharacters();
     const bookmarks = JSON.parse(localStorage.getItem('theoryBookmarks') || '[]');
     setIsBookmarked(bookmarks.includes(Number(id)));
   }, [id]);
@@ -35,6 +40,26 @@ const TheoryDetail = () => {
       console.error('Error fetching theory:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchEpisodes = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=episodes`);
+      const data = await response.json();
+      setEpisodes(data);
+    } catch (error) {
+      console.error('Error fetching episodes:', error);
+    }
+  };
+
+  const fetchCharacters = async () => {
+    try {
+      const response = await fetch(`${CONTENT_API}?type=characters`);
+      const data = await response.json();
+      setCharacters(data);
+    } catch (error) {
+      console.error('Error fetching characters:', error);
     }
   };
 
@@ -255,12 +280,28 @@ const TheoryDetail = () => {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {episodesArray.map((episode: string, index: number) => (
-                      <li key={index} className="flex items-start gap-2 text-gray-300">
-                        <Icon name="Dot" size={16} className="text-cyan-400 mt-1 shrink-0" />
-                        <span>{episode}</span>
-                      </li>
-                    ))}
+                    {episodesArray.map((episodeName: string, index: number) => {
+                      const episode = episodes.find(ep => ep.title === episodeName || ep.name === episodeName);
+                      if (episode) {
+                        return (
+                          <li key={index}>
+                            <Link 
+                              to={`/episode/${generateSlug(episode.id, episode.title || episode.name)}`}
+                              className="flex items-start gap-2 text-cyan-300 hover:text-cyan-200 transition-colors"
+                            >
+                              <Icon name="Dot" size={16} className="text-cyan-400 mt-1 shrink-0" />
+                              <span className="hover:underline">{episodeName}</span>
+                            </Link>
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={index} className="flex items-start gap-2 text-gray-300">
+                          <Icon name="Dot" size={16} className="text-cyan-400 mt-1 shrink-0" />
+                          <span>{episodeName}</span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </CardContent>
               </Card>
@@ -276,12 +317,28 @@ const TheoryDetail = () => {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {charactersArray.map((character: string, index: number) => (
-                      <li key={index} className="flex items-start gap-2 text-gray-300">
-                        <Icon name="Dot" size={16} className="text-purple-400 mt-1 shrink-0" />
-                        <span>{character}</span>
-                      </li>
-                    ))}
+                    {charactersArray.map((characterName: string, index: number) => {
+                      const character = characters.find(ch => ch.name === characterName);
+                      if (character) {
+                        return (
+                          <li key={index}>
+                            <Link 
+                              to={`/character/${generateSlug(character.id, character.name)}`}
+                              className="flex items-start gap-2 text-purple-300 hover:text-purple-200 transition-colors"
+                            >
+                              <Icon name="Dot" size={16} className="text-purple-400 mt-1 shrink-0" />
+                              <span className="hover:underline">{characterName}</span>
+                            </Link>
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={index} className="flex items-start gap-2 text-gray-300">
+                          <Icon name="Dot" size={16} className="text-purple-400 mt-1 shrink-0" />
+                          <span>{characterName}</span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </CardContent>
               </Card>
