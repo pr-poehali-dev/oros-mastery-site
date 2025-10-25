@@ -81,18 +81,18 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/episode/2-pilot" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Pilot - S1E1
-                </Link>
-              </li>
-              <li>
                 <Link to="/episodes" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
                   Все эпизоды
                 </Link>
               </li>
               <li>
-                <Link to="/blog/1-kak-multivselennaya-rabotaet-v-rick-and-morty-nauchnyy-podkhod" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Теория мультивселенной
+                <Link to="/characters" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Персонажи
+                </Link>
+              </li>
+              <li>
+                <Link to="/universes" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Вселенные
                 </Link>
               </li>
               <li>
@@ -101,8 +101,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/characters" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
-                  Персонажи
+                <Link to="/blog" className="text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+                  Статьи блога
                 </Link>
               </li>
             </ul>
