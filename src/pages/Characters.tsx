@@ -256,7 +256,7 @@ const Characters = () => {
                 variant={selectedSpecies === spec.id ? 'default' : 'outline'}
                 className={
                   selectedSpecies === spec.id
-                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-0'
+                    ? 'bg-gradient-to-r from-cyan-400 to-blue-400 text-gray-900 border-0 font-semibold'
                     : 'border-gray-700 text-gray-300 hover:bg-gray-800'
                 }
               >

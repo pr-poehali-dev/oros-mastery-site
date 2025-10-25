@@ -136,12 +136,12 @@ const Episodes = () => {
                 variant={selectedSeason === season.id ? 'default' : 'outline'}
                 className={
                   selectedSeason === season.id
-                    ? 'bg-gradient-to-r from-cyan-600 to-green-600 text-white border-0'
+                    ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-gray-900 border-0 font-semibold'
                     : 'border-gray-700 text-gray-300 hover:bg-gray-800'
                 }
               >
                 {season.name}
-                <Badge className="ml-2 bg-white/20" variant="secondary">{season.count}</Badge>
+                <Badge className={selectedSeason === season.id ? "ml-2 bg-gray-900/30 text-gray-900" : "ml-2 bg-white/20"} variant="secondary">{season.count}</Badge>
               </Button>
             ))}
           </div>
