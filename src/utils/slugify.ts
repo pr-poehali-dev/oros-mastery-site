@@ -17,5 +17,15 @@ export const slugify = (text: string): string => {
 };
 
 export const generateSlug = (id: number, title: string): string => {
-  return `${id}-${slugify(title)}`;
+  return slugify(title);
+};
+
+// Extract episode info from title for URL routing
+export const extractEpisodeInfo = (title: string): { season: number; episode: number } | null => {
+  // Extract from format "Рик и Морти. 1 сезон 3 серия. ..."
+  const match = title.match(/(\d+)\s*сезон\s*(\d+)\s*серия/i);
+  if (match) {
+    return { season: parseInt(match[1]), episode: parseInt(match[2]) };
+  }
+  return null;
 };

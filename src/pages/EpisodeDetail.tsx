@@ -7,7 +7,7 @@ import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
-import { generateSlug } from '@/utils/slugify';
+import { generateSlug, extractEpisodeInfo } from '@/utils/slugify';
 
 interface Episode {
   id: number;
@@ -50,7 +50,6 @@ const generateAvatar = (name: string): string => {
 
 const EpisodeDetail = () => {
   const { slug } = useParams();
-  const id = slug ? parseInt(slug.split('-')[0]) : 1;
   const navigate = useNavigate();
   const [episode, setEpisode] = useState<Episode | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -67,18 +66,37 @@ const EpisodeDetail = () => {
 
   useEffect(() => {
     fetchEpisodeData();
-    incrementViews();
-  }, [id]);
+  }, [slug]);
 
   const fetchEpisodeData = async () => {
     try {
-      const response = await fetch(`${API_URL}?id=${id}`);
+      // Fetch all episodes to find by slug
+      const episodesResponse = await fetch('https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389');
+      const allEpisodes = await episodesResponse.json();
+      
+      // Find episode by matching slug
+      const foundEpisode = allEpisodes.find((ep: Episode) => 
+        generateSlug(ep.id, ep.title) === slug
+      );
+      
+      if (!foundEpisode) {
+        setLoading(false);
+        return;
+      }
+      
+      // Fetch detailed episode data
+      const response = await fetch(`${API_URL}?id=${foundEpisode.id}`);
       const data = await response.json();
       setEpisode(data.episode);
       setLocalLikes(data.episode?.likes || 0);
       setLocalViews(data.episode?.views || 0);
       setComments(data.comments || []);
       setArticles(data.articles || []);
+      
+      // Increment views
+      await fetch(`${API_URL}?id=${foundEpisode.id}&action=increment_views`, {
+        method: 'POST'
+      });
     } catch (error) {
       console.error('Error fetching episode:', error);
     } finally {
@@ -86,21 +104,13 @@ const EpisodeDetail = () => {
     }
   };
 
-  const incrementViews = async () => {
-    try {
-      await fetch(`${API_URL}?id=${id}&action=increment_views`, {
-        method: 'POST'
-      });
-    } catch (error) {
-      console.error('Error incrementing views:', error);
-    }
-  };
+
 
   const handleLike = async () => {
-    if (liked) return;
+    if (liked || !episode) return;
     
     try {
-      await fetch(`${API_URL}?id=${id}&action=increment_likes`, {
+      await fetch(`${API_URL}?id=${episode.id}&action=increment_likes`, {
         method: 'POST'
       });
       setLiked(true);
@@ -112,13 +122,15 @@ const EpisodeDetail = () => {
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!episode) return;
+    
     try {
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'add_comment',
-          episodeId: id,
+          episodeId: episode.id,
           authorName: newComment.authorName,
           authorAvatar: generateAvatar(newComment.authorName),
           text: newComment.text,
