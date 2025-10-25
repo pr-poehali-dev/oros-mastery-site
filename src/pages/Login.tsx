@@ -140,20 +140,7 @@ const Login = () => {
             </div>
           </form>
 
-          <div className="mt-6 p-4 bg-gray-700/30 rounded-lg border border-gray-600">
-            <p className="text-xs text-gray-400 text-center mb-2">
-              <Icon name="Info" size={14} className="inline mr-1" />
-              Тестовые данные для входа:
-            </p>
-            <div className="flex flex-col gap-1 text-xs text-gray-300 font-mono">
-              <div className="bg-gray-900/50 px-3 py-2 rounded">
-                <span className="text-cyan-400">Логин:</span> admin
-              </div>
-              <div className="bg-gray-900/50 px-3 py-2 rounded">
-                <span className="text-green-400">Пароль:</span> rick137
-              </div>
-            </div>
-          </div>
+
         </CardContent>
       </Card>
       </div>

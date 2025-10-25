@@ -17,10 +17,13 @@ import TheoryForm from '@/components/admin/TheoryForm';
 import TheoryList from '@/components/admin/TheoryList';
 import ArticleForm from '@/components/admin/ArticleForm';
 import ArticleList from '@/components/admin/ArticleList';
+import ShopProductForm from '@/components/admin/ShopProductForm';
+import ShopProductList from '@/components/admin/ShopProductList';
 import PlaceholderTab from '@/components/admin/PlaceholderTab';
 import { useEpisodesManager } from '@/components/admin/hooks/useEpisodesManager';
 import { useBlogManager } from '@/components/admin/hooks/useBlogManager';
 import { useContentManager } from '@/components/admin/hooks/useContentManager';
+import { useShopProductsManager } from '@/components/admin/hooks/useShopProductsManager';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -71,6 +74,15 @@ const Admin = () => {
     handleDeleteArticle
   } = useContentManager();
 
+  const {
+    products,
+    editingProduct,
+    setEditingProduct,
+    fetchProducts,
+    handleProductSubmit,
+    handleDeleteProduct
+  } = useShopProductsManager();
+
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
     if (!isAuthenticated) {
@@ -85,6 +97,7 @@ const Admin = () => {
     fetchTheories();
     fetchBlogPosts();
     fetchArticles();
+    fetchProducts();
   }, []);
 
   return (
@@ -95,7 +108,7 @@ const Admin = () => {
         <AdminHeader />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-2 bg-gray-800/50 p-2 mb-8 h-auto">
+          <TabsList className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-2 bg-gray-800/50 p-2 mb-8 h-auto">
             <TabsTrigger 
               value="episodes" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-green-500 data-[state=active]:text-white text-gray-300"
@@ -143,6 +156,12 @@ const Admin = () => {
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-green-500 data-[state=active]:text-white text-gray-300"
             >
               Пользователи
+            </TabsTrigger>
+            <TabsTrigger 
+              value="shop"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-green-500 data-[state=active]:text-white text-gray-300"
+            >
+              Магазин
             </TabsTrigger>
             <TabsTrigger 
               value="settings"
@@ -232,6 +251,19 @@ const Admin = () => {
               articles={articles}
               onEdit={setEditingArticle}
               onDelete={handleDeleteArticle}
+            />
+          </TabsContent>
+
+          <TabsContent value="shop" className="space-y-6">
+            <ShopProductForm 
+              editingProduct={editingProduct}
+              onSubmit={handleProductSubmit}
+              onCancel={() => setEditingProduct(null)}
+            />
+            <ShopProductList 
+              products={products}
+              onEdit={setEditingProduct}
+              onDelete={handleDeleteProduct}
             />
           </TabsContent>
 
