@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Icon from '@/components/ui/icon';
@@ -23,6 +24,7 @@ interface ShopProduct {
 }
 
 const Shop = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<ShopProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -153,7 +155,11 @@ const Shop = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map(product => (
-              <Card key={product.id} className="bg-gray-800/50 border-gray-700 hover:border-cyan-500 transition-all group overflow-hidden">
+              <Card 
+                key={product.id} 
+                className="bg-gray-800/50 border-gray-700 hover:border-cyan-500 transition-all group overflow-hidden cursor-pointer"
+                onClick={() => navigate(`/shop/${product.id}`)}
+              >
                 <div className="relative h-64 overflow-hidden bg-gray-900">
                   {product.image ? (
                     <img 
@@ -219,9 +225,13 @@ const Shop = () => {
                       size="sm"
                       className="bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-600 hover:to-green-600"
                       disabled={!product.stock}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/shop/${product.id}`);
+                      }}
                     >
-                      <Icon name="ShoppingCart" size={16} className="mr-1" />
-                      Купить
+                      <Icon name="Eye" size={16} className="mr-1" />
+                      Подробнее
                     </Button>
                   </div>
 
