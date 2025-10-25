@@ -213,8 +213,9 @@ const EpisodeDetail = () => {
                   className="w-full h-96 object-cover"
                 />
               )}
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4 flex-wrap">
+              <div className="p-6 space-y-4">
+                <h1 className="text-4xl font-bold text-cyan-400">{episode.title}</h1>
+                <div className="flex items-center gap-3 flex-wrap">
                   <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-green-500 text-white text-sm rounded-full">
                     Сезон {episode.season}, Эпизод {episode.episode}
                   </span>
@@ -236,7 +237,6 @@ const EpisodeDetail = () => {
                     </button>
                   </div>
                 </div>
-                <h1 className="text-4xl font-bold text-cyan-400 mb-4">{episode.title}</h1>
                 <p className="text-gray-300 text-lg leading-relaxed">{episode.description}</p>
               </div>
             </Card>
@@ -359,7 +359,7 @@ const EpisodeDetail = () => {
           </div>
 
           <div className="space-y-6">
-            <Card className="bg-gray-800/50 border-purple-500/30 p-6 sticky top-6">
+            <Card className="bg-gray-800/50 border-purple-500/30 p-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
               <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
                 <Icon name="Info" size={24} />
                 Информация об эпизоде
@@ -409,10 +409,12 @@ const EpisodeDetail = () => {
             {/* Другие эпизоды этого сезона */}
             {episode && allEpisodes.length > 0 && (
               <Card className="bg-gray-800/50 border-cyan-500/30 p-6">
-                <h3 className="text-xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
-                  <Icon name="Film" size={24} />
-                  Сезон {episode.season}
-                </h3>
+                <Link to={`/?season=${episode.season}`}>
+                  <h3 className="text-xl font-bold text-cyan-400 mb-4 flex items-center gap-2 hover:text-cyan-300 transition-colors cursor-pointer">
+                    <Icon name="Film" size={24} />
+                    Сезон {episode.season}
+                  </h3>
+                </Link>
                 <div className="space-y-2 max-h-96 overflow-y-auto">
                   {allEpisodes
                     .filter(ep => ep.season === episode.season)
@@ -431,7 +433,7 @@ const EpisodeDetail = () => {
                           <span className={`text-sm font-semibold ${
                             ep.id === episode.id ? 'text-cyan-400' : 'text-gray-400'
                           }`}>
-                            S{ep.season}E{ep.episode}
+                            С{ep.season}Э{ep.episode}
                           </span>
                           <span className={`text-sm flex-1 ${
                             ep.id === episode.id ? 'text-white font-semibold' : 'text-gray-300'
