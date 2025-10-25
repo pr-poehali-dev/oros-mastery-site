@@ -137,7 +137,7 @@ const Episodes = () => {
                 className={
                   selectedSeason === season.id
                     ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-gray-900 border-0 font-semibold'
-                    : 'border-gray-700 text-gray-300 hover:bg-gray-800'
+                    : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
                 }
               >
                 {season.name}

@@ -249,8 +249,8 @@ const Blog = () => {
                 variant={selectedCategory === category.id ? 'default' : 'outline'}
                 className={`whitespace-nowrap animate-slide-up ${
                   selectedCategory === category.id
-                    ? 'bg-cyan-400 text-gray-900 hover:bg-cyan-300'
-                    : 'bg-gray-800 text-white border-gray-700 hover:bg-gray-700'
+                    ? 'bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-semibold'
+                    : 'bg-gray-200 text-gray-900 border-gray-300 hover:bg-gray-300'
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
                 style={{ animationDelay: `${index * 0.05}s` }}
