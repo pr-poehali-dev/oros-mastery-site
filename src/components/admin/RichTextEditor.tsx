@@ -14,7 +14,7 @@ const RichTextEditor = ({ value, onChange, placeholder }: RichTextEditorProps) =
       [{ 'header': [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'color': [] }, { 'background': [] }],
+      [{ 'color': ['#ffffff', '#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ff00ff', '#bfbfbf', '#808080'] }, { 'background': [] }],
       ['link', 'image'],
       ['clean']
     ],
