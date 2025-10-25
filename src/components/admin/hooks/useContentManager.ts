@@ -71,7 +71,8 @@ export const useContentManager = () => {
   const handleUniverseSubmit = async (formData: UniverseFormData, isEdit: boolean) => {
     try {
       const method = isEdit ? 'PUT' : 'POST';
-      const url = isEdit ? `${CONTENT_API}?type=universes&id=${formData.id}` : `${CONTENT_API}?type=universes`;
+      const universeId = isEdit && editingUniverse ? editingUniverse.id : formData.id;
+      const url = isEdit ? `${CONTENT_API}?type=universes&id=${universeId}` : `${CONTENT_API}?type=universes`;
       
       await fetch(url, {
         method,
@@ -103,7 +104,8 @@ export const useContentManager = () => {
     try {
       console.log('handleCharacterSubmit called with:', { formData, isEdit });
       const method = isEdit ? 'PUT' : 'POST';
-      const url = isEdit ? `${CONTENT_API}?type=characters&id=${formData.id}` : `${CONTENT_API}?type=characters`;
+      const characterId = isEdit && editingCharacter ? editingCharacter.id : formData.id;
+      const url = isEdit ? `${CONTENT_API}?type=characters&id=${characterId}` : `${CONTENT_API}?type=characters`;
       console.log('Request URL:', url, 'Method:', method);
       
       const response = await fetch(url, {
