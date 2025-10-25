@@ -179,6 +179,12 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     f"image='{escape_sql(body_data.get('image', ''))}', "
                     f"status='{escape_sql(body_data.get('status', ''))}', "
                     f"features='{escape_sql(body_data.get('features', ''))}', "
+                    f"coordinates='{escape_sql(body_data.get('coordinates', ''))}', "
+                    f"danger_level='{escape_sql(body_data.get('dangerLevel', ''))}', "
+                    f"discovery_date='{escape_sql(body_data.get('discoveryDate', ''))}', "
+                    f"population='{escape_sql(body_data.get('population', ''))}', "
+                    f"technology='{escape_sql(body_data.get('technology', ''))}', "
+                    f"related_characters='{escape_sql(body_data.get('relatedCharacters', ''))}', "
                     f"updated_at=CURRENT_TIMESTAMP WHERE id={int(item_id)}"
                 )
             elif content_type == 'characters':
