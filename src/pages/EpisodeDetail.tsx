@@ -147,8 +147,10 @@ const EpisodeDetail = () => {
   };
 
   const handleNavigate = async (direction: 'prev' | 'next') => {
+    if (!episode) return;
+    
     try {
-      const response = await fetch(`${API_URL}?id=${id}&action=get_navigation&current_id=${id}&direction=${direction}`);
+      const response = await fetch(`${API_URL}?id=${episode.id}&action=get_navigation&current_id=${episode.id}&direction=${direction}`);
       const data = await response.json();
       if (data.episode) {
         navigate(`/episode/${generateSlug(data.episode.id, data.episode.title)}`);
