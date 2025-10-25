@@ -9,25 +9,28 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import CommentSection from '@/components/CommentSection';
+import { generateSlug } from '@/utils/slugify';
 
 const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
 const CharacterDetail = () => {
   const { slug } = useParams();
-  const id = slug ? parseInt(slug.split('-')[0]) : 1;
 
   const [character, setCharacter] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchCharacter();
-  }, [id]);
+  }, [slug]);
 
   const fetchCharacter = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=characters&id=${id}`);
+      const response = await fetch(`${CONTENT_API}?type=characters`);
       const data = await response.json();
-      setCharacter(data);
+      const characters = Array.isArray(data) ? data : [];
+      
+      const foundCharacter = characters.find(c => generateSlug(c.id, c.name) === slug);
+      setCharacter(foundCharacter || null);
     } catch (error) {
       console.error('Error fetching character:', error);
     } finally {

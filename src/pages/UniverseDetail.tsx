@@ -16,7 +16,6 @@ const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951
 
 const UniverseDetail = () => {
   const { slug } = useParams();
-  const id = slug ? parseInt(slug.split('-')[0]) : 1;
 
   const [universe, setUniverse] = useState<any>(null);
   const [relatedCharacters, setRelatedCharacters] = useState<any[]>([]);
@@ -24,21 +23,23 @@ const UniverseDetail = () => {
 
   useEffect(() => {
     fetchUniverse();
-  }, [id]);
+  }, [slug]);
 
   const fetchUniverse = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=universes&id=${id}`);
+      const response = await fetch(`${CONTENT_API}?type=universes`);
       const data = await response.json();
-      setUniverse(data);
+      const universes = Array.isArray(data) ? data : [];
       
-      if (data.related_characters) {
-        const charIds = data.related_characters.split(',').map((id: string) => id.trim());
-        const charPromises = charIds.map((charId: string) => 
-          fetch(`${CONTENT_API}?type=characters&id=${charId}`).then(r => r.json())
-        );
-        const chars = await Promise.all(charPromises);
-        setRelatedCharacters(chars.filter(c => c && c.id));
+      const foundUniverse = universes.find(u => generateSlug(u.id, u.name) === slug);
+      setUniverse(foundUniverse || null);
+      
+      if (foundUniverse?.related_characters) {
+        const charResponse = await fetch(`${CONTENT_API}?type=characters`);
+        const allCharacters = await charResponse.json();
+        const charIds = foundUniverse.related_characters.split(',').map((id: string) => id.trim());
+        const chars = allCharacters.filter((c: any) => charIds.includes(String(c.id)));
+        setRelatedCharacters(chars);
       }
     } catch (error) {
       console.error('Error fetching universe:', error);

@@ -15,7 +15,6 @@ const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951
 
 const TheoryDetail = () => {
   const { slug } = useParams();
-  const id = slug ? parseInt(slug.split('-')[0]) : 1;
 
   const [theory, setTheory] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -27,15 +26,23 @@ const TheoryDetail = () => {
     fetchTheory();
     fetchEpisodes();
     fetchCharacters();
-    const bookmarks = JSON.parse(localStorage.getItem('theoryBookmarks') || '[]');
-    setIsBookmarked(bookmarks.includes(Number(id)));
-  }, [id]);
+  }, [slug]);
+
+  useEffect(() => {
+    if (theory) {
+      const bookmarks = JSON.parse(localStorage.getItem('theoryBookmarks') || '[]');
+      setIsBookmarked(bookmarks.includes(Number(theory.id)));
+    }
+  }, [theory]);
 
   const fetchTheory = async () => {
     try {
-      const response = await fetch(`${CONTENT_API}?type=theories&id=${id}`);
+      const response = await fetch(`${CONTENT_API}?type=theories`);
       const data = await response.json();
-      setTheory(data);
+      const theories = Array.isArray(data) ? data : [];
+      
+      const foundTheory = theories.find(t => generateSlug(t.id, t.title) === slug);
+      setTheory(foundTheory || null);
     } catch (error) {
       console.error('Error fetching theory:', error);
     } finally {
@@ -81,14 +88,15 @@ const TheoryDetail = () => {
   };
 
   const handleBookmark = () => {
+    if (!theory) return;
     const bookmarks = JSON.parse(localStorage.getItem('theoryBookmarks') || '[]');
     if (isBookmarked) {
-      const updated = bookmarks.filter((bId: number) => bId !== Number(id));
+      const updated = bookmarks.filter((bId: number) => bId !== Number(theory.id));
       localStorage.setItem('theoryBookmarks', JSON.stringify(updated));
       setIsBookmarked(false);
       alert('Удалено из закладок');
     } else {
-      bookmarks.push(Number(id));
+      bookmarks.push(Number(theory.id));
       localStorage.setItem('theoryBookmarks', JSON.stringify(bookmarks));
       setIsBookmarked(true);
       alert('Добавлено в закладки!');
