@@ -33,20 +33,24 @@ const Shop = () => {
 
   const fetchProducts = async () => {
     try {
+      console.log('Загрузка товаров...');
       const response = await fetch('https://api.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/database/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          query: 'SELECT * FROM shop_products WHERE is_available = true ORDER BY created_at DESC'
+          query: 'SELECT id, name, description, price, old_price, image, category, stock, is_available, rating, reviews_count, features, specifications FROM shop_products WHERE is_available = true ORDER BY created_at DESC'
         })
       });
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
       const productsData = (data.rows || []).map((p: any) => ({
         ...p,
         price: parseFloat(p.price),
         old_price: p.old_price ? parseFloat(p.old_price) : undefined,
         rating: parseFloat(p.rating)
       }));
+      console.log('Parsed products:', productsData);
       setProducts(productsData);
     } catch (error) {
       console.error('Ошибка загрузки товаров:', error);
