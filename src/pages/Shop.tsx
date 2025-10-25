@@ -41,7 +41,13 @@ const Shop = () => {
         })
       });
       const data = await response.json();
-      setProducts(data.rows || []);
+      const productsData = (data.rows || []).map((p: any) => ({
+        ...p,
+        price: parseFloat(p.price),
+        old_price: p.old_price ? parseFloat(p.old_price) : undefined,
+        rating: parseFloat(p.rating)
+      }));
+      setProducts(productsData);
     } catch (error) {
       console.error('Ошибка загрузки товаров:', error);
     } finally {
