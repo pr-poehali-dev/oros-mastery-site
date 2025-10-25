@@ -41,6 +41,13 @@ interface Article {
 
 const API_URL = 'https://functions.poehali.dev/ac29f682-6173-43c7-a16b-3ffb94e0f51a';
 
+// Generate Rick and Morty style avatar based on name
+const generateAvatar = (name: string): string => {
+  // Use DiceBear API with fun-emoji style for Rick and Morty vibes
+  const seed = encodeURIComponent(name);
+  return `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${seed}&backgroundColor=06b6d4,10b981,8b5cf6,ec4899&radius=50`;
+};
+
 const EpisodeDetail = () => {
   const { slug } = useParams();
   const id = slug ? parseInt(slug.split('-')[0]) : 1;
@@ -113,7 +120,7 @@ const EpisodeDetail = () => {
           action: 'add_comment',
           episodeId: id,
           authorName: newComment.authorName,
-          authorAvatar: `https://i.pravatar.cc/150?u=${newComment.authorName}`,
+          authorAvatar: generateAvatar(newComment.authorName),
           text: newComment.text,
           rating: newComment.rating
         })
@@ -315,9 +322,9 @@ const EpisodeDetail = () => {
                   <div key={comment.id} className="bg-gray-700/30 p-4 rounded-lg border border-gray-600/30">
                     <div className="flex items-start gap-3">
                       <img 
-                        src={comment.authorAvatar} 
+                        src={comment.authorAvatar || generateAvatar(comment.authorName)} 
                         alt={comment.authorName}
-                        className="w-12 h-12 rounded-full"
+                        className="w-12 h-12 rounded-full bg-gray-800"
                       />
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
