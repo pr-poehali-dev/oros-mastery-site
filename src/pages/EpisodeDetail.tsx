@@ -361,7 +361,7 @@ const EpisodeDetail = () => {
           </div>
 
           <div className="space-y-6">
-            <Card className="bg-gray-800/50 border-purple-500/30 p-6 lg:sticky lg:top-24">
+            <Card className="bg-gray-800/50 border-purple-500/30 p-6">
               <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
                 <Icon name="Info" size={24} />
                 Информация об эпизоде
