@@ -42,22 +42,20 @@ const Universes = () => {
   const displayUniverses = universes;
 
   const getDangerColor = (danger: string) => {
-    switch (danger) {
-      case 'low': return 'bg-green-500/20 text-green-300 border-green-500/30';
-      case 'medium': return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
-      case 'high': return 'bg-orange-500/20 text-orange-300 border-orange-500/30';
-      case 'extreme': return 'bg-red-500/20 text-red-300 border-red-500/30';
-      default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
-    }
+    const lowerDanger = danger?.toLowerCase() || '';
+    if (lowerDanger.includes('низкий') || lowerDanger.includes('очень низкий')) return 'bg-green-500/20 text-green-300 border-green-500/30';
+    if (lowerDanger.includes('средний')) return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
+    if (lowerDanger.includes('высокий')) return 'bg-orange-500/20 text-orange-300 border-orange-500/30';
+    if (lowerDanger.includes('критический') || lowerDanger.includes('экстрем')) return 'bg-red-500/20 text-red-300 border-red-500/30';
+    return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30';
-      case 'abandoned': return 'bg-red-500/20 text-red-300 border-red-500/30';
-      case 'unknown': return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
-      default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
-    }
+    const lowerStatus = status?.toLowerCase() || '';
+    if (lowerStatus.includes('активн') || lowerStatus.includes('стабильн') || lowerStatus.includes('мирн')) return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30';
+    if (lowerStatus.includes('заброшен') || lowerStatus.includes('враждебн')) return 'bg-red-500/20 text-red-300 border-red-500/30';
+    if (lowerStatus.includes('нестабильн') || lowerStatus.includes('опасн')) return 'bg-orange-500/20 text-orange-300 border-orange-500/30';
+    return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
   };
 
   return (
@@ -109,30 +107,36 @@ const Universes = () => {
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-purple-500/50 transition-all cursor-pointer"
               onClick={() => navigate(`/universe/${generateSlug(universe.id, universe.name)}`)}
             >
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={universe.image} 
-                  alt={universe.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-purple-900 via-indigo-900 to-pink-900">
+                {universe.image ? (
+                  <img 
+                    src={universe.image} 
+                    alt={universe.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Icon name="Globe" size={64} className="text-white/30" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                 <Badge className="absolute top-4 right-4 bg-black/50 text-white border-0 backdrop-blur-sm">
-                  {universe.dimension}
+                  {universe.coordinates}
                 </Badge>
               </div>
               
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
                   <Badge className={getStatusColor(universe.status)}>
-                    {universe.status === 'active' ? 'Активна' : universe.status === 'abandoned' ? 'Заброшена' : 'Неизвестно'}
+                    {universe.status}
                   </Badge>
-                  <Badge className={getDangerColor(universe.danger)}>
-                    {universe.danger === 'low' ? 'Безопасно' : universe.danger === 'medium' ? 'Средне' : universe.danger === 'high' ? 'Опасно' : 'Критично'}
+                  <Badge className={getDangerColor(universe.danger_level)}>
+                    {universe.danger_level}
                   </Badge>
                 </div>
                 <CardTitle className="text-2xl text-white">{universe.name}</CardTitle>
                 <CardDescription className="text-gray-400">
-                  {universe.shortDescription || universe.description?.substring(0, 120) + '...'}
+                  {universe.description?.substring(0, 120) + '...'}
                 </CardDescription>
               </CardHeader>
             </Card>

@@ -274,9 +274,9 @@ const Characters = () => {
               className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all group flex flex-col cursor-pointer"
               onClick={() => navigate(`/character/${generateSlug(character.id, character.name)}`)}
             >
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-64 overflow-hidden bg-gradient-to-br from-cyan-900 to-blue-900">
                 <img 
-                  src={character.image} 
+                  src={character.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(character.name)}&size=400&background=random&color=fff&bold=true`} 
                   alt={character.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
