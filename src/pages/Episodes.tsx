@@ -159,6 +159,7 @@ const Episodes = () => {
                   src={episode.image || 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop'} 
                   alt={episode.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop';
                   }}

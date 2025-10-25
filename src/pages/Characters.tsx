@@ -279,6 +279,7 @@ const Characters = () => {
                   src={character.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(character.name)}&size=400&background=random&color=fff&bold=true`} 
                   alt={character.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                 <Badge className={`absolute top-4 right-4 ${getStatusColor(character.status)}`}>

@@ -291,6 +291,7 @@ const Blog = () => {
                       src={post.image} 
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
                     <Badge className="absolute top-3 right-3 bg-cyan-400 text-gray-800 border-0 font-semibold">

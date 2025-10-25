@@ -164,6 +164,7 @@ const Theories = () => {
                     src={theory.image} 
                     alt={theory.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                   <Badge className={`absolute top-4 right-4 ${getProbabilityColor(theory.probability)}`}>
