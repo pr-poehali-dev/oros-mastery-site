@@ -257,7 +257,7 @@ const Characters = () => {
                 className={
                   selectedSpecies === spec.id
                     ? 'bg-gradient-to-r from-cyan-400 to-blue-400 text-gray-900 border-0 font-semibold'
-                    : 'border-gray-700 text-gray-300 hover:bg-gray-800'
+                    : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
                 }
               >
                 <Icon name={spec.icon as any} size={16} className="mr-2" />
