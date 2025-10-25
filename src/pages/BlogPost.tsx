@@ -17,7 +17,6 @@ const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951
 
 const BlogPost = () => {
   const { slug } = useParams();
-  const id = slug ? parseInt(slug.split('-')[0]) : 1;
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -27,7 +26,7 @@ const BlogPost = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchArticle();
-  }, [id]);
+  }, [slug]);
 
   const fetchArticle = async () => {
     try {
@@ -43,7 +42,11 @@ const BlogPost = () => {
       const validArticlesData = Array.isArray(articlesData) ? articlesData : [];
       
       const combinedPosts = [...validBlogData, ...validArticlesData];
-      const foundArticle = combinedPosts.find(p => p.id === Number(id));
+      
+      const foundArticle = combinedPosts.find(p => {
+        const articleSlug = generateSlug(p.id, p.title);
+        return articleSlug === slug;
+      });
       
       if (foundArticle) {
         setArticle(foundArticle);
