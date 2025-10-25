@@ -21,6 +21,7 @@ const Index = () => {
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [blogLoading, setBlogLoading] = useState(true);
+  const [stats, setStats] = useState({ episodes: 0, seasons: 0 });
 
   useEffect(() => {
     fetchEpisodes();
@@ -32,6 +33,12 @@ const Index = () => {
       const response = await fetch(EPISODES_API);
       const data = await response.json();
       setEpisodes(data);
+      
+      const uniqueSeasons = new Set(data.map((ep: any) => ep.season));
+      setStats({
+        episodes: data.length,
+        seasons: uniqueSeasons.size
+      });
     } catch (error) {
       console.error('Error fetching episodes:', error);
     } finally {
@@ -132,13 +139,13 @@ const Index = () => {
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up">
-              <div className="text-3xl mb-2"></div>
-              <div className="text-2xl font-bold mb-1">80</div>
+              <div className="text-3xl mb-2">🎬</div>
+              <div className="text-2xl font-bold mb-1">{loading ? '...' : stats.episodes}</div>
               <div className="text-white/90 text-sm">Серий</div>
             </div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <div className="text-3xl mb-2">📺</div>
-              <div className="text-2xl font-bold mb-1">8</div>
+              <div className="text-2xl font-bold mb-1">{loading ? '...' : stats.seasons}</div>
               <div className="text-white/90 text-sm">Сезонов</div>
             </div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.2s' }}>
