@@ -140,8 +140,8 @@ const Theories = () => {
                 variant={selectedType === type.id ? 'default' : 'outline'}
                 className={
                   selectedType === type.id
-                    ? 'bg-gradient-to-r from-green-400 to-cyan-400 text-gray-900 border-0 font-semibold'
-                    : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
+                    ? 'bg-gradient-to-r from-green-400 to-cyan-400 text-gray-900 border-0 font-semibold hover:from-green-500 hover:to-cyan-500'
+                    : 'border-cyan-500/30 text-cyan-300 bg-gray-800/50 hover:bg-cyan-500/10 hover:border-cyan-500/50'
                 }
               >
                 <Icon name={type.icon as any} size={16} className="mr-2" />
