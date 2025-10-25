@@ -23,6 +23,8 @@ export interface EpisodeFormData {
   airDate: string;
   funFacts: string;
   linkedArticles: number[];
+  likes?: number;
+  views?: number;
 }
 
 const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProps) => {
@@ -36,7 +38,9 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
     videoIframe: '',
     airDate: '',
     funFacts: '',
-    linkedArticles: []
+    linkedArticles: [],
+    likes: 0,
+    views: 0
   });
 
   useEffect(() => {
@@ -58,7 +62,9 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
       videoIframe: '',
       airDate: '',
       funFacts: '',
-      linkedArticles: []
+      linkedArticles: [],
+      likes: 0,
+      views: 0
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -74,7 +80,9 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
       videoIframe: '',
       airDate: '',
       funFacts: '',
-      linkedArticles: []
+      linkedArticles: [],
+      likes: 0,
+      views: 0
     });
     if (onCancelEdit) onCancelEdit();
   };
@@ -210,6 +218,33 @@ const EpisodeForm = ({ onSubmit, editingEpisode, onCancelEdit }: EpisodeFormProp
             />
             <p className="text-xs text-gray-400 mt-1">💡 Каждый факт с новой строки</p>
           </div>
+
+          {editingEpisode && (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-white text-sm font-medium mb-2 block">
+                  Лайки
+                </label>
+                <Input
+                  type="number"
+                  value={form.likes || 0}
+                  onChange={(e) => setForm({ ...form, likes: parseInt(e.target.value) || 0 })}
+                  className="bg-gray-900 border-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <label className="text-white text-sm font-medium mb-2 block">
+                  Просмотры
+                </label>
+                <Input
+                  type="number"
+                  value={form.views || 0}
+                  onChange={(e) => setForm({ ...form, views: parseInt(e.target.value) || 0 })}
+                  className="bg-gray-900 border-gray-700 text-white"
+                />
+              </div>
+            </div>
+          )}
 
           <div className="flex gap-3">
             <Button type="submit" className="flex-1 bg-cyan-500 hover:bg-cyan-600">

@@ -77,7 +77,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     }
             
             cur.execute(
-                "SELECT id, title, season, episode, description, image, air_date, video_iframe, fun_facts FROM episodes WHERE id = " + str(int(episode_id))
+                "SELECT id, title, season, episode, description, image, air_date, video_iframe, fun_facts, likes, views FROM episodes WHERE id = " + str(int(episode_id))
             )
             row = cur.fetchone()
             
@@ -97,7 +97,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'image': row[5],
                 'airDate': row[6] if row[6] else '',
                 'videoIframe': row[7] if len(row) > 7 and row[7] else '',
-                'funFacts': row[8] if len(row) > 8 and row[8] else ''
+                'funFacts': row[8] if len(row) > 8 and row[8] else '',
+                'likes': row[9] if len(row) > 9 else 0,
+                'views': row[10] if len(row) > 10 else 0
             }
             
             cur.execute(
@@ -137,6 +139,29 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             }
         
         elif method == 'POST':
+            query_params = event.get('queryStringParameters') or {}
+            action = query_params.get('action')
+            
+            if action == 'increment_views':
+                episode_id = int(query_params.get('id'))
+                cur.execute("UPDATE episodes SET views = COALESCE(views, 0) + 1 WHERE id = " + str(episode_id))
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                    'body': json.dumps({'message': 'Views incremented'})
+                }
+            
+            if action == 'increment_likes':
+                episode_id = int(query_params.get('id'))
+                cur.execute("UPDATE episodes SET likes = COALESCE(likes, 0) + 1 WHERE id = " + str(episode_id))
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+                    'body': json.dumps({'message': 'Likes incremented'})
+                }
+            
             body = json.loads(event.get('body', '{}'))
             action = body.get('action')
             

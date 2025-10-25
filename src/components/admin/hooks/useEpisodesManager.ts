@@ -36,7 +36,11 @@ export const useEpisodesManager = () => {
           image: formData.image,
           videoUrl: formData.videoUrl,
           videoIframe: formData.videoIframe,
-          airDate: formData.airDate
+          airDate: formData.airDate,
+          funFacts: formData.funFacts,
+          linkedArticles: formData.linkedArticles,
+          likes: formData.likes,
+          views: formData.views
         })
       });
 

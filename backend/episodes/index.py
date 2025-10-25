@@ -120,9 +120,11 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             video_iframe = body.get('videoIframe', '').replace("'", "''")
             fun_facts = body.get('funFacts', '').replace("'", "''")
             linked_articles = body.get('linkedArticles', [])
+            likes = int(body.get('likes', 0))
+            views = int(body.get('views', 0))
             
             cur.execute(
-                f"UPDATE episodes SET title='{title}', season={season}, episode={episode}, description='{description}', image='{image}', air_date='{air_date}', video_iframe='{video_iframe}', fun_facts='{fun_facts}' WHERE id={int(episode_id)}"
+                f"UPDATE episodes SET title='{title}', season={season}, episode={episode}, description='{description}', image='{image}', air_date='{air_date}', video_iframe='{video_iframe}', fun_facts='{fun_facts}', likes={likes}, views={views} WHERE id={int(episode_id)}"
             )
             
             cur.execute(f"DELETE FROM episode_article_links WHERE episode_id={int(episode_id)}")

@@ -19,6 +19,8 @@ interface Episode {
   airDate: string;
   videoIframe?: string;
   funFacts?: string;
+  likes?: number;
+  views?: number;
 }
 
 interface Comment {
@@ -52,9 +54,13 @@ const EpisodeDetail = () => {
     text: '',
     rating: 5
   });
+  const [liked, setLiked] = useState(false);
+  const [localLikes, setLocalLikes] = useState(0);
+  const [localViews, setLocalViews] = useState(0);
 
   useEffect(() => {
     fetchEpisodeData();
+    incrementViews();
   }, [id]);
 
   const fetchEpisodeData = async () => {
@@ -62,12 +68,38 @@ const EpisodeDetail = () => {
       const response = await fetch(`${API_URL}?id=${id}`);
       const data = await response.json();
       setEpisode(data.episode);
+      setLocalLikes(data.episode?.likes || 0);
+      setLocalViews(data.episode?.views || 0);
       setComments(data.comments || []);
       setArticles(data.articles || []);
     } catch (error) {
       console.error('Error fetching episode:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const incrementViews = async () => {
+    try {
+      await fetch(`${API_URL}?id=${id}&action=increment_views`, {
+        method: 'POST'
+      });
+    } catch (error) {
+      console.error('Error incrementing views:', error);
+    }
+  };
+
+  const handleLike = async () => {
+    if (liked) return;
+    
+    try {
+      await fetch(`${API_URL}?id=${id}&action=increment_likes`, {
+        method: 'POST'
+      });
+      setLiked(true);
+      setLocalLikes(prev => prev + 1);
+    } catch (error) {
+      console.error('Error liking episode:', error);
     }
   };
 
@@ -161,11 +193,27 @@ const EpisodeDetail = () => {
                 />
               )}
               <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4 flex-wrap">
                   <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-green-500 text-white text-sm rounded-full">
                     Сезон {episode.season}, Эпизод {episode.episode}
                   </span>
                   <span className="text-gray-300">{episode.airDate}</span>
+                  <div className="flex items-center gap-4 ml-auto">
+                    <span className="flex items-center gap-1 text-gray-300">
+                      <Icon name="Eye" size={18} className="text-blue-400" />
+                      {localViews}
+                    </span>
+                    <button
+                      onClick={handleLike}
+                      disabled={liked}
+                      className={`flex items-center gap-1 transition-colors ${
+                        liked ? 'text-pink-500' : 'text-gray-300 hover:text-pink-400'
+                      } disabled:cursor-not-allowed`}
+                    >
+                      <Icon name={liked ? "Heart" : "Heart"} size={18} className={liked ? "fill-pink-500" : ""} />
+                      {localLikes}
+                    </button>
+                  </div>
                 </div>
                 <h1 className="text-4xl font-bold text-cyan-400 mb-4">{episode.title}</h1>
                 <p className="text-gray-300 text-lg leading-relaxed">{episode.description}</p>
