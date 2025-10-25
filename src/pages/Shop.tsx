@@ -24,11 +24,52 @@ interface ShopProduct {
 
 const Shop = () => {
   const [products, setProducts] = useState<ShopProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
-    fetchProducts();
+    const testProducts: ShopProduct[] = [
+      {
+        id: 1,
+        name: "Портал-пушка Rick C-137",
+        description: "Оригинальная портал-пушка из измерения C-137",
+        price: 99999.99,
+        old_price: 149999.99,
+        image: "https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/e5139de9-aaaa-4838-847a-458e6df6daac.jpg",
+        category: "Гаджеты",
+        stock: 3,
+        is_available: true,
+        rating: 4.9,
+        reviews_count: 1247
+      },
+      {
+        id: 2,
+        name: "Плюмбус Classic",
+        description: "Классический плюмбус для повседневного использования",
+        price: 4999.00,
+        image: "https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/c6480e74-c8c4-4b41-afbe-e14b64eae09c.jpg",
+        category: "Бытовые товары",
+        stock: 156,
+        is_available: true,
+        rating: 4.7,
+        reviews_count: 892
+      },
+      {
+        id: 3,
+        name: "Мега-семена",
+        description: "Редкие мега-семена с планеты Измерение 35-C",
+        price: 25000.00,
+        old_price: 35000.00,
+        image: "https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/1d49fab5-42a3-43a5-ad1c-22d27c1f5c7f.jpg",
+        category: "Редкости",
+        stock: 8,
+        is_available: true,
+        rating: 4.8,
+        reviews_count: 234
+      }
+    ];
+    setProducts(testProducts);
+    // fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
