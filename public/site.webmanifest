@@ -1,0 +1,18 @@
+{
+  "name": "Рик и Морти фан-сайт",
+  "short_name": "Rick & Morty",
+  "description": "Полная база эпизодов Rick and Morty с описаниями, блогом и теориями",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#06b6d4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/297810f8-b996-44a1-b86f-9caa68f581d1.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

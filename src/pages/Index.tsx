@@ -11,6 +11,7 @@ import Navigation from '@/components/Navigation';
 import { generateSlug } from '@/utils/slugify';
 import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 import WatchedEpisodes from '@/components/WatchedEpisodes';
+import FAQ from '@/components/FAQ';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
@@ -180,7 +181,7 @@ const Index = () => {
           
           <div className="text-center mb-12 animate-fade-in">
             <Badge className="mb-4 bg-green-400/20 text-green-400 border-green-400">Все серии</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Каталог эпизодов</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Каталог эпизодов Rick and Morty</h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Выбери сезон и начни просмотр прямо сейчас
             </p>
@@ -221,7 +222,7 @@ const Index = () => {
                     <div className="relative overflow-hidden aspect-video">
                       <img 
                         src={episode.image} 
-                        alt={episode.title}
+                        alt={`${episode.title} - сезон ${episode.season} эпизод ${episode.episode}`}
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
@@ -265,7 +266,7 @@ const Index = () => {
         <div className="container px-4">
           <div className="text-center mb-12 animate-fade-in">
             <Badge className="mb-4 bg-cyan-400/20 text-cyan-400 border-cyan-400">Блог</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Статьи и теории</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Блог о Rick and Morty: Статьи и теории</h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Глубокий разбор сериала, теории фанатов и интересные факты
             </p>
@@ -287,7 +288,8 @@ const Index = () => {
                   <div className="relative overflow-hidden aspect-video">
                     <img 
                       src={post.image} 
-                      alt={post.title}
+                      alt={`${post.title} - статья в блоге Rick and Morty`}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
@@ -355,7 +357,29 @@ const Index = () => {
       <section className="py-20 bg-gray-900 text-white">
         <div className="container px-4">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
+            <FAQ items={[
+              {
+                question: 'Где можно посмотреть все серии Rick and Morty?',
+                answer: 'На нашем сайте вы найдёте полный каталог всех эпизодов Rick and Morty с встроенным видеоплеером. Просто выберите сезон и эпизод, который хотите посмотреть.'
+              },
+              {
+                question: 'Сколько сезонов Rick and Morty вышло?',
+                answer: 'На данный момент вышло 7 сезонов Rick and Morty. Сериал был продлён ещё на несколько сезонов, так что нас ждёт ещё много новых приключений Рика и Морти!'
+              },
+              {
+                question: 'Можно ли комментировать эпизоды?',
+                answer: 'Да! Каждый эпизод имеет раздел комментариев, где вы можете поделиться своим мнением, обсудить теории и оставить оценку серии.'
+              },
+              {
+                question: 'Как часто обновляется блог?',
+                answer: 'Наш блог регулярно пополняется новыми статьями, теориями и анализом эпизодов. Мы публикуем материалы несколько раз в неделю.'
+              },
+              {
+                question: 'Есть ли на сайте информация о персонажах и вселенных?',
+                answer: 'Конечно! У нас есть полный каталог персонажей с их описаниями, а также база данных всех вселенных, которые встречаются в сериале.'
+              }
+            ]} />
+            <div className="text-center mb-12 mt-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 Исследуй вселенную Rick and Morty
               </h2>
