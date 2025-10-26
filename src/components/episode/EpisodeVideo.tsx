@@ -72,11 +72,12 @@ const EpisodeVideo = ({ episode, localLikes, localViews, liked, onLike, onNaviga
   return (
     <Card className="bg-gray-800/50 border-cyan-500/30 overflow-hidden">
       {episode.videoIframe ? (
-        <div 
-          ref={videoContainerRef}
-          className="relative w-full aspect-video md:h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
-        >
-          <div dangerouslySetInnerHTML={{ __html: episode.videoIframe }} />
+        <div className="relative">
+          <div 
+            ref={videoContainerRef}
+            className="w-full aspect-video md:h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
+            dangerouslySetInnerHTML={{ __html: episode.videoIframe }}
+          />
           
           {showSkipCredits && (
             <div className="absolute bottom-20 right-8 z-10 animate-in slide-in-from-right duration-300">
