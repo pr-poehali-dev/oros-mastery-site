@@ -28,6 +28,8 @@ const Episodes = () => {
   useEffect(() => {
     if (seasonParam) {
       setSelectedSeason(seasonParam);
+    } else {
+      setSelectedSeason('all');
     }
   }, [seasonParam]);
 
