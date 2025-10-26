@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import { generateSlug, extractEpisodeInfo } from '@/utils/slugify';
 import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 
 interface Episode {
   id: number;
@@ -66,6 +67,12 @@ const EpisodeDetail = () => {
   const [localLikes, setLocalLikes] = useState(0);
   const [localViews, setLocalViews] = useState(0);
   const { markAsWatched } = useWatchedEpisodes();
+
+  useSwipeGesture({
+    onSwipeLeft: () => handleNavigate('next'),
+    onSwipeRight: () => handleNavigate('prev'),
+    threshold: 100
+  });
 
   useEffect(() => {
     fetchEpisodeData();

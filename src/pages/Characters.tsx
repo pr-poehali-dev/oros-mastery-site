@@ -264,8 +264,10 @@ const Characters = () => {
                 onClick={() => {
                   if (spec.id === 'all') {
                     navigate('/characters');
+                    setSelectedSpecies('all');
                   } else {
-                    navigate(`/characters/species/${spec.id}`);
+                    navigate(`/characters/species/${encodeURIComponent(spec.id)}`);
+                    setSelectedSpecies(spec.id);
                   }
                 }}
                 variant={selectedSpecies === spec.id ? 'default' : 'outline'}

@@ -30,7 +30,8 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
     'contact': 'Контакты',
     'season': 'Сезон',
     'type': 'Тип',
-    'danger': 'Уровень опасности'
+    'danger': 'Уровень опасности',
+    'species': 'Вид'
   };
 
   if (pathnames.length === 0) {
@@ -78,13 +79,16 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
         'critical': 'Критический'
       };
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
-      breadcrumbs.push({ label: dangerNames[value] || value, path });
+      breadcrumbs.push({ label: dangerNames[value] || decodeURIComponent(value), path });
+    } else if (prevValue === 'species') {
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+      breadcrumbs.push({ label: decodeURIComponent(value), path });
     } else if (value.includes('-')) {
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
       breadcrumbs.push({ label: '', path });
     } else {
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
-      const label = value.charAt(0).toUpperCase() + value.slice(1);
+      const label = decodeURIComponent(value).charAt(0).toUpperCase() + decodeURIComponent(value).slice(1);
       breadcrumbs.push({ label, path });
     }
   });

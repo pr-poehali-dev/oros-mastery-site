@@ -26,6 +26,8 @@ const Universes = () => {
   useEffect(() => {
     if (dangerParam) {
       setSelectedDanger(dangerParam);
+    } else {
+      setSelectedDanger('all');
     }
   }, [dangerParam]);
 
