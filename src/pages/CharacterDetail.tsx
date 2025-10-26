@@ -71,7 +71,7 @@ const CharacterDetail = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
       <SEO
-        title={`${character.name} | Рик и Морти`}
+        title={`${character.name} из Рика и Морти: биография, способности, интересные факты`}
         description={character.description?.substring(0, 160)}
         image={character.image}
         keywords={`Рик и Морти, ${character.name}, персонаж`}

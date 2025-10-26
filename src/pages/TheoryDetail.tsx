@@ -137,7 +137,7 @@ const TheoryDetail = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 [&_h2]:text-white [&_h4]:text-white">
       <Navigation />
       <SEO
-        title={`${theory.title} | Рик и Морти`}
+        title={`Теория ${theory.type === 'character' ? 'персонажей' : theory.type === 'multiverse' ? 'мультивселенной' : theory.type === 'science' ? 'науки' : 'будущего'} из Рика и Морти: ${theory.title}`}
         description={theory.description?.substring(0, 160)}
         keywords={`Рик и Морти, ${theory.title}, теория, фан-теория`}
         ogType="article"

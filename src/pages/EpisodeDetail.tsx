@@ -181,7 +181,7 @@ const EpisodeDetail = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
       <SEO
-        title={`${episode.title} - S${episode.season}E${episode.episode}`}
+        title={`Смотреть ${episode.episode} эпизод Рика и Морти в хорошем качестве`}
         description={episode.description}
         image={episode.image}
         keywords={`Рик и Морти, ${episode.title}, сезон ${episode.season}, эпизод ${episode.episode}, смотреть онлайн`}
