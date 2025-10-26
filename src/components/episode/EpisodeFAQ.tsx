@@ -15,22 +15,47 @@ interface EpisodeFAQProps {
 }
 
 const EpisodeFAQ = ({ episode }: EpisodeFAQProps) => {
+  const generateMetaDescription = () => {
+    const keywords = [
+      `смотреть ${episode.episode} серию Рик и Морти`,
+      `${episode.season} сезон ${episode.episode} эпизод`,
+      'Rick and Morty онлайн',
+      'в хорошем качестве',
+      'с русской озвучкой'
+    ];
+    return `${episode.title} - ${keywords.join(', ')}. ${episode.description.slice(0, 120)}...`;
+  };
+
+  const episodeTypeName = () => {
+    const lastDigit = episode.episode % 10;
+    const lastTwoDigits = episode.episode % 100;
+    
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) return `${episode.episode}-й эпизод`;
+    if (lastDigit === 1) return `${episode.episode}-й эпизод`;
+    if (lastDigit >= 2 && lastDigit <= 4) return `${episode.episode}-й эпизод`;
+    return `${episode.episode}-й эпизод`;
+  };
+
   const faqData = [
     {
-      question: `Где смотреть ${episode.episode} эпизод Рик и Морти онлайн?`,
-      answer: `${episode.episode} эпизод ${episode.season} сезона "Рик и Морти" доступен для просмотра на этой странице в хорошем качестве с русской озвучкой.`
+      question: `Где смотреть ${episode.episode} эпизод ${episode.season} сезона Рик и Морти онлайн бесплатно?`,
+      answer: `Смотреть "${episode.title}" (${episodeTypeName()} ${episode.season} сезона) Rick and Morty можно на этой странице в HD качестве с русской озвучкой совершенно бесплатно. Доступен просмотр на телефоне, планшете и компьютере без регистрации.`
     },
     {
-      question: `Когда вышел эпизод "${episode.title}"?`,
-      answer: `Эпизод "${episode.title}" является ${episode.episode}-м эпизодом ${episode.season} сезона сериала "Рик и Морти".`
+      question: `О чем ${episode.episode} серия ${episode.season} сезона Рик и Морти "${episode.title}"?`,
+      answer: `${episode.description} В этом эпизоде зрители увидят очередные безумные приключения гениального ученого Рика и его внука Морти в мультивселенной.`
     },
     {
-      question: `О чем ${episode.episode} серия Рик и Морти?`,
-      answer: episode.description
+      question: `Когда вышел эпизод "${episode.title}" сериала Рик и Морти?`,
+      answer: `Эпизод "${episode.title}" - это ${episodeTypeName()} ${episode.season} сезона культового анимационного сериала "Рик и Морти" (Rick and Morty). Сериал создан Дэном Хармоном и Джастином Ройландом для канала Adult Swim.`
     },
     {
-      question: `Сколько эпизодов в ${episode.season} сезоне Рик и Морти?`,
-      answer: `${episode.season} сезон "Рик и Морти" включает 10-11 эпизодов. Вы можете посмотреть все эпизоды сезона в плейлисте на сайте.`
+      question: `Можно ли скачать ${episode.episode} серию Рик и Морти?`,
+      answer: `На нашем сайте вы можете смотреть ${episode.episode} эпизод онлайн без скачивания. Это быстрее, безопаснее и не занимает место на устройстве. Просмотр доступен 24/7 в любое время.`
+    },
+    {
+      question: `Есть ли субтитры к эпизоду "${episode.title}"?`,
+      answer: `${episodeTypeName()} ${episode.season} сезона доступен с профессиональной русской озвучкой. Оригинальная озвучка на английском языке также доступна для тех, кто изучает язык.`
     }
   ];
 

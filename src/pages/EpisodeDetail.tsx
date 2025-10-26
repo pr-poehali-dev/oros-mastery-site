@@ -233,14 +233,45 @@ const EpisodeDetail = () => {
     ? comments.reduce((sum, c) => sum + c.rating, 0) / comments.length 
     : 0;
 
+  const generateSeoDescription = () => {
+    const keywords = [
+      'смотреть онлайн',
+      'в хорошем качестве HD',
+      'с русской озвучкой',
+      'бесплатно без регистрации'
+    ];
+    return `${episode.title} - ${episode.season} сезон ${episode.episode} эпизод Рик и Морти ${keywords.join(', ')}. ${episode.description.slice(0, 100)}. Rick and Morty на русском языке.`;
+  };
+
+  const generateSeoTitle = () => {
+    return `Смотреть ${episode.episode} серию ${episode.season} сезона Рик и Морти "${episode.title}" онлайн HD`;
+  };
+
+  const generateSeoKeywords = () => {
+    return [
+      'Рик и Морти',
+      `${episode.season} сезон`,
+      `${episode.episode} эпизод`,
+      episode.title,
+      'смотреть онлайн',
+      'Rick and Morty',
+      'HD качество',
+      'русская озвучка',
+      'бесплатно',
+      'Adult Swim',
+      'мультсериал',
+      'анимация'
+    ].join(', ');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
       <SEO
-        title={`Смотреть ${episode.episode} эпизод Рика и Морти в хорошем качестве`}
-        description={episode.description}
+        title={generateSeoTitle()}
+        description={generateSeoDescription()}
         image={episode.image}
-        keywords={`Рик и Морти, ${episode.title}, сезон ${episode.season}, эпизод ${episode.episode}, смотреть онлайн`}
+        keywords={generateSeoKeywords()}
         ogType="article"
         episodeNumber={episode.episode}
         seasonNumber={episode.season}
