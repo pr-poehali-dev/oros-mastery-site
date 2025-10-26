@@ -10,6 +10,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { generateSlug } from '@/utils/slugify';
+import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
+import WatchedEpisodes from '@/components/WatchedEpisodes';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 
@@ -20,6 +22,7 @@ const Episodes = () => {
   const [selectedSeason, setSelectedSeason] = useState(seasonParam || 'all');
   const [episodes, setEpisodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { watchedEpisodes, removeWatched } = useWatchedEpisodes();
 
   useEffect(() => {
     fetchEpisodes();
@@ -146,6 +149,8 @@ const Episodes = () => {
           </div>
         ) : (
           <>
+        <WatchedEpisodes episodes={watchedEpisodes} onRemove={removeWatched} />
+        
         <div className="mb-8 space-y-6">
           <div className="relative">
             <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />

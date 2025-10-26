@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import { generateSlug } from '@/utils/slugify';
+import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
+import WatchedEpisodes from '@/components/WatchedEpisodes';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
@@ -22,6 +24,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [blogLoading, setBlogLoading] = useState(true);
   const [stats, setStats] = useState({ episodes: 0, seasons: 0 });
+  const { watchedEpisodes, removeWatched } = useWatchedEpisodes();
 
   useEffect(() => {
     fetchEpisodes();
@@ -172,6 +175,8 @@ const Index = () => {
 
       <section id="episodes" className="py-24 bg-gray-900 text-white">
         <div className="container px-4">
+          <WatchedEpisodes episodes={watchedEpisodes} onRemove={removeWatched} />
+          
           <div className="text-center mb-12 animate-fade-in">
             <Badge className="mb-4 bg-green-400/20 text-green-400 border-green-400">Все серии</Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Каталог эпизодов</h2>

@@ -8,6 +8,7 @@ import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Footer from '@/components/Footer';
 import { generateSlug, extractEpisodeInfo } from '@/utils/slugify';
+import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 
 interface Episode {
   id: number;
@@ -64,6 +65,7 @@ const EpisodeDetail = () => {
   const [liked, setLiked] = useState(false);
   const [localLikes, setLocalLikes] = useState(0);
   const [localViews, setLocalViews] = useState(0);
+  const { markAsWatched } = useWatchedEpisodes();
 
   useEffect(() => {
     fetchEpisodeData();
@@ -94,6 +96,16 @@ const EpisodeDetail = () => {
       setLocalViews(data.episode?.views || 0);
       setComments(data.comments || []);
       setArticles(data.articles || []);
+      
+      // Mark as watched
+      markAsWatched({
+        id: foundEpisode.id.toString(),
+        slug: generateSlug(foundEpisode.id, foundEpisode.title),
+        title: foundEpisode.title,
+        season: foundEpisode.season,
+        episode: foundEpisode.episode,
+        image: foundEpisode.image
+      });
       
       // Increment views
       await fetch(`${API_URL}?id=${foundEpisode.id}&action=increment_views`, {
