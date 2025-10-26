@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,14 +15,21 @@ const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f0
 
 const Episodes = () => {
   const navigate = useNavigate();
+  const { season: seasonParam } = useParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSeason, setSelectedSeason] = useState('all');
+  const [selectedSeason, setSelectedSeason] = useState(seasonParam || 'all');
   const [episodes, setEpisodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchEpisodes();
   }, []);
+
+  useEffect(() => {
+    if (seasonParam) {
+      setSelectedSeason(seasonParam);
+    }
+  }, [seasonParam]);
 
   const fetchEpisodes = async () => {
     try {
@@ -68,15 +75,23 @@ const Episodes = () => {
     return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
   };
 
+  const pageTitle = selectedSeason !== 'all' 
+    ? `Сезон ${selectedSeason} - Эпизоды Рик и Морти`
+    : 'Эпизоды Рик и Морти - Полный каталог всех сезонов';
+  
+  const pageDescription = selectedSeason !== 'all'
+    ? `Все эпизоды ${selectedSeason} сезона Рик и Морти с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сезона.`
+    : 'Все эпизоды Рик и Морти с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала. Полный каталог всех серий и сезонов.';
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Эпизоды Рик и Морти - Полный каталог всех сезонов"
-        description="Все эпизоды Рик и Морти с описаниями, рейтингами и датами выхода. Смотрите и обсуждайте лучшие моменты сериала. Полный каталог всех серий и сезонов."
+        title={pageTitle}
+        description={pageDescription}
         keywords="Рик и Морти эпизоды, все серии, сезоны, смотреть онлайн, описание эпизодов, каталог серий Рик и Морти, рейтинги эпизодов"
       />
-      <div className="pt-20">
+      <div className="pt-20 pb-4 container mx-auto px-4">
         <Breadcrumbs />
       </div>
       
@@ -130,19 +145,22 @@ const Episodes = () => {
 
           <div className="flex gap-2 flex-wrap">
             {seasons.map(season => (
-              <Button
+              <Link
                 key={season.id}
-                onClick={() => setSelectedSeason(season.id)}
-                variant={selectedSeason === season.id ? 'default' : 'outline'}
-                className={
-                  selectedSeason === season.id
-                    ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-gray-900 border-0 font-semibold'
-                    : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
-                }
+                to={season.id === 'all' ? '/episodes' : `/episodes/season/${season.id}`}
               >
-                {season.name}
-                <Badge className={selectedSeason === season.id ? "ml-2 bg-gray-900/30 text-gray-900" : "ml-2 bg-white/20"} variant="secondary">{season.count}</Badge>
-              </Button>
+                <Button
+                  variant={selectedSeason === season.id ? 'default' : 'outline'}
+                  className={
+                    selectedSeason === season.id
+                      ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-gray-900 border-0 font-semibold'
+                      : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
+                  }
+                >
+                  {season.name}
+                  <Badge className={selectedSeason === season.id ? "ml-2 bg-gray-900/30 text-gray-900" : "ml-2 bg-white/20"} variant="secondary">{season.count}</Badge>
+                </Button>
+              </Link>
             ))}
           </div>
         </div>

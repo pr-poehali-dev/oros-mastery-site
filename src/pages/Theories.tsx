@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { generateSlug } from '@/utils/slugify';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,14 +15,21 @@ const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951
 
 const Theories = () => {
   const navigate = useNavigate();
+  const { type: typeParam } = useParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedType, setSelectedType] = useState('all');
+  const [selectedType, setSelectedType] = useState(typeParam || 'all');
   const [theories, setTheories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTheories();
   }, []);
+
+  useEffect(() => {
+    if (typeParam) {
+      setSelectedType(typeParam);
+    }
+  }, [typeParam]);
 
   const fetchTheories = async () => {
     try {
@@ -87,11 +94,11 @@ const Theories = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Теории Рик и Морти - Фанатские теории и анализ"
+        title={selectedType !== 'all' ? `${types.find(t => t.id === selectedType)?.name} - Теории Рик и Морти` : "Теории Рик и Морти - Фанатские теории и анализ"}
         description="Фанатские теории о Рик и Морти. Злой Морти, мультивселенная, тайны персонажей и научные концепции сериала. Полный каталог теорий с доказательствами."
         keywords="Рик и Морти теории, фанатские теории, Злой Морти, мультивселенная, анализ, теории Рик и Морти, разбор сериала, фан-теории"
       />
-      <div className="pt-20">
+      <div className="pt-20 pb-4 container mx-auto px-4">
         <Breadcrumbs />
       </div>
       
@@ -134,19 +141,22 @@ const Theories = () => {
 
           <div className="flex gap-2 flex-wrap">
             {types.map(type => (
-              <Button
+              <Link
                 key={type.id}
-                onClick={() => setSelectedType(type.id)}
-                variant={selectedType === type.id ? 'default' : 'outline'}
-                className={
-                  selectedType === type.id
-                    ? 'bg-gradient-to-r from-green-400 to-cyan-400 text-gray-900 border-0 font-semibold hover:from-green-500 hover:to-cyan-500'
-                    : 'border-cyan-500/30 text-cyan-300 bg-gray-800/50 hover:bg-cyan-500/10 hover:border-cyan-500/50'
-                }
+                to={type.id === 'all' ? '/theories' : `/theories/type/${type.id}`}
               >
-                <Icon name={type.icon as any} size={16} className="mr-2" />
-                {type.name}
-              </Button>
+                <Button
+                  variant={selectedType === type.id ? 'default' : 'outline'}
+                  className={
+                    selectedType === type.id
+                      ? 'bg-gradient-to-r from-green-400 to-cyan-400 text-gray-900 border-0 font-semibold hover:from-green-500 hover:to-cyan-500'
+                      : 'border-cyan-500/30 text-cyan-300 bg-gray-800/50 hover:bg-cyan-500/10 hover:border-cyan-500/50'
+                  }
+                >
+                  <Icon name={type.icon as any} size={16} className="mr-2" />
+                  {type.name}
+                </Button>
+              </Link>
             ))}
           </div>
         </div>

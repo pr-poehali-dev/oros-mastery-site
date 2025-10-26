@@ -27,7 +27,10 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
     'theory': 'Теория',
     'episode': 'Эпизод',
     'about': 'О сайте',
-    'contact': 'Контакты'
+    'contact': 'Контакты',
+    'season': 'Сезон',
+    'type': 'Тип',
+    'danger': 'Уровень опасности'
   };
 
   if (pathnames.length === 0) {
@@ -40,6 +43,7 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
 
   pathnames.forEach((value, index) => {
     const isLast = index === pathnames.length - 1;
+    const prevValue = index > 0 ? pathnames[index - 1] : null;
     
     if (isLast && customLabel) {
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
@@ -54,6 +58,27 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
       const path = sectionMap[value] || `/${pathnames.slice(0, index + 1).join('/')}`;
       const label = breadcrumbNameMap[value];
       breadcrumbs.push({ label, path });
+    } else if (prevValue === 'season') {
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+      breadcrumbs.push({ label: `Сезон ${value}`, path });
+    } else if (prevValue === 'type') {
+      const typeNames: { [key: string]: string } = {
+        'character': 'Персонажи',
+        'multiverse': 'Мультивселенная',
+        'science': 'Наука',
+        'future': 'Будущее'
+      };
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+      breadcrumbs.push({ label: typeNames[value] || value, path });
+    } else if (prevValue === 'danger') {
+      const dangerNames: { [key: string]: string } = {
+        'low': 'Низкий',
+        'medium': 'Средний',
+        'high': 'Высокий',
+        'critical': 'Критический'
+      };
+      const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+      breadcrumbs.push({ label: dangerNames[value] || value, path });
     } else if (value.includes('-')) {
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
       breadcrumbs.push({ label: '', path });
@@ -93,16 +118,18 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
     };
   }, [location.pathname]);
 
+  const filteredBreadcrumbs = breadcrumbs.filter(b => b.label !== '');
+
   return (
     <nav className="bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/50" aria-label="Навигационная цепочка">
-      <div className="container mx-auto px-4 py-3">
+      <div className="px-4 py-3">
         <ol className="flex items-center gap-2 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
-          {breadcrumbs.map((crumb, index) => (
+          {filteredBreadcrumbs.map((crumb, index) => (
             <li key={crumb.path} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
               {index > 0 && (
                 <Icon name="ChevronRight" size={16} className="text-gray-500" />
               )}
-              {index === breadcrumbs.length - 1 ? (
+              {index === filteredBreadcrumbs.length - 1 ? (
                 <>
                   <span className="text-cyan-400 font-semibold" itemProp="name">{crumb.label}</span>
                   <meta itemProp="position" content={String(index + 1)} />

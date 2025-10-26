@@ -34,12 +34,15 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/episodes" element={<Episodes />} />
+          <Route path="/episodes/season/:season" element={<Episodes />} />
           <Route path="/episode/:slug" element={<EpisodeDetail />} />
           <Route path="/universes" element={<Universes />} />
+          <Route path="/universes/danger/:danger" element={<Universes />} />
           <Route path="/universe/:slug" element={<UniverseDetail />} />
           <Route path="/characters" element={<Characters />} />
           <Route path="/character/:slug" element={<CharacterDetail />} />
           <Route path="/theories" element={<Theories />} />
+          <Route path="/theories/type/:type" element={<Theories />} />
           <Route path="/theory/:slug" element={<TheoryDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,13 +14,20 @@ const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951
 
 const Universes = () => {
   const navigate = useNavigate();
-  const [selectedDimension, setSelectedDimension] = useState<number | null>(null);
+  const { danger: dangerParam } = useParams();
+  const [selectedDanger, setSelectedDanger] = useState(dangerParam || 'all');
   const [universes, setUniverses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchUniverses();
   }, []);
+
+  useEffect(() => {
+    if (dangerParam) {
+      setSelectedDanger(dangerParam);
+    }
+  }, [dangerParam]);
 
   const fetchUniverses = async () => {
     try {
@@ -39,7 +46,26 @@ const Universes = () => {
 
 
 
-  const displayUniverses = universes;
+  const dangerLevels = [
+    { id: 'all', name: 'Все уровни' },
+    { id: 'low', name: 'Низкий' },
+    { id: 'medium', name: 'Средний' },
+    { id: 'high', name: 'Высокий' },
+    { id: 'critical', name: 'Критический' }
+  ];
+
+  const filteredUniverses = selectedDanger === 'all' 
+    ? universes 
+    : universes.filter(u => {
+        const lowerDanger = u.danger_level?.toLowerCase() || '';
+        if (selectedDanger === 'low') return lowerDanger.includes('низкий');
+        if (selectedDanger === 'medium') return lowerDanger.includes('средний');
+        if (selectedDanger === 'high') return lowerDanger.includes('высокий');
+        if (selectedDanger === 'critical') return lowerDanger.includes('критический') || lowerDanger.includes('экстрем');
+        return false;
+      });
+
+  const displayUniverses = filteredUniverses;
 
   const getDangerColor = (danger: string) => {
     const lowerDanger = danger?.toLowerCase() || '';
@@ -62,11 +88,11 @@ const Universes = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Вселенные Рик и Морти - Гид по мультивселенной"
+        title={selectedDanger !== 'all' ? `${dangerLevels.find(d => d.id === selectedDanger)?.name} уровень опасности - Вселенные Рик и Морти` : "Вселенные Рик и Морти - Гид по мультивселенной"}
         description="Исследуйте все вселенные Рик и Морти. Цитадель Риков, Кроненберг-вселенная и другие измерения мультивселенной. Полный каталог всех вселенных и измерений."
         keywords="Рик и Морти вселенные, измерения, C-137, Цитадель Риков, мультивселенная, вселенная Рик и Морти, все измерения, каталог вселенных"
       />
-      <div className="pt-20">
+      <div className="pt-20 pb-4 container mx-auto px-4">
         <Breadcrumbs />
       </div>
       
@@ -100,6 +126,30 @@ const Universes = () => {
             <div className="text-cyan-400 text-xl">Загрузка вселенных...</div>
           </div>
         ) : (
+          <>
+            <div className="mb-8">
+              <div className="flex gap-2 flex-wrap">
+                {dangerLevels.map(level => (
+                  <Link
+                    key={level.id}
+                    to={level.id === 'all' ? '/universes' : `/universes/danger/${level.id}`}
+                  >
+                    <Button
+                      variant={selectedDanger === level.id ? 'default' : 'outline'}
+                      className={
+                        selectedDanger === level.id
+                          ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-gray-900 border-0 font-semibold'
+                          : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
+                      }
+                    >
+                      {level.name}
+                    </Button>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </>)}
+        {!loading && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayUniverses.map((universe) => (
             <Card 
