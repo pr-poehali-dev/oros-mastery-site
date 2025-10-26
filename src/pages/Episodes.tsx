@@ -105,7 +105,9 @@ const Episodes = () => {
           </Badge>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Все эпизоды
+            {selectedSeason === 'all' 
+              ? 'Все эпизоды' 
+              : `Смотреть ${selectedSeason} сезон Рика и Морти в хорошем качестве онлайн`}
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">

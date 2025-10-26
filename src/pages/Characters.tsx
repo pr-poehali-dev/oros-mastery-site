@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,8 +15,9 @@ const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951
 
 const Characters = () => {
   const navigate = useNavigate();
+  const { species: speciesParam } = useParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSpecies, setSelectedSpecies] = useState('all');
+  const [selectedSpecies, setSelectedSpecies] = useState(speciesParam || 'all');
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [availableSpecies, setAvailableSpecies] = useState<string[]>([]);
@@ -24,6 +25,14 @@ const Characters = () => {
   useEffect(() => {
     fetchCharacters();
   }, []);
+
+  useEffect(() => {
+    if (speciesParam) {
+      setSelectedSpecies(speciesParam);
+    } else {
+      setSelectedSpecies('all');
+    }
+  }, [speciesParam]);
 
   const fetchCharacters = async () => {
     try {
@@ -221,7 +230,7 @@ const Characters = () => {
           </Badge>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Герои сериала
+            {selectedSpecies === 'all' ? 'Персонажи' : `${selectedSpecies}`}
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
@@ -252,7 +261,13 @@ const Characters = () => {
             {species.map(spec => (
               <Button
                 key={spec.id}
-                onClick={() => setSelectedSpecies(spec.id)}
+                onClick={() => {
+                  if (spec.id === 'all') {
+                    navigate('/characters');
+                  } else {
+                    navigate(`/characters/species/${spec.id}`);
+                  }
+                }}
                 variant={selectedSpecies === spec.id ? 'default' : 'outline'}
                 className={
                   selectedSpecies === spec.id
