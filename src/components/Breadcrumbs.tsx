@@ -128,7 +128,7 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
 
   return (
     <nav className="bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/50" aria-label="Навигационная цепочка">
-      <div className="px-4 py-3">
+      <div className="container mx-auto px-4 py-3">
         <ol className="flex items-center gap-2 text-sm" itemScope itemType="https://schema.org/BreadcrumbList">
           {filteredBreadcrumbs.map((crumb, index) => (
             <li key={crumb.path} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
