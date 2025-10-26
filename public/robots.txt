@@ -7,10 +7,16 @@ Disallow: /login
 Disallow: /private/
 
 # Sitemap
-Sitemap: https://functions.poehali.dev/e8e6d4c7-b2e7-4e11-b48f-a4c6eb2e8cc7
+Sitemap: https://functions.poehali.dev/ef8dba09-e4a9-4cda-8f1c-29b8444eea2a
+
+# RSS Feed
+Sitemap: https://functions.poehali.dev/b693b55c-12cf-432c-a0f8-a29bd1b5deb8
 
 # Crawl-delay
 Crawl-delay: 1
+
+# Host (main domain)
+Host: https://rick-and-morty.poehali.dev
 
 # Specific bot rules
 User-agent: Googlebot
