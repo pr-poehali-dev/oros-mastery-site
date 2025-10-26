@@ -76,6 +76,33 @@ const EpisodeDetail = () => {
     fetchEpisodeData();
   }, [slug]);
 
+  useEffect(() => {
+    if (episode && allEpisodes.length > 0) {
+      prefetchNextEpisode();
+    }
+  }, [episode, allEpisodes]);
+
+  const prefetchNextEpisode = async () => {
+    if (!episode) return;
+
+    try {
+      const response = await fetch(`${API_URL}?id=${episode.id}&action=get_navigation&current_id=${episode.id}&direction=next`);
+      const data = await response.json();
+      
+      if (data.episode) {
+        const nextSlug = generateSlug(data.episode.id, data.episode.title);
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = `/episode/${nextSlug}`;
+        document.head.appendChild(link);
+
+        fetch(`${API_URL}?id=${data.episode.id}`).catch(() => {});
+      }
+    } catch (error) {
+      console.error('Prefetch error:', error);
+    }
+  };
+
   const fetchEpisodeData = async () => {
     try {
       const episodesResponse = await fetch('https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389');
