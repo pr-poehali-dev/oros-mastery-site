@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { WatchedEpisode } from '@/hooks/useWatchedEpisodes';
 
@@ -8,56 +11,97 @@ interface WatchedEpisodesProps {
 }
 
 const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
+  const [startIndex, setStartIndex] = useState(0);
+
   if (episodes.length === 0) return null;
+
+  const displayedEpisodes = episodes.slice(startIndex, startIndex + 3);
+  const canGoPrev = startIndex > 0;
+  const canGoNext = startIndex + 3 < episodes.length;
+
+  const handlePrev = () => {
+    if (canGoPrev) setStartIndex(startIndex - 1);
+  };
+
+  const handleNext = () => {
+    if (canGoNext) setStartIndex(startIndex + 1);
+  };
 
   return (
     <div className="mb-12">
-      <div className="flex items-center gap-3 mb-6">
-        <Icon name="Clock" size={28} className="text-cyan-400" />
-        <h2 className="text-2xl md:text-3xl font-bold text-white">
-          Просмотренное
-        </h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <Icon name="Clock" size={24} className="text-cyan-400" />
+          <h2 className="text-xl md:text-2xl font-bold text-white">
+            Просмотренное
+          </h2>
+        </div>
+        {episodes.length > 3 && (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePrev}
+              disabled={!canGoPrev}
+              className="h-8 w-8 rounded-full border-gray-700 text-white disabled:opacity-30 hover:bg-gray-700"
+            >
+              <Icon name="ChevronLeft" size={18} />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNext}
+              disabled={!canGoNext}
+              className="h-8 w-8 rounded-full border-gray-700 text-white disabled:opacity-30 hover:bg-gray-700"
+            >
+              <Icon name="ChevronRight" size={18} />
+            </Button>
+          </div>
+        )}
       </div>
 
-      <div className="relative">
-        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">
-          {episodes.map((episode) => (
-            <div
-              key={episode.id}
-              className="flex-shrink-0 w-64 group relative"
-            >
-              <Link to={`/episode/${episode.slug}`}>
-                <div className="relative rounded-lg overflow-hidden aspect-video mb-3">
-                  <img
-                    src={episode.image}
-                    alt={episode.title}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 left-2 right-2">
-                    <div className="text-xs text-cyan-400 font-semibold mb-1">
-                      S{episode.season}E{episode.episode}
-                    </div>
-                  </div>
-                </div>
-                <h3 className="text-white font-semibold text-sm line-clamp-2 group-hover:text-cyan-400 transition-colors">
-                  {episode.title}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {displayedEpisodes.map((ep) => (
+          <Link
+            key={ep.id}
+            to={`/episode/${ep.slug}`}
+            className="group"
+          >
+            <div className="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all">
+              <div className="relative aspect-video overflow-hidden">
+                <img
+                  src={ep.image}
+                  alt={ep.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <Badge className="absolute top-3 left-3 bg-cyan-400/90 text-gray-900 border-0 font-bold">
+                  S{ep.season}E{ep.episode}
+                </Badge>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onRemove(ep.id);
+                  }}
+                  className="absolute top-3 right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
+                  aria-label="Удалить из просмотренного"
+                >
+                  <Icon name="X" size={16} className="text-white" />
+                </button>
+              </div>
+              <div className="p-4">
+                <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors">
+                  {ep.title}
                 </h3>
-              </Link>
-              
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  onRemove(episode.id);
-                }}
-                className="absolute top-2 right-2 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors"
-                aria-label="Удалить из просмотренного"
-              >
-                <Icon name="X" size={16} className="text-white" />
-              </button>
+                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                  <Icon name="Clock" size={14} />
+                  <span>Недавно просмотрено</span>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
