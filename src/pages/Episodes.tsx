@@ -12,6 +12,7 @@ import SEO from '@/components/SEO';
 import { generateSlug } from '@/utils/slugify';
 import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 import WatchedEpisodes from '@/components/WatchedEpisodes';
+import EpisodesSeoContent from '@/components/EpisodesSeoContent';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 
@@ -272,6 +273,11 @@ const Episodes = () => {
           </Card>
         </div>
       </section>
+
+      <EpisodesSeoContent 
+        season={selectedSeason} 
+        episodesCount={filteredEpisodes.length}
+      />
 
       <Footer />
     </div>

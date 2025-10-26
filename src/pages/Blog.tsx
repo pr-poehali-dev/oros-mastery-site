@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import BlogSeoContent from '@/components/BlogSeoContent';
 import { generateSlug } from '@/utils/slugify';
 
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
@@ -188,9 +189,9 @@ const Blog = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Блог Рик и Морти - Теории, анализ и факты"
-        description="Блог о Рик и Морти - теории фанатов, анализ эпизодов, интересные факты, философские размышления и научные концепции из сериала. Глубокий разбор мультсериала."
-        keywords="Рик и Морти блог, теории, анализ эпизодов, пасхалки, персонажи, философия, наука, блог Рик и Морти, статьи о сериале"
+        title="Блог о Рик и Морти: теории фанатов, разборы эпизодов, анализ персонажей"
+        description="Читайте блог о Rick and Morty с глубокими разборами всех эпизодов, невероятными теориями о мультивселенной, анализом персонажей и скрытых пасхалок. Обсуждения философии сериала, научных концепций и секретов каждой серии. Присоединяйтесь к сообществу фанатов!"
+        keywords="Рик и Морти блог, теории Rick and Morty, разбор эпизодов, анализ персонажей, пасхалки, скрытые детали, философия сериала, Evil Morty теория, мультивселенная, научная фантастика, Adult Swim, фан-теории"
       />
       <div className="pt-20">
         <Breadcrumbs />
@@ -456,6 +457,8 @@ const Blog = () => {
           </Card>
         </div>
       </section>
+
+      <BlogSeoContent />
 
       <Footer />
     </div>
