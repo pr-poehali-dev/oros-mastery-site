@@ -11,6 +11,8 @@ interface SEOProps {
   publishedTime?: string;
   episodeNumber?: number;
   seasonNumber?: number;
+  rating?: number;
+  ratingCount?: number;
 }
 
 const SEO = ({
@@ -23,7 +25,9 @@ const SEO = ({
   author,
   publishedTime,
   episodeNumber,
-  seasonNumber
+  seasonNumber,
+  rating,
+  ratingCount
 }: SEOProps) => {
   const type = ogType;
   const isEpisode = episodeNumber !== undefined && seasonNumber !== undefined;
@@ -131,6 +135,15 @@ const SEO = ({
           'height': 630
         }
       };
+
+      if (rating && ratingCount) {
+        structuredData.aggregateRating = {
+          '@type': 'AggregateRating',
+          'ratingValue': rating,
+          'bestRating': 5,
+          'ratingCount': ratingCount
+        };
+      }
     } else {
       structuredData = {
         ...structuredData,

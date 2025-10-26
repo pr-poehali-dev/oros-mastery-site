@@ -15,6 +15,7 @@ const EpisodeArticles = lazy(() => import('@/components/episode/EpisodeArticles'
 const EpisodeComments = lazy(() => import('@/components/episode/EpisodeComments'));
 const EpisodeSidebar = lazy(() => import('@/components/episode/EpisodeSidebar'));
 const RelatedEpisodes = lazy(() => import('@/components/episode/RelatedEpisodes'));
+const EpisodeFAQ = lazy(() => import('@/components/episode/EpisodeFAQ'));
 
 interface Episode {
   id: number;
@@ -228,6 +229,10 @@ const EpisodeDetail = () => {
     );
   }
 
+  const averageRating = comments.length > 0 
+    ? comments.reduce((sum, c) => sum + c.rating, 0) / comments.length 
+    : 0;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <Navigation />
@@ -239,6 +244,8 @@ const EpisodeDetail = () => {
         ogType="article"
         episodeNumber={episode.episode}
         seasonNumber={episode.season}
+        rating={averageRating > 0 ? averageRating : undefined}
+        ratingCount={comments.length > 0 ? comments.length : undefined}
       />
       <div className="pt-20">
         <Breadcrumbs customLabel={episode.title} />
@@ -279,6 +286,8 @@ const EpisodeDetail = () => {
                 articles={articles}
                 funFacts={episode.funFacts}
               />
+
+              <EpisodeFAQ episode={episode} />
 
               <EpisodeComments
                 comments={comments}
