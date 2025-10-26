@@ -100,6 +100,10 @@ const Index = () => {
               src="https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg" 
               alt="Portal"
               className="relative w-64 h-64 object-cover rounded-full border-4 border-green-400 shadow-2xl"
+              loading="eager"
+              fetchpriority="high"
+              width="256"
+              height="256"
             />
           </div>
 
