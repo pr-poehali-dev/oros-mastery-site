@@ -61,47 +61,59 @@ const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        {displayedEpisodes.map((ep) => (
-          <Link
-            key={ep.id}
-            to={`/episode/${ep.slug}`}
-            className="group"
-          >
-            <div className="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all">
-              <div className="relative aspect-video overflow-hidden">
-                <img
-                  src={ep.image}
-                  alt={ep.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                <Badge className="absolute top-2 md:top-3 left-2 md:left-3 bg-cyan-400/90 text-gray-900 border-0 font-bold text-xs md:text-sm">
-                  S{ep.season}E{ep.episode}
-                </Badge>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onRemove(ep.id);
-                  }}
-                  className="absolute top-2 md:top-3 right-2 md:right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
-                  aria-label="Удалить из просмотренного"
-                >
-                  <Icon name="X" size={14} className="text-white" />
-                </button>
-              </div>
-              <div className="p-3 md:p-4">
-                <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors text-sm md:text-base">
-                  {ep.title}
-                </h3>
-                <div className="flex items-center gap-2 text-gray-400 text-xs md:text-sm">
-                  <Icon name="Clock" size={12} />
-                  <span>Недавно просмотрено</span>
+        {displayedEpisodes.map((ep, index) => {
+          const isLatest = startIndex === 0 && index === 0;
+          return (
+            <div key={ep.id} className="group flex flex-col">
+              <Link
+                to={`/episode/${ep.slug}`}
+                className="flex-1 flex flex-col"
+              >
+                <div className="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all flex-1 flex flex-col">
+                  <div className="relative aspect-video overflow-hidden">
+                    <img
+                      src={ep.image}
+                      alt={ep.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <Badge className="absolute top-2 md:top-3 left-2 md:left-3 bg-cyan-400/90 text-gray-900 border-0 font-bold text-xs md:text-sm">
+                      Сезон {ep.season} серия {ep.episode}
+                    </Badge>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onRemove(ep.id);
+                      }}
+                      className="absolute top-2 md:top-3 right-2 md:right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
+                      aria-label="Удалить из просмотренного"
+                    >
+                      <Icon name="X" size={14} className="text-white" />
+                    </button>
+                  </div>
+                  <div className="p-3 md:p-4 flex-1 flex flex-col">
+                    <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors text-sm md:text-base min-h-[2.5rem] md:min-h-[3rem]">
+                      {ep.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-gray-400 text-xs md:text-sm mt-auto">
+                      <Icon name="Clock" size={12} />
+                      <span>Недавно просмотрено</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Link>
+              {isLatest && (
+                <Link to={`/episode/${ep.slug}`} className="mt-3">
+                  <Button className="w-full bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-600 hover:to-green-600 text-white font-semibold">
+                    <Icon name="Play" size={16} className="mr-2" />
+                    Продолжить просмотр
+                  </Button>
+                </Link>
+              )}
             </div>
-          </Link>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
