@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
@@ -9,11 +9,12 @@ import Footer from '@/components/Footer';
 import { generateSlug } from '@/utils/slugify';
 import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
-import EpisodeVideo from '@/components/episode/EpisodeVideo';
-import EpisodeArticles from '@/components/episode/EpisodeArticles';
-import EpisodeComments from '@/components/episode/EpisodeComments';
-import EpisodeSidebar from '@/components/episode/EpisodeSidebar';
-import RelatedEpisodes from '@/components/episode/RelatedEpisodes';
+
+const EpisodeVideo = lazy(() => import('@/components/episode/EpisodeVideo'));
+const EpisodeArticles = lazy(() => import('@/components/episode/EpisodeArticles'));
+const EpisodeComments = lazy(() => import('@/components/episode/EpisodeComments'));
+const EpisodeSidebar = lazy(() => import('@/components/episode/EpisodeSidebar'));
+const RelatedEpisodes = lazy(() => import('@/components/episode/RelatedEpisodes'));
 
 interface Episode {
   id: number;
@@ -223,43 +224,57 @@ const EpisodeDetail = () => {
           </Button>
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <EpisodeVideo
-              episode={episode}
-              localLikes={localLikes}
-              localViews={localViews}
-              liked={liked}
-              onLike={handleLike}
-              onNavigate={handleNavigate}
-            />
+        <Suspense fallback={
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <div className="h-96 bg-gray-800/50 rounded-lg animate-pulse"></div>
+              <div className="h-64 bg-gray-800/50 rounded-lg animate-pulse"></div>
+              <div className="h-96 bg-gray-800/50 rounded-lg animate-pulse"></div>
+            </div>
+            <div className="space-y-6">
+              <div className="h-48 bg-gray-800/50 rounded-lg animate-pulse"></div>
+              <div className="h-96 bg-gray-800/50 rounded-lg animate-pulse"></div>
+            </div>
+          </div>
+        }>
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <EpisodeVideo
+                episode={episode}
+                localLikes={localLikes}
+                localViews={localViews}
+                liked={liked}
+                onLike={handleLike}
+                onNavigate={handleNavigate}
+              />
 
-            <EpisodeArticles
-              articles={articles}
-              funFacts={episode.funFacts}
-            />
+              <EpisodeArticles
+                articles={articles}
+                funFacts={episode.funFacts}
+              />
 
-            <EpisodeComments
-              comments={comments}
-              onSubmit={handleSubmitComment}
-              generateAvatar={generateAvatar}
-            />
+              <EpisodeComments
+                comments={comments}
+                onSubmit={handleSubmitComment}
+                generateAvatar={generateAvatar}
+              />
+            </div>
+
+            <div className="space-y-6">
+              <EpisodeSidebar
+                episode={episode}
+                allEpisodes={allEpisodes}
+                generateSlug={generateSlug}
+              />
+            </div>
           </div>
 
-          <div className="space-y-6">
-            <EpisodeSidebar
-              episode={episode}
-              allEpisodes={allEpisodes}
-              generateSlug={generateSlug}
-            />
-          </div>
-        </div>
-
-        <RelatedEpisodes
-          currentEpisode={episode}
-          allEpisodes={allEpisodes}
-          generateSlug={generateSlug}
-        />
+          <RelatedEpisodes
+            currentEpisode={episode}
+            allEpisodes={allEpisodes}
+            generateSlug={generateSlug}
+          />
+        </Suspense>
       </div>
 
       <Footer />
