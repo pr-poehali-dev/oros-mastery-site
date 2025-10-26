@@ -90,9 +90,9 @@ const Universes = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title={selectedDanger !== 'all' ? `${dangerLevels.find(d => d.id === selectedDanger)?.name} уровень опасности - Вселенные Рик и Морти` : "Вселенные Рик и Морти - Гид по мультивселенной"}
-        description="Исследуйте все вселенные Рик и Морти. Цитадель Риков, Кроненберг-вселенная и другие измерения мультивселенной. Полный каталог всех вселенных и измерений."
-        keywords="Рик и Морти вселенные, измерения, C-137, Цитадель Риков, мультивселенная, вселенная Рик и Морти, все измерения, каталог вселенных"
+        title={selectedDanger !== 'all' ? `${dangerLevels.find(d => d.id === selectedDanger)?.name} уровень опасности - Вселенные Рик и Морти` : "Вселенные Rick and Morty: полный гид по мультивселенной, каталог измерений"}
+        description="Полный каталог вселенных и измерений Рика и Морти с описанием, уровнем опасности и историей. Исследуйте C-137, Цитадель Риков, Кроненберг-вселенную и сотни других параллельных миров, посещённых героями. Полная карта мультивселенной с фильтрами по уровню опасности."
+        keywords="Рик и Морти вселенные, измерения Rick and Morty, C-137 вселенная, Цитадель Риков, Кроненберг вселенная, мультивселенная, параллельные измерения, каталог вселенных, карта мультивселенной, опасные измерения"
       />
       <div className="pt-20 pb-4 container mx-auto px-4">
         <Breadcrumbs />
@@ -130,6 +130,63 @@ const Universes = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto mb-12 text-gray-200 bg-gray-800/30 rounded-lg p-8">
+          <h2 className="text-3xl font-bold mb-6 text-white">Мультивселенная Rick and Morty: гид по бесконечности измерений</h2>
+          
+          <p className="mb-4 text-lg leading-relaxed">
+            В сериале **Рик и Морти** существует **бесконечное количество вселенных** - от близких копий нашей реальности до абсолютно безумных измерений с уникальными законами физики. 
+            Мы создали самый полный каталог известных вселенных, посещённых Риком и Морти во всех сезонах.
+          </p>
+
+          <h3 className="text-2xl font-semibold mb-4 text-purple-400 flex items-center">
+            <Icon name="Globe" size={24} className="mr-2" />
+            Известные вселенные и измерения
+          </h3>
+          
+          <ul className="space-y-3 mb-6">
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-purple-400 flex-shrink-0" />
+              <span><strong className="text-white">Вселенная C-137:</strong> Родная вселенная Рика Санчеза, главного героя сериала</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-purple-400 flex-shrink-0" />
+              <span><strong className="text-white">Цитадель Риков:</strong> Город-государство из тысяч Риков и Морти из разных измерений</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-purple-400 flex-shrink-0" />
+              <span><strong className="text-white">Кроненберг-вселенная:</strong> Измерение, где Рик прревратил всех людей в мутантов</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-purple-400 flex-shrink-0" />
+              <span><strong className="text-white">Альтернативные вселенные:</strong> Измерения, где история пошла другим путём - с другими Риками, Морти и событиями</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-purple-400 flex-shrink-0" />
+              <span><strong className="text-white">Экзотические измерения:</strong> Вселенные с уникальными свойствами, чудовищами и правилами</span>
+            </li>
+          </ul>
+
+          <h3 className="text-2xl font-semibold mb-4 text-purple-400 flex items-center">
+            <Icon name="Shield" size={24} className="mr-2" />
+            Уровни опасности вселенных
+          </h3>
+          
+          <p className="mb-4">
+            Каждой вселенной присвоен **уровень опасности** - от безопасных измерений до критически опасных миров, где выживание почти невозможно. Используйте фильтры, чтобы найти вселенные по уровню угрозы.
+          </p>
+
+          <p className="mb-4">
+            Каждая карточка вселенной содержит: название, описание, уровень опасности, особенности и важные события, которые произошли в этой вселенной. Нажмите на карточку для подробной информации.
+          </p>
+
+          <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4 mt-6">
+            <p className="text-sm flex items-start">
+              <Icon name="Sparkles" size={18} className="mr-2 mt-0.5 text-purple-400 flex-shrink-0" />
+              <span><strong>Интересный факт:</strong> Согласно теории сериала, существует бесконечное количество вселенных, где возможны любые события - но Рик посещает лишь те, где он самый умный человек во вселенной!</span>
+            </p>
+          </div>
+        </div>
+
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <div className="text-cyan-400 text-xl">Загрузка вселенных...</div>

@@ -212,9 +212,9 @@ const Characters = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title="Персонажи Рик и Морти - Полный каталог героев"
-        description="Познакомьтесь со всеми персонажами Рик и Морти. Рик, Морти, Саммер, семья Смитов и другие герои сериала. Биографии, описания и факты о персонажах."
-        keywords="Рик и Морти персонажи, Рик Санчез, Морти Смит, герои, инопланетяне, персонажи Рик и Морти, биографии героев, все персонажи"
+        title="Персонажи Рик и Морти: полный каталог героев из всех сезонов с биографиями"
+        description="Изучайте всех персонажей Rick and Morty - от семьи Смитов до инопланетных существ из разных вселенных. Подробные биографии Рика Санчеза, Морти Смита, Саммер, Бёрда Персона, Evil Morty и сотен других героев. Описания, факты, статус персонажей, связи между ними."
+        keywords="Рик и Морти персонажи, Рик Санчез биография, Морти Смит, Саммер Смит, семья Смитов, Evil Morty, Бёрд Персон, Pickle Rick, Мистер Мисикс, инопланетяне, герои сериала, все персонажи Rick and Morty, энциклопедия героев"
       />
       <div className="pt-20">
         <Breadcrumbs />
@@ -240,6 +240,63 @@ const Characters = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto mb-12 text-gray-200 bg-gray-800/30 rounded-lg p-8">
+          <h2 className="text-3xl font-bold mb-6 text-white">Полная энциклопедия персонажей Rick and Morty</h2>
+          
+          <p className="mb-4 text-lg leading-relaxed">
+            Добро пожаловать в **крупнейший русскоязычный каталог персонажей** культового мультсериала! 
+            Мы собрали подробную информацию о всех героях из вселенной Рика и Морти - от главных действующих лиц до второстепенных персонажей, которые появились всего в одном эпизоде.
+          </p>
+
+          <h3 className="text-2xl font-semibold mb-4 text-cyan-400 flex items-center">
+            <Icon name="Users" size={24} className="mr-2" />
+            Кого вы найдёте в каталоге?
+          </h3>
+          
+          <ul className="space-y-3 mb-6">
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Семья Смитов:</strong> Рик Санчез C-137, Морти Смит, Саммер Смит, Джерри и Бет - полные биографии, история, характер и развитие персонажей</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Культовые антагонисты:</strong> Evil Morty, Федерация, Тамми, Феникс-персон и другие враги Рика</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Друзья и союзники:</strong> Бёрд Персон, Сквончи, Мистер Мисикс, Джессика и другие важные персонажи</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Инопланетные расы:</strong> Существа из разных вселенных, измерений и планет мультивселенной</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Альтернативные версии:</strong> Рики и Морти из параллельных измерений, включая Doofus Rick, Cop Rick и других</span>
+            </li>
+          </ul>
+
+          <h3 className="text-2xl font-semibold mb-4 text-cyan-400 flex items-center">
+            <Icon name="Search" size={24} className="mr-2" />
+            Как искать персонажей?
+          </h3>
+          
+          <p className="mb-4">
+            Используйте **поисковую строку** для быстрого поиска по имени. Или примените **фильтры по расам** - люди, инопланетяне, роботы, животные и другие виды существ из вселенной Rick and Morty.
+          </p>
+
+          <p className="mb-4">
+            Каждая карточка персонажа содержит: фотографию, статус (жив/погиб/неизвестно), расу, место происхождения и краткую информацию. Кликните на персонажа, чтобы узнать полную биографию, историю появлений и интересные факты.
+          </p>
+
+          <div className="bg-cyan-900/20 border border-cyan-500/30 rounded-lg p-4 mt-6">
+            <p className="text-sm flex items-start">
+              <Icon name="Sparkles" size={18} className="mr-2 mt-0.5 text-cyan-400 flex-shrink-0" />
+              <span><strong>Совет:</strong> Добавляйте персонажей в избранное, чтобы отслеживать информацию о любимых героях и не пропустить обновления их историй в новых сезонах!</span>
+            </p>
+          </div>
+        </div>
+
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <div className="text-cyan-400 text-xl">Загрузка персонажей...</div>

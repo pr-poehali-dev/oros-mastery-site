@@ -94,9 +94,9 @@ const Theories = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navigation />
       <SEO
-        title={selectedType !== 'all' ? `${types.find(t => t.id === selectedType)?.name} - Теории Рик и Морти` : "Теории Рик и Морти - Фанатские теории и анализ"}
-        description="Фанатские теории о Рик и Морти. Злой Морти, мультивселенная, тайны персонажей и научные концепции сериала. Полный каталог теорий с доказательствами."
-        keywords="Рик и Морти теории, фанатские теории, Злой Морти, мультивселенная, анализ, теории Рик и Морти, разбор сериала, фан-теории"
+        title={selectedType !== 'all' ? `${types.find(t => t.id === selectedType)?.name} - Теории Рик и Морти` : "Теории Rick and Morty: самые невероятные фанатские теории, разгадки тайн"}
+        description="Изучайте самые невероятные фанатские теории о Рике и Морти с доказательствами и анализом. Разгадки тайн Evil Morty, теории о мультивселенной, скрытые послания создателей, тайны персонажей, научные концепции сериала. Полная база теорий с подтверждениями из эпизодов."
+        keywords="Рик и Морти теории, фанатские теории Rick and Morty, Evil Morty теория, тайны мультивселенной, научные концепции, скрытые послания, разгадки, фан-теории, анализ сериала, теории о персонажах"
       />
       <div className="pt-20 pb-4 container mx-auto px-4">
         <Breadcrumbs />
@@ -129,6 +129,60 @@ const Theories = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto mb-12 text-gray-200 bg-gray-800/30 rounded-lg p-8">
+          <h2 className="text-3xl font-bold mb-6 text-white">Фанатские теории о Рике и Морти: разгадайте тайны мультивселенной!</h2>
+          
+          <p className="mb-4 text-lg leading-relaxed">
+            **Rick and Morty** - это не просто мультсериал, а **загадка с множеством уровней**. 
+            Создатели оставляют десятки скрытых подсказок, а фанаты строят невероятные теории, которые иногда сбываются! 
+            Мы собрали **самые интересные и обоснованные** теории с доказательствами из эпизодов.
+          </p>
+
+          <h3 className="text-2xl font-semibold mb-4 text-green-400 flex items-center">
+            <Icon name="Lightbulb" size={24} className="mr-2" />
+            Категории теорий
+          </h3>
+          
+          <ul className="space-y-3 mb-6">
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-green-400 flex-shrink-0" />
+              <span><strong className="text-white">Теории о персонажах:</strong> Тайны Evil Morty, история Рика C-137, связь между персонажами и их скрытые мотивы</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-green-400 flex-shrink-0" />
+              <span><strong className="text-white">Теории мультивселенной:</strong> Правила путешествий между измерениями, структура вселенной, главные тайны мультивселенной</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-green-400 flex-shrink-0" />
+              <span><strong className="text-white">Научные теории:</strong> Объяснение технологий Рика, квантовая физика, временные парадоксы и научные концепции из сериала</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-green-400 flex-shrink-0" />
+              <span><strong className="text-white">Предсказания будущего:</strong> Что произойдёт в следующих сезонах, анализ намёков создателей и прогнозы развития сюжета</span>
+            </li>
+          </ul>
+
+          <h3 className="text-2xl font-semibold mb-4 text-green-400 flex items-center">
+            <Icon name="Star" size={24} className="mr-2" />
+            Самые популярные теории
+          </h3>
+          
+          <p className="mb-4">
+            **Evil Morty** - самая обсуждаемая теория среди фанатов. Кто он на самом деле? Почему он так умён и безжалостен? Какая связь у него с Риком C-137? Фанаты создали десятки теорий с доказательствами из эпизодов.
+          </p>
+
+          <p className="mb-4">
+            **Кривая смерти** (центральная концепция сериала) - согласно теории, она показывает, в каких измерениях Рик ещё жив, а в каких нет. Это объясняет, почему Рик может прыгать между измерениями без последствий.
+          </p>
+
+          <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4 mt-6">
+            <p className="text-sm flex items-start">
+              <Icon name="Sparkles" size={18} className="mr-2 mt-0.5 text-green-400 flex-shrink-0" />
+              <span><strong>Знаете ли вы?</strong> Многие фанатские теории, которые казались безумными, позже подтвердились в новых эпизодах! Создатели сериала следят за теориями фанатов и иногда используют их в сюжете.</span>
+            </p>
+          </div>
+        </div>
+
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <div className="text-cyan-400 text-xl">Загрузка теорий...</div>

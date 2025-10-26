@@ -89,9 +89,9 @@ const About = () => {
       </div>
       
       <SEO
-        title="О сайте"
-        description="Рик и Морти фан-сайт - крупнейший русскоязычный портал о культовом мультсериале. База эпизодов, аналитические статьи, теории, персонажи и активное сообщество фанатов."
-        keywords="Рик и Морти, о сайте, фан портал, русский сайт, эпизоды, блог, теории, сообщество"
+        title="О сайте Rick and Morty - крупнейший русскоязычный фан-портал о Рике и Морти"
+        description="Узнайте о крупнейшем русскоязычном фан-портале о мультсериале Рик и Морти. Полная база всех эпизодов, аналитические статьи, фанатские теории, энциклопедия персонажей, каталог вселенных и активное сообщество фанатов Rick and Morty. Наша миссия, история и возможности сайта."
+        keywords="Рик и Морти сайт, Rick and Morty фан-портал, о сайте, русскоязычный портал, фан-сайт, сообщество фанатов, база эпизодов, блог о сериале, теории фанатов, Adult Swim"
       />
 
       <div className="container mx-auto px-4 py-12">
@@ -167,6 +167,65 @@ const About = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+
+        {/* SEO Content Section */}
+        <div className="max-w-4xl mx-auto mb-16 text-gray-200 bg-gray-800/30 rounded-lg p-8">
+          <h2 className="text-3xl font-bold mb-6 text-white">Почему наш сайт - лучший для фанатов Rick and Morty?</h2>
+          
+          <p className="mb-4 text-lg leading-relaxed">
+            Мы - **крупнейший русскоязычный портал** о культовом мультсериале Рик и Морти. 
+            Наша цель - создать единое пространство, где каждый фанат сможет найти всю информацию о сериале, обсудить теории и поделиться мнением.
+          </p>
+
+          <h3 className="text-2xl font-semibold mb-4 text-cyan-400 flex items-center">
+            <Icon name="Database" size={24} className="mr-2" />
+            Что вы найдёте на нашем сайте?
+          </h3>
+          
+          <ul className="space-y-3 mb-6">
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Полная база эпизодов:</strong> Все серии всех сезонов с подробными описаниями, датами выхода и рейтингами</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Аналитический блог:</strong> Глубокие разборы эпизодов, анализ персонажей, научные концепции и философские размышления</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">База теорий:</strong> Самые невероятные фанатские теории с доказательствами и разгадками тайн Evil Morty</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Энциклопедия персонажей:</strong> Подробные биографии Рика, Морти, Саммер, семьи Смитов и сотен других героев</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Каталог вселенных:</strong> Полный гид по мультивселенной с описанием всех измерений, посещённых Риком и Морти</span>
+            </li>
+            <li className="flex items-start">
+              <Icon name="Check" size={20} className="mr-2 mt-1 text-cyan-400 flex-shrink-0" />
+              <span><strong className="text-white">Активное сообщество:</strong> Общайтесь с другими фанатами, делитесь теориями и мнениями о сериале</span>
+            </li>
+          </ul>
+
+          <h3 className="text-2xl font-semibold mb-4 text-cyan-400 flex items-center">
+            <Icon name="Users" size={24} className="mr-2" />
+            Для кого этот сайт?
+          </h3>
+          
+          <p className="mb-4">
+            **Для всех поклонников Rick and Morty** — от новичков, которые только начинают знакомиться с сериалом, до опытных фанатов, которые знают наизусть каждый эпизод. 
+            Мы создали удобную платформу с поиском, фильтрами и структурированной информацией, чтобы каждый мог легко найти нужное.
+          </p>
+
+          <div className="bg-cyan-900/20 border border-cyan-500/30 rounded-lg p-4 mt-6">
+            <p className="text-sm flex items-start">
+              <Icon name="Heart" size={18} className="mr-2 mt-0.5 text-cyan-400 flex-shrink-0" />
+              <span><strong>Наша миссия:</strong> Быть лучшим русскоязычным ресурсом о Рике и Морти, предоставляя полную информацию о сериале и платформу для общения фанатов!</span>
+            </p>
           </div>
         </div>
 
