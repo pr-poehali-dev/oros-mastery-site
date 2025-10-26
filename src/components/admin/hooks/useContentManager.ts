@@ -26,7 +26,15 @@ export const useContentManager = () => {
         cache: 'no-store'
       });
       const data = await response.json();
-      setUniverses(data);
+      const mappedData = data.map((u: any) => ({
+        ...u,
+        shortDescription: u.short_description,
+        backgroundImage: u.background_image,
+        dangerLevel: u.danger_level,
+        discoveryDate: u.discovery_date,
+        relatedCharacters: u.related_characters
+      }));
+      setUniverses(mappedData);
     } catch (error) {
       console.error('Error fetching universes:', error);
     }
@@ -50,7 +58,17 @@ export const useContentManager = () => {
         cache: 'no-store'
       });
       const data = await response.json();
-      setTheories(data);
+      const mappedData = data.map((t: any) => ({
+        ...t,
+        published_date: t.published_date,
+        full_text: t.full_text,
+        counter_arguments: t.counter_arguments,
+        related_episodes: t.related_episodes,
+        related_characters: t.related_characters,
+        impact_level: t.impact_level,
+        background_image: t.background_image
+      }));
+      setTheories(mappedData);
     } catch (error) {
       console.error('Error fetching theories:', error);
     }
