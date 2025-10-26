@@ -121,13 +121,23 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cur = conn.cursor()
         
         # Base URL for the site
-        base_url = 'https://oros-mastery-site.poehali.app'
+        base_url = 'https://rick-and-morty.poehali.dev'
         
         # Fetch blog posts ordered by date (newest first)
         cur.execute(
             "SELECT id, title, excerpt, date, author FROM blog_posts ORDER BY created_at DESC LIMIT 50"
         )
         blog_posts = cur.fetchall()
+        
+        # Fetch episodes with articles
+        cur.execute("""
+            SELECT DISTINCT e.id, e.title, e.description, e.air_date 
+            FROM episodes e 
+            JOIN articles a ON a.episode_id = e.id 
+            ORDER BY e.air_date DESC 
+            LIMIT 30
+        """)
+        episodes_with_articles = cur.fetchall()
         
         # Start building RSS XML
         rss = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -158,6 +168,21 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             if author:
                 rss += f'      <author>{escape_xml(author)}</author>\n'
             
+            rss += '    </item>\n'
+            rss += '\n'
+        
+        # Add episode items with articles
+        for ep in episodes_with_articles:
+            ep_id, title, description, air_date = ep
+            slug = generate_slug(ep_id, title)
+            ep_url = f"{base_url}/episode/{slug}"
+            
+            rss += '    <item>\n'
+            rss += f'      <title>{escape_xml(title)}</title>\n'
+            rss += f'      <link>{escape_xml(ep_url)}</link>\n'
+            rss += f'      <description>{escape_xml(description or "")}</description>\n'
+            rss += f'      <pubDate>{format_rfc822_date(air_date)}</pubDate>\n'
+            rss += f'      <guid isPermaLink="true">{escape_xml(ep_url)}</guid>\n'
             rss += '    </item>\n'
             rss += '\n'
         

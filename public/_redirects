@@ -1,0 +1,5 @@
+# HTTPS redirect for all requests
+http://rick-and-morty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+
+# SPA fallback - all routes go to index.html
+/*    /index.html   200
