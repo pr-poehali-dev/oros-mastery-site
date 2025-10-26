@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
+import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 
 interface Episode {
   id: number;
@@ -23,6 +24,16 @@ interface EpisodeSidebarProps {
 }
 
 const EpisodeSidebar = ({ episode, allEpisodes, generateSlug }: EpisodeSidebarProps) => {
+  const { isWatched } = useWatchedEpisodes();
+  
+  const seasonEpisodes = allEpisodes
+    .filter(ep => ep.season === episode.season)
+    .sort((a, b) => a.episode - b.episode);
+  
+  const watchedCount = seasonEpisodes.filter(ep => isWatched(ep.id.toString())).length;
+  const totalCount = seasonEpisodes.length;
+  const progressPercent = totalCount > 0 ? Math.round((watchedCount / totalCount) * 100) : 0;
+
   return (
     <>
       <Card className="bg-gray-800/50 border-purple-500/30 p-6">
@@ -46,17 +57,42 @@ const EpisodeSidebar = ({ episode, allEpisodes, generateSlug }: EpisodeSidebarPr
         </div>
       </Card>
 
-      {allEpisodes.length > 0 && (
+      {totalCount > 0 && (
+        <Card className="bg-gray-800/50 border-green-500/30 p-6">
+          <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+            <Icon name="TrendingUp" size={24} />
+            Прогресс сезона
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-400">Просмотрено:</span>
+              <span className="text-white font-semibold">{watchedCount} из {totalCount}</span>
+            </div>
+            <div className="relative w-full h-3 bg-gray-700 rounded-full overflow-hidden">
+              <div 
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-500 to-cyan-500 transition-all duration-500 ease-out"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <div className="text-center">
+              <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400">
+                {progressPercent}%
+              </span>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {totalCount > 0 && (
         <Card className="bg-gray-800/50 border-cyan-500/30 p-6">
           <h3 className="text-xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
             <Icon name="Film" size={24} />
             Сезон {episode.season}
           </h3>
           <div className="space-y-2 max-h-96 overflow-y-auto">
-            {allEpisodes
-              .filter(ep => ep.season === episode.season)
-              .sort((a, b) => a.episode - b.episode)
-              .map(ep => (
+            {seasonEpisodes.map(ep => {
+              const watched = isWatched(ep.id.toString());
+              return (
                 <Link
                   key={ep.id}
                   to={`/episode/${generateSlug(ep.id, ep.title)}`}
@@ -77,9 +113,13 @@ const EpisodeSidebar = ({ episode, allEpisodes, generateSlug }: EpisodeSidebarPr
                     }`}>
                       {ep.title}
                     </span>
+                    {watched && ep.id !== episode.id && (
+                      <Icon name="Check" size={16} className="text-green-400 flex-shrink-0" />
+                    )}
                   </div>
                 </Link>
-              ))}
+              );
+            })}
           </div>
         </Card>
       )}
