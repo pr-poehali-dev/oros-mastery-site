@@ -86,6 +86,7 @@ const Index = () => {
         title="Главная"
         description="Рик и Морти фан-сайт - смотрите эпизоды, читайте блог, обсуждайте теории. Полная база эпизодов сериала Рик и Морти с описаниями, комментариями и интересными фактами."
         keywords="Рик и Морти, Рик и Морти, эпизоды, смотреть онлайн, блог, теории, фан-сайт, сериал, мультсериал, Adult Swim"
+        url="https://rick-and-morty.poehali.dev/"
       />
       <Navigation />
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-cyan-600 via-green-500 to-blue-600">

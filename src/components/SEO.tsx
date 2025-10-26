@@ -136,6 +136,24 @@ const SEO = ({
           'width': 1200,
           'height': 630
         },
+        ...(type === 'website' && canonicalUrl === 'https://rick-and-morty.poehali.dev/' && {
+          'potentialAction': {
+            '@type': 'SearchAction',
+            'target': {
+              '@type': 'EntryPoint',
+              'urlTemplate': 'https://rick-and-morty.poehali.dev/episodes?search={search_term_string}'
+            },
+            'query-input': 'required name=search_term_string'
+          },
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'Рик и Морти фан-сайт',
+            'logo': {
+              '@type': 'ImageObject',
+              'url': 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg'
+            }
+          }
+        }),
         ...(type === 'article' && {
           'author': {
             '@type': 'Person',
