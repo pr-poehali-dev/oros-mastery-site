@@ -2,14 +2,22 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <meta http-equiv="x-dns-prefetch-control" content="on"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="format-detection" content="telephone=no"/>
     
     <!-- Preload critical resources -->
     <link rel="preconnect" href="https://cdn.poehali.dev" crossorigin>
     <link rel="preconnect" href="https://functions.poehali.dev" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//mc.yandex.ru">
+    
+    <!-- Prefetch API endpoints -->
+    <link rel="dns-prefetch" href="//functions.poehali.dev">
+    <link rel="prefetch" href="https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389" as="fetch" crossorigin="anonymous">
+    <link rel="prefetch" href="https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71" as="fetch" crossorigin="anonymous">
+    <link rel="prefetch" href="https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4" as="fetch" crossorigin="anonymous">
     
 
     <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2" as="font" type="font/woff2" crossorigin>
@@ -40,9 +48,10 @@
       .hero-gradient{background:linear-gradient(to bottom right,#0891b2,#22c55e,#2563eb)}
       .skeleton{background:linear-gradient(90deg,#1f2937 25%,#374151 50%,#1f2937 75%);background-size:200% 100%;animation:loading 1.5s ease-in-out infinite}
       @keyframes loading{0%{background-position:200% 0}to{background-position:-200% 0}}
-      img{content-visibility:auto;max-width:100%;height:auto}
-      .lazy-load{opacity:0;transition:opacity .3s}
+      img{content-visibility:auto;max-width:100%;height:auto;will-change:transform}
+      .lazy-load{opacity:0;transition:opacity .3s;will-change:opacity}
       .lazy-load.loaded{opacity:1}
+      @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
     </style>
     
     <title>Рик и Морти фан-сайт | Эпизоды, Блог, Теории</title>
@@ -112,18 +121,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
-
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
     <script defer src="https://cdn.poehali.dev/intertnal/js/pp-min-2.js"></script>
     <script defer src="https://cdn.poehali.dev/intertnal/js/route-min.js"></script>
     <script defer src="https://cdn.poehali.dev/intertnal/js/telemetry-min.js"></script>
+    <script defer src="https://cdn.poehali.dev/intertnal/js/inspector-min.js"></script>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
 
     <meta name="pp-name" value="oros-mastery-site">
-      <script defer src="https://cdn.poehali.dev/intertnal/js/inspector-min.js"></script>
 
     <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
         (function(m,e,t,r,i,k,a){
             m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
             m[i].l=1*new Date();

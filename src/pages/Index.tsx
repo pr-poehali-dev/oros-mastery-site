@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +13,8 @@ import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 import WatchedEpisodes from '@/components/WatchedEpisodes';
 import FAQ from '@/components/FAQ';
 import SeoContent from '@/components/SeoContent';
+import OptimizedImage from '@/components/OptimizedImage';
+import { cachedFetch } from '@/utils/cache';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
@@ -35,8 +37,7 @@ const Index = () => {
 
   const fetchEpisodes = async () => {
     try {
-      const response = await fetch(EPISODES_API);
-      const data = await response.json();
+      const data = await cachedFetch<any[]>(EPISODES_API);
       setEpisodes(data);
       
       const uniqueSeasons = new Set(data.map((ep: any) => ep.season));
@@ -53,13 +54,10 @@ const Index = () => {
 
   const fetchBlogPosts = async () => {
     try {
-      const [blogResponse, articlesResponse] = await Promise.all([
-        fetch(BLOG_API),
-        fetch(`${CONTENT_API}?type=articles`)
+      const [blogData, articlesData] = await Promise.all([
+        cachedFetch<any[]>(BLOG_API),
+        cachedFetch<any[]>(`${CONTENT_API}?type=articles`)
       ]);
-      
-      const blogData = await blogResponse.json();
-      const articlesData = await articlesResponse.json();
       
       const validBlogData = Array.isArray(blogData) ? blogData : [];
       const validArticlesData = Array.isArray(articlesData) ? articlesData : [];
@@ -226,12 +224,11 @@ const Index = () => {
                     onClick={() => navigate(`/episode/${generateSlug(episode.id, episode.title)}`)}
                   >
                     <div className="relative overflow-hidden aspect-video">
-                      <img 
+                      <OptimizedImage 
                         src={episode.image} 
                         alt={`${episode.title} - сезон ${episode.season} эпизод ${episode.episode}`}
-                        loading="lazy"
-                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        priority={index < 3}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
                       <Badge className="absolute top-3 left-3 bg-green-400 text-gray-900 border-0 font-semibold">
@@ -293,11 +290,11 @@ const Index = () => {
                   onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
                 >
                   <div className="relative overflow-hidden aspect-video">
-                    <img 
+                    <OptimizedImage 
                       src={post.image} 
                       alt={`${post.title} - статья в блоге Rick and Morty`}
-                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      priority={index < 3}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
                   </div>
