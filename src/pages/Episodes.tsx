@@ -131,8 +131,18 @@ const Episodes = () => {
 
       <section className="container mx-auto px-4 py-12">
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="text-cyan-400 text-xl">Загрузка эпизодов...</div>
+          <div className="space-y-6">
+            <div className="h-14 bg-gray-800 rounded-lg skeleton" />
+            <div className="flex gap-2 flex-wrap">
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} className="h-10 w-24 bg-gray-800 rounded skeleton" />
+              ))}
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} className="h-80 bg-gray-800 rounded-lg skeleton" />
+              ))}
+            </div>
           </div>
         ) : (
           <>
