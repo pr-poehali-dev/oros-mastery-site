@@ -44,8 +44,8 @@ const EpisodeList = ({ episodes, onDelete, onEdit }: EpisodeListProps) => {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
-                      S{episode.season}E{episode.episode}
+                    <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30 font-semibold">
+                      {episode.season} сезон {episode.episode} серия
                     </Badge>
                     <h3 className="text-white font-semibold">{episode.title}</h3>
                   </div>

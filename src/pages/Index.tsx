@@ -220,8 +220,8 @@ const Index = () => {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
-                      <Badge className="absolute top-3 left-3 bg-green-400 text-gray-900 border-0">
-                        S{episode.season}E{episode.episode}
+                      <Badge className="absolute top-3 left-3 bg-green-400 text-gray-900 border-0 font-semibold">
+                        {episode.season} сезон {episode.episode} серия
                       </Badge>
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
                         <Button className="bg-green-400 text-gray-900 hover:bg-green-300 font-bold">
