@@ -98,10 +98,16 @@ const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
                 >
                   <Icon name="X" size={14} className="text-white" />
                 </button>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
-                  <Button className="bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-bold">
+                <div className={`absolute inset-0 flex items-center justify-center transition-opacity bg-black/50 ${
+                  isLatest ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                }`}>
+                  <Button className={`font-bold ${
+                    isLatest 
+                      ? 'bg-green-500 text-white hover:bg-green-600' 
+                      : 'bg-cyan-400 text-gray-900 hover:bg-cyan-300'
+                  }`}>
                     <Icon name="Play" className="mr-2" size={20} />
-                    {isLatest ? 'Продолжить' : 'Смотреть'}
+                    {isLatest ? 'Продолжить просмотр' : 'Смотреть'}
                   </Button>
                 </div>
               </div>
