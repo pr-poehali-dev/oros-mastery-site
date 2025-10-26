@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { WatchedEpisode } from '@/hooks/useWatchedEpisodes';
 
@@ -11,6 +12,7 @@ interface WatchedEpisodesProps {
 }
 
 const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
+  const navigate = useNavigate();
   const [startIndex, setStartIndex] = useState(0);
 
   if (episodes.length === 0) return null;
@@ -60,58 +62,66 @@ const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayedEpisodes.map((ep, index) => {
           const isLatest = startIndex === 0 && index === 0;
           return (
-            <div key={ep.id} className="group flex flex-col">
-              <Link
-                to={`/episode/${ep.slug}`}
-                className="flex-1 flex flex-col"
-              >
-                <div className="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all flex-1 flex flex-col">
-                  <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={ep.image}
-                      alt={ep.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <Badge className="absolute top-2 md:top-3 left-2 md:left-3 bg-cyan-400/90 text-gray-900 border-0 font-bold text-xs md:text-sm">
-                      Сезон {ep.season} серия {ep.episode}
-                    </Badge>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onRemove(ep.id);
-                      }}
-                      className="absolute top-2 md:top-3 right-2 md:right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
-                      aria-label="Удалить из просмотренного"
-                    >
-                      <Icon name="X" size={14} className="text-white" />
-                    </button>
-                  </div>
-                  <div className="p-3 md:p-4 flex-1 flex flex-col">
-                    <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors text-sm md:text-base min-h-[2.5rem] md:min-h-[3rem]">
-                      {ep.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-gray-400 text-xs md:text-sm mt-auto">
-                      <Icon name="Clock" size={12} />
-                      <span>Недавно просмотрено</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-              {isLatest && (
-                <Link to={`/episode/${ep.slug}`} className="mt-3">
-                  <Button className="w-full bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-600 hover:to-green-600 text-white font-semibold">
-                    <Icon name="Play" size={16} className="mr-2" />
-                    Продолжить просмотр
+            <Card 
+              key={ep.id}
+              className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-400/20 group overflow-hidden cursor-pointer"
+              onClick={() => navigate(`/episode/${ep.slug}`)}
+            >
+              <div className="relative overflow-hidden aspect-video">
+                <img 
+                  src={ep.image}
+                  alt={ep.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
+                <Badge className="absolute top-3 left-3 bg-cyan-400 text-gray-900 border-0 font-semibold">
+                  {ep.season} сезон {ep.episode} серия
+                </Badge>
+                {isLatest && (
+                  <Badge className="absolute top-3 right-3 bg-green-500 text-white border-0 font-semibold animate-pulse">
+                    <Icon name="Play" size={12} className="mr-1" />
+                    Продолжить
+                  </Badge>
+                )}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onRemove(ep.id);
+                  }}
+                  className="absolute bottom-3 right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
+                  aria-label="Удалить из просмотренного"
+                >
+                  <Icon name="X" size={14} className="text-white" />
+                </button>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
+                  <Button className="bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-bold">
+                    <Icon name="Play" className="mr-2" size={20} />
+                    {isLatest ? 'Продолжить' : 'Смотреть'}
                   </Button>
-                </Link>
-              )}
-            </div>
+                </div>
+              </div>
+
+              <CardHeader>
+                <CardTitle className="text-white group-hover:text-cyan-400 transition-colors line-clamp-2">
+                  {ep.title}
+                </CardTitle>
+                <CardDescription className="flex items-center justify-between text-gray-300">
+                  <span className="flex items-center gap-1">
+                    <Icon name="Clock" size={14} />
+                    Просмотрено
+                  </span>
+                  <span className="flex items-center gap-1 text-cyan-400">
+                    <Icon name="Film" size={14} />
+                    S{ep.season}E{ep.episode}
+                  </span>
+                </CardDescription>
+              </CardHeader>
+            </Card>
           );
         })}
       </div>
