@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
@@ -26,13 +27,69 @@ interface EpisodeVideoProps {
 }
 
 const EpisodeVideo = ({ episode, localLikes, localViews, liked, onLike, onNavigate }: EpisodeVideoProps) => {
+  const [showSkipCredits, setShowSkipCredits] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  const CREDITS_START_TIME = 1140;
+  const CREDITS_SKIP_TIME = 1200;
+
+  useEffect(() => {
+    if (!episode.videoIframe) return;
+
+    const interval = setInterval(() => {
+      const iframe = videoContainerRef.current?.querySelector('iframe');
+      if (iframe) {
+        try {
+          const iframeSrc = iframe.src;
+          if (iframeSrc.includes('kodik') || iframeSrc.includes('youtube')) {
+            const timeMatch = iframeSrc.match(/[?&]t=(\d+)/);
+            if (timeMatch) {
+              const time = parseInt(timeMatch[1]);
+              setCurrentTime(time);
+              
+              if (time >= CREDITS_START_TIME && time < CREDITS_SKIP_TIME) {
+                setShowSkipCredits(true);
+              } else {
+                setShowSkipCredits(false);
+              }
+            }
+          }
+        } catch (e) {
+          console.log('Cannot access iframe time');
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [episode.videoIframe]);
+
+  const handleSkipCredits = () => {
+    setShowSkipCredits(false);
+    onNavigate('next');
+  };
+
   return (
     <Card className="bg-gray-800/50 border-cyan-500/30 overflow-hidden">
       {episode.videoIframe ? (
         <div 
-          className="w-full aspect-video md:h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
-          dangerouslySetInnerHTML={{ __html: episode.videoIframe }}
-        />
+          ref={videoContainerRef}
+          className="relative w-full aspect-video md:h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
+        >
+          <div dangerouslySetInnerHTML={{ __html: episode.videoIframe }} />
+          
+          {showSkipCredits && (
+            <div className="absolute bottom-20 right-8 z-10 animate-in slide-in-from-right duration-300">
+              <Button
+                onClick={handleSkipCredits}
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold px-6 py-3 shadow-2xl"
+              >
+                <Icon name="FastForward" size={20} className="mr-2" />
+                Пропустить титры
+              </Button>
+            </div>
+          )}
+        </div>
       ) : (
         <img 
           src={episode.image} 
