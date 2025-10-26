@@ -18,7 +18,7 @@ const SEO = ({
   description,
   keywords = 'Рик и Морти, Рик и Морти, эпизоды, блог, теории, анализ, мультсериал',
   image = 'https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d490fe60-e1ff-4015-8de4-bb5defe289ae.jpg',
-  url = window.location.href,
+  url,
   ogType = 'website',
   author,
   publishedTime,
@@ -27,6 +27,18 @@ const SEO = ({
 }: SEOProps) => {
   const type = ogType;
   const isEpisode = episodeNumber !== undefined && seasonNumber !== undefined;
+  
+  const normalizeUrl = (rawUrl: string | undefined): string => {
+    const currentUrl = rawUrl || window.location.href;
+    return currentUrl
+      .replace(/\/+$/, '')
+      .replace('http://', 'https://')
+      .replace('www.rick-and-morty.poehali.dev', 'rick-and-morty.poehali.dev')
+      .replace('www.rickmorty.poehali.dev', 'rick-and-morty.poehali.dev')
+      .replace('rickmorty.poehali.dev', 'rick-and-morty.poehali.dev');
+  };
+  
+  const canonicalUrl = normalizeUrl(url);
   useEffect(() => {
     document.title = `${title} | Рик и Морти фан-сайт`;
     document.documentElement.lang = 'ru';
@@ -42,7 +54,7 @@ const SEO = ({
       { property: 'og:image', content: image },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
-      { property: 'og:url', content: url },
+      { property: 'og:url', content: canonicalUrl },
       { property: 'og:site_name', content: 'Рик и Морти фан-сайт' },
       { property: 'og:locale', content: 'ru_RU' },
       
@@ -82,7 +94,8 @@ const SEO = ({
       canonicalLink.setAttribute('rel', 'canonical');
       document.head.appendChild(canonicalLink);
     }
-    canonicalLink.setAttribute('href', url);
+
+    canonicalLink.setAttribute('href', canonicalUrl);
     
     let structuredData: any = {
       '@context': 'https://schema.org'
@@ -116,7 +129,7 @@ const SEO = ({
         '@type': type === 'article' ? 'Article' : 'WebSite',
         'name': title,
         'description': description,
-        'url': url,
+        'url': canonicalUrl,
         'image': {
           '@type': 'ImageObject',
           'url': image,

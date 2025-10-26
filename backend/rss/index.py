@@ -129,15 +129,19 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         )
         blog_posts = cur.fetchall()
         
-        # Fetch episodes with articles
-        cur.execute("""
-            SELECT DISTINCT e.id, e.title, e.description, e.air_date 
-            FROM episodes e 
-            JOIN articles a ON a.episode_id = e.id 
-            ORDER BY e.air_date DESC 
-            LIMIT 30
-        """)
-        episodes_with_articles = cur.fetchall()
+        # Fetch episodes with articles (if table exists)
+        episodes_with_articles = []
+        try:
+            cur.execute("""
+                SELECT DISTINCT e.id, e.title, e.description, e.air_date 
+                FROM episodes e 
+                JOIN articles a ON a.episode_id = e.id 
+                ORDER BY e.air_date DESC 
+                LIMIT 30
+            """)
+            episodes_with_articles = cur.fetchall()
+        except:
+            pass
         
         # Start building RSS XML
         rss = '<?xml version="1.0" encoding="UTF-8"?>\n'

@@ -1,5 +1,20 @@
-# HTTPS redirect for all requests
+# WWW to non-WWW redirect (HTTPS)
+https://www.rick-and-morty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+
+# WWW to non-WWW redirect (HTTP)
+http://www.rick-and-morty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+
+# HTTP to HTTPS redirect
 http://rick-and-morty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+
+# Alternative domains redirect (if any)
+https://rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+http://rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+https://www.rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+http://www.rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
+
+# Trailing slash normalization - remove trailing slashes
+/*/  /:splat  301!
 
 # SPA fallback - all routes go to index.html
 /*    /index.html   200
