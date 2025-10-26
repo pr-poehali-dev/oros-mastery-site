@@ -98,6 +98,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Open Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -107,6 +109,24 @@
   h5,
   h6 {
     font-family: "Montserrat", sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  img {
+    content-visibility: auto;
+  }
+
+  * {
+    will-change: auto;
+  }
+
+  .transition-transform,
+  .group:hover .group-hover\:scale-110 {
+    will-change: transform;
+  }
+
+  .transition-opacity {
+    will-change: opacity;
   }
 }
 

@@ -33,7 +33,11 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Suspense fallback={<div className="min-h-screen bg-gray-900" />}>
+        <Suspense fallback={
+          <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+            <div className="text-cyan-400 text-xl animate-pulse">Загрузка...</div>
+          </div>
+        }>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/episodes" element={<Episodes />} />

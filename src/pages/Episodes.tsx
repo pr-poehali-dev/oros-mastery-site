@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { generateSlug } from '@/utils/slugify';
 import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
 import WatchedEpisodes from '@/components/WatchedEpisodes';
 import EpisodesSeoContent from '@/components/EpisodesSeoContent';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
 
@@ -53,26 +54,32 @@ const Episodes = () => {
     }
   };
 
+  const debouncedSearch = useDebounce(searchQuery, 300);
   const displayEpisodes = episodes;
 
-  // Получаем уникальные сезоны динамически
-  const uniqueSeasons = Array.from(new Set(displayEpisodes.map(e => e.season))).sort((a, b) => a - b);
+  const uniqueSeasons = useMemo(() => 
+    Array.from(new Set(displayEpisodes.map(e => e.season))).sort((a, b) => a - b),
+    [displayEpisodes]
+  );
   
-  const seasons = [
+  const seasons = useMemo(() => [
     { id: 'all', name: 'Все сезоны', count: displayEpisodes.length },
     ...uniqueSeasons.map(season => ({
       id: season.toString(),
       name: `Сезон ${season}`,
       count: displayEpisodes.filter(e => e.season === season).length
     }))
-  ];
+  ], [displayEpisodes, uniqueSeasons]);
 
-  const filteredEpisodes = displayEpisodes.filter(ep => {
-    const matchesSeason = selectedSeason === 'all' || ep.season === parseInt(selectedSeason);
-    const matchesSearch = ep.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         ep.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSeason && matchesSearch;
-  });
+  const filteredEpisodes = useMemo(() => 
+    displayEpisodes.filter(ep => {
+      const matchesSeason = selectedSeason === 'all' || ep.season === parseInt(selectedSeason);
+      const matchesSearch = ep.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+                           ep.description.toLowerCase().includes(debouncedSearch.toLowerCase());
+      return matchesSeason && matchesSearch;
+    }),
+    [displayEpisodes, selectedSeason, debouncedSearch]
+  );
 
   const getRatingColor = (rating: number) => {
     if (rating >= 9) return 'bg-green-500/20 text-green-300 border-green-500/30';

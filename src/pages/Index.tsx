@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -73,14 +73,19 @@ const Index = () => {
     }
   };
 
-  const blogPostsPreview = blogPosts.slice(0, 3);
+  const blogPostsPreview = useMemo(() => blogPosts.slice(0, 3), [blogPosts]);
 
-  const filteredEpisodes = selectedSeason === 'all' 
-    ? episodes 
-    : episodes.filter(ep => ep.season === parseInt(selectedSeason));
+  const filteredEpisodes = useMemo(() => 
+    selectedSeason === 'all' 
+      ? episodes 
+      : episodes.filter(ep => ep.season === parseInt(selectedSeason)),
+    [episodes, selectedSeason]
+  );
 
-  // Получаем уникальные сезоны из загруженных эпизодов
-  const availableSeasons = Array.from(new Set(episodes.map(ep => ep.season))).sort((a, b) => a - b);
+  const availableSeasons = useMemo(() => 
+    Array.from(new Set(episodes.map(ep => ep.season))).sort((a, b) => a - b),
+    [episodes]
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
@@ -225,6 +230,7 @@ const Index = () => {
                         src={episode.image} 
                         alt={`${episode.title} - сезон ${episode.season} эпизод ${episode.episode}`}
                         loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>

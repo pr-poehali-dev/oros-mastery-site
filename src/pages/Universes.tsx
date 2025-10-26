@@ -196,21 +196,24 @@ const Universes = () => {
             <div className="mb-8">
               <div className="flex gap-2 flex-wrap">
                 {dangerLevels.map(level => (
-                  <Link
+                  <Button
                     key={level.id}
-                    to={level.id === 'all' ? '/universes' : `/universes/danger/${level.id}`}
-                  >
-                    <Button
-                      variant={selectedDanger === level.id ? 'default' : 'outline'}
-                      className={
-                        selectedDanger === level.id
-                          ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-gray-900 border-0 font-semibold'
-                          : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
+                    onClick={() => {
+                      if (level.id === 'all') {
+                        navigate('/universes');
+                      } else {
+                        navigate(`/universes/danger/${level.id}`);
                       }
-                    >
-                      {level.name}
-                    </Button>
-                  </Link>
+                    }}
+                    variant={selectedDanger === level.id ? 'default' : 'outline'}
+                    className={
+                      selectedDanger === level.id
+                        ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-gray-900 border-0 font-semibold'
+                        : 'border-gray-700 text-gray-900 bg-gray-200 hover:bg-gray-300'
+                    }
+                  >
+                    {level.name}
+                  </Button>
                 ))}
               </div>
             </div>

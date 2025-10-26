@@ -28,8 +28,10 @@ const Navigation = () => {
               alt="Рик и Морти Logo"
               className="w-12 h-12 rounded-full object-cover group-hover:scale-110 transition-transform border-2 border-cyan-500"
               loading="eager"
-              width="48"
-              height="48"
+              decoding="async"
+              fetchPriority="high"
+              width={48}
+              height={48}
             />
             <span className="text-xl font-bold text-cyan-400 hidden sm:block">
               Rick & Morty
