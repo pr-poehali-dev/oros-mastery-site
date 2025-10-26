@@ -28,6 +28,8 @@ const Theories = () => {
   useEffect(() => {
     if (typeParam) {
       setSelectedType(typeParam);
+    } else {
+      setSelectedType('all');
     }
   }, [typeParam]);
 
