@@ -186,16 +186,16 @@ const Universes = () => {
               </div>
               
               <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge className={getStatusColor(universe.status)}>
+                <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
+                  <Badge className={`${getStatusColor(universe.status)} text-xs md:text-sm`}>
                     {universe.status}
                   </Badge>
-                  <Badge className={getDangerColor(universe.danger_level)}>
+                  <Badge className={`${getDangerColor(universe.danger_level)} text-xs md:text-sm`}>
                     {universe.danger_level}
                   </Badge>
                 </div>
-                <CardTitle className="text-2xl text-white">{universe.name}</CardTitle>
-                <CardDescription className="text-gray-400">
+                <CardTitle className="text-xl md:text-2xl text-white break-words">{universe.name}</CardTitle>
+                <CardDescription className="text-gray-400 text-sm break-words">
                   {universe.description?.substring(0, 120) + '...'}
                 </CardDescription>
               </CardHeader>

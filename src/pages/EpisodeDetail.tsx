@@ -95,14 +95,30 @@ const EpisodeDetail = () => {
         return;
       }
       
-      // Fetch detailed episode data
-      const response = await fetch(`${API_URL}?id=${foundEpisode.id}`);
-      const data = await response.json();
-      setEpisode(data.episode);
-      setLocalLikes(data.episode?.likes || 0);
-      setLocalViews(data.episode?.views || 0);
-      setComments(data.comments || []);
-      setArticles(data.articles || []);
+      // Fetch detailed episode data with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      try {
+        const response = await fetch(`${API_URL}?id=${foundEpisode.id}`, {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        const data = await response.json();
+        setEpisode(data.episode);
+        setLocalLikes(data.episode?.likes || 0);
+        setLocalViews(data.episode?.views || 0);
+        setComments(data.comments || []);
+        setArticles((data.articles || []).slice(0, 2));
+      } catch (error) {
+        clearTimeout(timeoutId);
+        if ((error as Error).name === 'AbortError') {
+          console.log('Request timeout - using basic data');
+          setEpisode(foundEpisode as Episode);
+        } else {
+          throw error;
+        }
+      }
       
       // Mark as watched
       markAsWatched({
@@ -293,13 +309,13 @@ const EpisodeDetail = () => {
               </Card>
             )}
 
-            {articles.map((article) => (
+            {articles.length > 0 && articles.slice(0, 2).map((article) => (
               <Card key={article.id} className="bg-gray-800/50 border-green-500/30 p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Icon name="Lightbulb" size={24} className="text-green-400" />
-                  <h2 className="text-2xl font-bold text-green-400">{article.title}</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-green-400 break-words">{article.title}</h2>
                 </div>
-                <div className="text-gray-300 leading-relaxed whitespace-pre-line">
+                <div className="text-gray-300 leading-relaxed whitespace-pre-line break-words text-sm md:text-base">
                   {article.content}
                 </div>
               </Card>

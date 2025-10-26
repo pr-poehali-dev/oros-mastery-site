@@ -305,19 +305,19 @@ const Characters = () => {
               </div>
               
               <CardHeader>
-                <CardTitle className="text-2xl text-white">{character.name}</CardTitle>
+                <CardTitle className="text-xl md:text-2xl text-white break-words">{character.name}</CardTitle>
                 {(character.role || character.origin) && (
-                  <CardDescription className="text-gray-400 space-y-1">
+                  <CardDescription className="text-gray-400 space-y-1 text-sm">
                     {character.role && (
                       <div className="flex items-center gap-2">
                         <Icon name="Star" size={14} />
-                        <span>{character.role}</span>
+                        <span className="break-words">{character.role}</span>
                       </div>
                     )}
                     {character.origin && (
                       <div className="flex items-center gap-2">
                         <Icon name="MapPin" size={14} />
-                        <span>{character.origin}</span>
+                        <span className="break-words">{character.origin}</span>
                       </div>
                     )}
                   </CardDescription>
