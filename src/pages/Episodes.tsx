@@ -202,10 +202,10 @@ const Episodes = () => {
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-                <Badge className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-green-500 text-white border-0 font-semibold">
-                  {episode.season} сезон {episode.episode} серия
+                <Badge className="absolute top-2 md:top-4 left-2 md:left-4 bg-gradient-to-r from-cyan-500 to-green-500 text-white border-0 font-semibold text-xs md:text-sm">
+                  S{episode.season}E{episode.episode}
                 </Badge>
-                <Badge className={`absolute top-4 right-4 ${getRatingColor(episode.rating)}`}>
+                <Badge className={`absolute top-2 md:top-4 right-2 md:right-4 text-xs md:text-sm ${getRatingColor(episode.rating)}`}>
                   ⭐ {episode.rating}
                 </Badge>
               </div>

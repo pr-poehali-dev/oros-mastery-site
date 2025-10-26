@@ -217,7 +217,7 @@ const EpisodeDetail = () => {
             <Card className="bg-gray-800/50 border-cyan-500/30 overflow-hidden">
               {episode.videoIframe ? (
                 <div 
-                  className="w-full h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
+                  className="w-full aspect-video md:h-[600px] [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
                   dangerouslySetInnerHTML={{ __html: episode.videoIframe }}
                 />
               ) : (
@@ -228,13 +228,13 @@ const EpisodeDetail = () => {
                 />
               )}
               <div className="p-6 space-y-4">
-                <h1 className="text-4xl font-bold text-cyan-400">{episode.title}</h1>
+                <h1 className="text-2xl md:text-4xl font-bold text-cyan-400">{episode.title}</h1>
                 <div className="flex items-center gap-3 flex-wrap">
                   <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-green-500 text-white text-sm rounded-full">
                     Сезон {episode.season}, Эпизод {episode.episode}
                   </span>
-                  <span className="text-gray-300">{episode.airDate}</span>
-                  <div className="flex items-center gap-4 ml-auto">
+                  <span className="text-gray-300 text-sm md:text-base">{episode.airDate}</span>
+                  <div className="flex items-center gap-4 w-full md:w-auto md:ml-auto">
                     <span className="flex items-center gap-1 text-gray-300">
                       <Icon name="Eye" size={18} className="text-blue-400" />
                       {localViews}
@@ -255,19 +255,21 @@ const EpisodeDetail = () => {
               </div>
             </Card>
 
-            <div className="flex justify-between gap-4">
+            <div className="flex flex-col md:flex-row justify-between gap-4">
               <Button
                 onClick={() => handleNavigate('prev')}
                 className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50"
               >
                 <Icon name="ChevronLeft" size={20} className="mr-2" />
-                Предыдущий эпизод
+                <span className="hidden md:inline">Предыдущий эпизод</span>
+                <span className="md:hidden">Предыдущий</span>
               </Button>
               <Button
                 onClick={() => handleNavigate('next')}
                 className="flex-1 bg-gradient-to-r from-cyan-600 to-green-600 hover:from-cyan-700 hover:to-green-700 disabled:opacity-50"
               >
-                Следующий эпизод
+                <span className="hidden md:inline">Следующий эпизод</span>
+                <span className="md:hidden">Следующий</span>
                 <Icon name="ChevronRight" size={20} className="ml-2" />
               </Button>
             </div>

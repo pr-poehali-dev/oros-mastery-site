@@ -186,7 +186,7 @@ const Index = () => {
           </div>
 
           <Tabs defaultValue="all" className="w-full max-w-6xl mx-auto mb-8" onValueChange={setSelectedSeason}>
-            <TabsList className="flex flex-wrap justify-center gap-2 w-full max-w-4xl mx-auto bg-gray-800 mb-12 p-2">
+            <TabsList className="flex flex-wrap justify-center gap-2 w-full max-w-4xl mx-auto bg-gray-800 mb-12 p-2 min-h-fit">
               <TabsTrigger value="all" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Все</TabsTrigger>
               {availableSeasons.map(season => (
                 <TabsTrigger 

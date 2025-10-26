@@ -60,7 +60,7 @@ const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
         )}
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {displayedEpisodes.map((ep) => (
           <Link
             key={ep.id}
@@ -75,7 +75,7 @@ const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                <Badge className="absolute top-3 left-3 bg-cyan-400/90 text-gray-900 border-0 font-bold">
+                <Badge className="absolute top-2 md:top-3 left-2 md:left-3 bg-cyan-400/90 text-gray-900 border-0 font-bold text-xs md:text-sm">
                   S{ep.season}E{ep.episode}
                 </Badge>
                 <button
@@ -84,18 +84,18 @@ const WatchedEpisodes = ({ episodes, onRemove }: WatchedEpisodesProps) => {
                     e.stopPropagation();
                     onRemove(ep.id);
                   }}
-                  className="absolute top-3 right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
+                  className="absolute top-2 md:top-3 right-2 md:right-3 bg-black/60 hover:bg-red-500 p-1.5 rounded-full transition-colors z-10"
                   aria-label="Удалить из просмотренного"
                 >
-                  <Icon name="X" size={16} className="text-white" />
+                  <Icon name="X" size={14} className="text-white" />
                 </button>
               </div>
-              <div className="p-4">
-                <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors">
+              <div className="p-3 md:p-4">
+                <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors text-sm md:text-base">
                   {ep.title}
                 </h3>
-                <div className="flex items-center gap-2 text-gray-400 text-sm">
-                  <Icon name="Clock" size={14} />
+                <div className="flex items-center gap-2 text-gray-400 text-xs md:text-sm">
+                  <Icon name="Clock" size={12} />
                   <span>Недавно просмотрено</span>
                 </div>
               </div>
