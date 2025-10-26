@@ -85,7 +85,9 @@ const Breadcrumbs = ({ customLabel }: BreadcrumbsProps) => {
       breadcrumbs.push({ label: decodeURIComponent(value), path });
     } else if (value.includes('-')) {
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
-      breadcrumbs.push({ label: '', path });
+      if (customLabel) {
+        breadcrumbs.push({ label: customLabel, path });
+      }
     } else {
       const path = `/${pathnames.slice(0, index + 1).join('/')}`;
       const label = decodeURIComponent(value).charAt(0).toUpperCase() + decodeURIComponent(value).slice(1);
