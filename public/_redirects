@@ -13,9 +13,6 @@ http://rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
 https://www.rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
 http://www.rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  301!
 
-# Sitemap proxy to backend function
-/sitemap.xml https://functions.poehali.dev/ef8dba09-e4a9-4cda-8f1c-29b8444eea2a 200!
-
 # Trailing slash normalization - remove trailing slashes
 /*/  /:splat  301!
 

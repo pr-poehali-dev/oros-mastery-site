@@ -23,6 +23,7 @@ const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Shop = lazy(() => import("./pages/Shop"));
 const ShopProduct = lazy(() => import("./pages/ShopProduct"));
+const SitemapXML = lazy(() => import("./pages/SitemapXML"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/:id" element={<ShopProduct />} />
+            <Route path="/sitemap.xml" element={<SitemapXML />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
