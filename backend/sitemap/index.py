@@ -121,6 +121,24 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         )
         episodes = cur.fetchall()
         
+        # Fetch characters
+        cur.execute(
+            "SELECT id, name, image FROM characters ORDER BY id"
+        )
+        characters = cur.fetchall()
+        
+        # Fetch universes
+        cur.execute(
+            "SELECT id, name, image FROM universes ORDER BY id"
+        )
+        universes = cur.fetchall()
+        
+        # Fetch theories
+        cur.execute(
+            "SELECT id, title, created_at FROM theories ORDER BY id"
+        )
+        theories = cur.fetchall()
+        
         # Start building XML
         xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
         xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
@@ -171,6 +189,57 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             xml += '  <url>\n'
             xml += f'    <loc>{escape_xml(base_url + "/episodes/" + str(episode_id))}</loc>\n'
+            xml += f'    <lastmod>{lastmod}</lastmod>\n'
+            xml += '    <changefreq>monthly</changefreq>\n'
+            xml += '    <priority>0.6</priority>\n'
+            xml += '  </url>\n\n'
+        
+        # Characters
+        for character in characters:
+            character_id, name, image = character
+            slug = generate_slug(character_id, name)
+            
+            xml += '  <url>\n'
+            xml += f'    <loc>{escape_xml(base_url + "/characters/" + slug)}</loc>\n'
+            xml += f'    <lastmod>{today}</lastmod>\n'
+            xml += '    <changefreq>monthly</changefreq>\n'
+            xml += '    <priority>0.6</priority>\n'
+            
+            if image:
+                xml += '    <image:image>\n'
+                xml += f'      <image:loc>{escape_xml(image)}</image:loc>\n'
+                xml += f'      <image:title>{escape_xml(name)}</image:title>\n'
+                xml += '    </image:image>\n'
+            
+            xml += '  </url>\n\n'
+        
+        # Universes
+        for universe in universes:
+            universe_id, name, image = universe
+            slug = generate_slug(universe_id, name)
+            
+            xml += '  <url>\n'
+            xml += f'    <loc>{escape_xml(base_url + "/universes/" + slug)}</loc>\n'
+            xml += f'    <lastmod>{today}</lastmod>\n'
+            xml += '    <changefreq>monthly</changefreq>\n'
+            xml += '    <priority>0.6</priority>\n'
+            
+            if image:
+                xml += '    <image:image>\n'
+                xml += f'      <image:loc>{escape_xml(image)}</image:loc>\n'
+                xml += f'      <image:title>{escape_xml(name)}</image:title>\n'
+                xml += '    </image:image>\n'
+            
+            xml += '  </url>\n\n'
+        
+        # Theories
+        for theory in theories:
+            theory_id, title, created_at = theory
+            slug = generate_slug(theory_id, title)
+            lastmod = format_date(created_at) if created_at else today
+            
+            xml += '  <url>\n'
+            xml += f'    <loc>{escape_xml(base_url + "/theories/" + slug)}</loc>\n'
             xml += f'    <lastmod>{lastmod}</lastmod>\n'
             xml += '    <changefreq>monthly</changefreq>\n'
             xml += '    <priority>0.6</priority>\n'
