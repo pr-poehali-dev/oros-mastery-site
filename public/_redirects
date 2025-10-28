@@ -16,5 +16,8 @@ http://www.rickmorty.poehali.dev/*  https://rick-and-morty.poehali.dev/:splat  3
 # Trailing slash normalization - remove trailing slashes
 /*/  /:splat  301!
 
+# Dynamic sitemap proxy
+/sitemap.xml https://functions.poehali.dev/ef8dba09-e4a9-4cda-8f1c-29b8444eea2a 200
+
 # SPA fallback - all routes go to index.html
 /*    /index.html   200

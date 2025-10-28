@@ -6,8 +6,8 @@ Disallow: /api/
 Disallow: /login
 Disallow: /private/
 
-# Sitemap
-Sitemap: https://functions.poehali.dev/ef8dba09-e4a9-4cda-8f1c-29b8444eea2a
+# Sitemap (dynamic)
+Sitemap: https://rick-and-morty.poehali.dev/sitemap.xml
 
 # RSS Feed
 Sitemap: https://functions.poehali.dev/b693b55c-12cf-432c-a0f8-a29bd1b5deb8
