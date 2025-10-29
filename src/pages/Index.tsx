@@ -53,54 +53,56 @@ const Index = () => {
             <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">Цены</a>
             <a href="#reviews" className="text-muted-foreground hover:text-primary transition-colors">Отзывы</a>
           </div>
-          <Button asChild className="bg-gradient-to-r from-primary to-secondary text-background hover:opacity-90">
+          <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 shadow-lg shadow-primary/30">
             <a href="#contact">Связаться</a>
           </Button>
         </div>
       </nav>
 
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
-        <div className="absolute inset-0 bg-[url('https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/2b949fc0-1e40-40c9-8a2a-12b8a724de22.jpg')] opacity-10 bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20"></div>
+        <div className="absolute inset-0 bg-[url('https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/2b949fc0-1e40-40c9-8a2a-12b8a724de22.jpg')] opacity-5 bg-cover bg-center"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
         
         <div className="container mx-auto relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/30 rounded-full mb-6 backdrop-blur-sm">
-              <span className="text-primary font-semibold">🚀 Performance Marketing Agency</span>
+            <div className="inline-block px-4 py-2 bg-primary/20 border border-primary/50 rounded-full mb-6 backdrop-blur-sm shadow-lg shadow-primary/20">
+              <span className="text-primary font-bold">🚀 Performance Marketing Agency</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-fade-in">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent animate-fade-in drop-shadow-2xl">
               Превращаем клики
               <br />
               в продажи
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-foreground/90 mb-8 max-w-2xl mx-auto font-medium">
               Комплексное digital-продвижение с гарантией результата. Работаем на рост вашей прибыли, а не просто показов.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" asChild className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary text-background hover:opacity-90">
+              <Button size="lg" asChild className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 shadow-2xl shadow-primary/40 hover:shadow-primary/60 transition-all">
                 <a href="#contact">Получить стратегию</a>
               </Button>
-              <Button size="lg" variant="outline" asChild className="text-lg px-8 py-6 border-primary/50 text-foreground hover:bg-primary/10">
+              <Button size="lg" variant="outline" asChild className="text-lg px-8 py-6 border-2 border-primary/60 text-foreground hover:bg-primary/20 hover:border-primary transition-all shadow-lg">
                 <a href="#cases">Кейсы (↑320%)</a>
               </Button>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
+              <Card className="p-4 bg-card/70 backdrop-blur-sm border-primary/40 hover:border-primary hover:bg-card/90 transition-all shadow-lg hover:shadow-primary/20">
                 <div className="text-3xl font-bold text-primary mb-1">320%</div>
-                <div className="text-sm text-muted-foreground">Рост выручки</div>
+                <div className="text-sm text-foreground/70">Рост выручки</div>
               </Card>
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
+              <Card className="p-4 bg-card/70 backdrop-blur-sm border-secondary/40 hover:border-secondary hover:bg-card/90 transition-all shadow-lg hover:shadow-secondary/20">
                 <div className="text-3xl font-bold text-secondary mb-1">-50%</div>
-                <div className="text-sm text-muted-foreground">Снижение CPL</div>
+                <div className="text-sm text-foreground/70">Снижение CPL</div>
               </Card>
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
+              <Card className="p-4 bg-card/70 backdrop-blur-sm border-primary/40 hover:border-primary hover:bg-card/90 transition-all shadow-lg hover:shadow-primary/20">
                 <div className="text-3xl font-bold text-primary mb-1">150+</div>
-                <div className="text-sm text-muted-foreground">Клиентов</div>
+                <div className="text-sm text-foreground/70">Клиентов</div>
               </Card>
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
+              <Card className="p-4 bg-card/70 backdrop-blur-sm border-secondary/40 hover:border-secondary hover:bg-card/90 transition-all shadow-lg hover:shadow-secondary/20">
                 <div className="text-3xl font-bold text-secondary mb-1">5 лет</div>
-                <div className="text-sm text-muted-foreground">На рынке</div>
+                <div className="text-sm text-foreground/70">На рынке</div>
               </Card>
             </div>
           </div>
@@ -111,57 +113,58 @@ const Index = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/30 rounded-full mb-6">
-                <span className="text-primary font-semibold">О компании</span>
+              <div className="inline-block px-4 py-2 bg-primary/20 border border-primary/50 rounded-full mb-6 shadow-lg shadow-primary/20">
+                <span className="text-primary font-bold">О компании</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
                 Мы не делаем "просто рекламу"
               </h2>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-lg text-foreground/80 mb-6 leading-relaxed">
                 0101.studio — это команда экспертов в performance-маркетинге. Мы создаем системы привлечения клиентов, которые масштабируются и приносят стабильную прибыль.
               </p>
-              <p className="text-lg text-muted-foreground mb-8">
+              <p className="text-lg text-foreground/80 mb-8 leading-relaxed">
                 Наш подход основан на глубокой аналитике, A/B тестировании и постоянной оптимизации. Каждый рубль вашего бюджета работает на максимум.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon name="Target" className="text-primary" size={20} />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <Icon name="Target" className="text-primary" size={24} />
                   </div>
                   <div>
-                    <div className="font-semibold mb-1 text-foreground">Фокус на ROI</div>
-                    <div className="text-muted-foreground">Работаем только на результат, который можно измерить</div>
+                    <div className="font-bold mb-1 text-foreground text-lg">Фокус на ROI</div>
+                    <div className="text-foreground/70">Работаем только на результат, который можно измерить</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon name="TrendingUp" className="text-secondary" size={20} />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <Icon name="TrendingUp" className="text-secondary" size={24} />
                   </div>
                   <div>
-                    <div className="font-semibold mb-1 text-foreground">Прозрачность</div>
-                    <div className="text-muted-foreground">Полная отчетность и доступ к аналитике в реальном времени</div>
+                    <div className="font-bold mb-1 text-foreground text-lg">Прозрачность</div>
+                    <div className="text-foreground/70">Полная отчетность и доступ к аналитике в реальном времени</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon name="Zap" className="text-primary" size={20} />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <Icon name="Zap" className="text-primary" size={24} />
                   </div>
                   <div>
-                    <div className="font-semibold mb-1 text-foreground">Скорость</div>
-                    <div className="text-muted-foreground">Первые результаты уже через 2 недели после запуска</div>
+                    <div className="font-bold mb-1 text-foreground text-lg">Скорость</div>
+                    <div className="text-foreground/70">Первые результаты уже через 2 недели после запуска</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/20">
+              <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl shadow-primary/20">
                 <img 
                   src="https://cdn.poehali.dev/files/fa0ac5d4-ae70-4eb5-b09c-8b45c77da06e.png" 
                   alt="Digital Marketing" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-2xl blur-3xl opacity-30"></div>
+              <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-gradient-to-br from-primary to-secondary rounded-2xl blur-3xl opacity-50 animate-pulse"></div>
+              <div className="absolute -top-8 -left-8 w-40 h-40 bg-gradient-to-br from-secondary to-primary rounded-2xl blur-3xl opacity-30 animate-pulse" style={{animationDelay: '1s'}}></div>
             </div>
           </div>
         </div>
@@ -170,19 +173,19 @@ const Index = () => {
       <section id="services" className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/30 rounded-full mb-6">
-              <span className="text-primary font-semibold">Услуги</span>
+            <div className="inline-block px-4 py-2 bg-primary/20 border border-primary/50 rounded-full mb-6 shadow-lg shadow-primary/20">
+              <span className="text-primary font-bold">Услуги</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Полный спектр digital-услуг</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
               Все инструменты для привлечения и удержания клиентов под одной крышей
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            <Card className="p-6 bg-card/50 backdrop-blur-sm border-primary/30 hover:border-primary transition-all group">
-              <div className="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Icon name="Megaphone" className="text-background" size={28} />
+            <Card className="p-6 bg-card/70 backdrop-blur-sm border-primary/40 hover:border-primary hover:bg-card/90 transition-all group shadow-lg hover:shadow-primary/30">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-primary/30">
+                <Icon name="Megaphone" className="text-white" size={32} />
               </div>
               <h3 className="text-2xl font-bold mb-3 text-foreground">Контекстная реклама</h3>
               <p className="text-muted-foreground mb-4">
