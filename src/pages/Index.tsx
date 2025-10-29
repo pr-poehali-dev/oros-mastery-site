@@ -1,461 +1,658 @@
-import { useState, useEffect, useMemo, memo } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
-import Footer from '@/components/Footer';
-import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
-import Navigation from '@/components/Navigation';
-import { generateSlug } from '@/utils/slugify';
-import { useWatchedEpisodes } from '@/hooks/useWatchedEpisodes';
-import WatchedEpisodes from '@/components/WatchedEpisodes';
-import FAQ from '@/components/FAQ';
-import SeoContent from '@/components/SeoContent';
-import OptimizedImage from '@/components/OptimizedImage';
-import { cachedFetch } from '@/utils/cache';
-
-const EPISODES_API = 'https://functions.poehali.dev/031f0f01-3e0b-440b-a295-08f07c4d1389';
-const BLOG_API = 'https://functions.poehali.dev/833cc9a4-513a-4d22-a390-4878941c0d71';
-const CONTENT_API = 'https://functions.poehali.dev/a3182691-86a7-4e0e-8e97-a0951d94bfb4';
 
 const Index = () => {
-  const navigate = useNavigate();
-  const [selectedSeason, setSelectedSeason] = useState('all');
-  const [episodes, setEpisodes] = useState<any[]>([]);
-  const [blogPosts, setBlogPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [blogLoading, setBlogLoading] = useState(true);
-  const [stats, setStats] = useState({ episodes: 0, seasons: 0 });
-  const { watchedEpisodes, removeWatched } = useWatchedEpisodes();
+  const [phone, setPhone] = useState('');
 
-  useEffect(() => {
-    fetchEpisodes();
-    fetchBlogPosts();
-  }, []);
-
-  const fetchEpisodes = async () => {
-    try {
-      const data = await cachedFetch<any[]>(EPISODES_API);
-      setEpisodes(data);
-      
-      const uniqueSeasons = new Set(data.map((ep: any) => ep.season));
-      setStats({
-        episodes: data.length,
-        seasons: uniqueSeasons.size
-      });
-    } catch (error) {
-      console.error('Error fetching episodes:', error);
-    } finally {
-      setLoading(false);
-    }
+  const formatPhone = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    if (cleaned.length === 0) return '';
+    if (cleaned.length <= 1) return `+${cleaned}`;
+    if (cleaned.length <= 4) return `+${cleaned.slice(0, 1)} (${cleaned.slice(1)}`;
+    if (cleaned.length <= 7) return `+${cleaned.slice(0, 1)} (${cleaned.slice(1, 4)}) ${cleaned.slice(4)}`;
+    if (cleaned.length <= 9) return `+${cleaned.slice(0, 1)} (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7)}`;
+    return `+${cleaned.slice(0, 1)} (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7, 9)}-${cleaned.slice(9, 11)}`;
   };
 
-  const fetchBlogPosts = async () => {
-    try {
-      const [blogData, articlesData] = await Promise.all([
-        cachedFetch<any[]>(BLOG_API),
-        cachedFetch<any[]>(`${CONTENT_API}?type=articles`)
-      ]);
-      
-      const validBlogData = Array.isArray(blogData) ? blogData : [];
-      const validArticlesData = Array.isArray(articlesData) ? articlesData : [];
-      
-      const combinedPosts = [...validBlogData, ...validArticlesData];
-      setBlogPosts(combinedPosts);
-    } catch (error) {
-      console.error('Error fetching blog posts:', error);
-    } finally {
-      setBlogLoading(false);
-    }
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value);
+    setPhone(formatted);
   };
 
-  const blogPostsPreview = useMemo(() => blogPosts.slice(0, 3), [blogPosts]);
-
-  const filteredEpisodes = useMemo(() => 
-    selectedSeason === 'all' 
-      ? episodes 
-      : episodes.filter(ep => ep.season === parseInt(selectedSeason)),
-    [episodes, selectedSeason]
-  );
-
-  const availableSeasons = useMemo(() => 
-    Array.from(new Set(episodes.map(ep => ep.season))).sort((a, b) => a - b),
-    [episodes]
-  );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Phone submitted:', phone);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-background">
       <SEO
-        title="Смотреть все сезоны Рик и Морти онлайн бесплатно в HD качестве"
-        description="Все серии Рик и Морти (Rick and Morty) смотреть онлайн в хорошем HD качестве с русской озвучкой бесплатно. Полная коллекция эпизодов всех сезонов, блог с теориями, персонажи и вселенные мультсериала Adult Swim. Смотрите на любом устройстве без регистрации."
-        keywords="Рик и Морти смотреть онлайн, Rick and Morty на русском, все серии Рик и Морти, HD качество, бесплатно, без регистрации, Adult Swim, мультсериал, все сезоны, эпизоды, русская озвучка, анимация"
+        title="0101.studio - Маркетинговое агентство полного цикла"
+        description="Разрабатываем эффективные стратегии продвижения, которые увеличивают выручку и снижают стоимость лида"
+        keywords="маркетинговое агентство, digital marketing, продвижение бизнеса, реклама, CPL, стратегия продвижения"
         url="https://rick-and-morty.poehali.dev/"
       />
-      <Navigation />
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-cyan-600 via-green-500 to-blue-600">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
-        
-        <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-400 rounded-full blur-[120px] opacity-40 animate-pulse"></div>
-          <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-cyan-400 rounded-full blur-[100px] opacity-30 animate-pulse" style={{ animationDelay: '1s' }}></div>
-        </div>
 
-        <div className="container relative z-10 px-4 py-20 text-center text-white animate-fade-in">
-          <div className="mb-8 inline-block relative">
-            <div className="absolute inset-0 bg-green-400 blur-2xl opacity-50 animate-pulse"></div>
-            <img 
-              src="https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/54ad156d-f2d1-49cc-9d49-a0e720719998.jpg" 
-              alt="Portal"
-              className="relative w-64 h-64 object-cover rounded-full border-4 border-green-400 shadow-2xl"
-              loading="eager"
-              fetchpriority="high"
-              width="256"
-              height="256"
-            />
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <Link to="/" className="text-2xl font-bold text-foreground">
+            0101<span className="text-primary">.studio</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#cases" className="text-foreground/80 hover:text-foreground transition-colors">Кейсы</a>
+            <a href="#strategy" className="text-foreground/80 hover:text-foreground transition-colors">Стратегия</a>
+            <a href="#stages" className="text-foreground/80 hover:text-foreground transition-colors">Этапы</a>
+            <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-colors">Цены</a>
+            <a href="#reviews" className="text-foreground/80 hover:text-foreground transition-colors">Отзывы</a>
           </div>
-
-          <Badge className="mb-6 bg-green-400/20 text-white border-green-400 backdrop-blur-sm text-sm px-6 py-2">
-            🛸 Wubba Lubba Dub Dub!
-          </Badge>
-          
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-            Рик и Морти
-            <span className="block text-green-400 mt-2 text-5xl md:text-6xl">Universe Portal</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto font-light leading-relaxed">
-            Смотри все серии, читай теории и погружайся в бесконечную мультивселенную!
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              className="bg-green-400 text-gray-900 hover:bg-green-500 hover:text-white text-lg px-8 py-6 h-auto font-bold shadow-2xl transform hover:scale-105 transition-all"
-              onClick={() => document.getElementById('episodes')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <Icon name="Play" className="mr-2" size={20} />
-              Смотреть серии
-            </Button>
-            
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="bg-transparent border-2 border-white text-white hover:bg-white/10 hover:border-green-400 text-lg px-8 py-6 h-auto font-bold backdrop-blur-sm transform hover:scale-105 transition-all"
-              onClick={() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <Icon name="BookOpen" className="mr-2" size={20} />
-              Читать блог
-            </Button>
-          </div>
-
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up">
-              <div className="text-3xl mb-2">🎬</div>
-              <div className="text-2xl font-bold mb-1">{loading ? '...' : stats.episodes}</div>
-              <div className="text-white/90 text-sm">Серий</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              <div className="text-3xl mb-2">📺</div>
-              <div className="text-2xl font-bold mb-1">{loading ? '...' : stats.seasons}</div>
-              <div className="text-white/90 text-sm">Сезонов</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="text-3xl mb-2">🌌</div>
-              <div className="text-2xl font-bold mb-1">∞</div>
-              <div className="text-white/90 text-sm">Вселенных</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-              <div className="text-3xl mb-2">⭐</div>
-              <div className="text-2xl font-bold mb-1">9.1</div>
-              <div className="text-white/90 text-sm">Рейтинг</div>
-            </div>
-          </div>
+          <Button asChild>
+            <a href="#contact">Оставить заявку</a>
+          </Button>
         </div>
+      </nav>
 
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <Icon name="ChevronDown" size={40} className="text-white/70" />
-        </div>
-      </section>
-
-      <section id="episodes" className="py-24 bg-gray-900 text-white">
-        <div className="container px-4">
-          <WatchedEpisodes episodes={watchedEpisodes} onRemove={removeWatched} />
-          
-          <div className="text-center mb-12 animate-fade-in">
-            <Badge className="mb-4 bg-green-400/20 text-green-400 border-green-400">Все серии</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Каталог эпизодов Rick and Morty</h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Выбери сезон и начни просмотр прямо сейчас
+      <section className="pt-32 pb-20 px-4">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Маркетинговое агентство
+              <br />
+              <span className="text-primary">полного цикла</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-foreground/70 mb-8 max-w-2xl mx-auto">
+              Разрабатываем эффективные стратегии продвижения, которые увеличивают выручку и снижают стоимость лида
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" asChild className="text-lg px-8 py-6">
+                <a href="#contact">Получить консультацию</a>
+              </Button>
+              <Button size="lg" variant="outline" asChild className="text-lg px-8 py-6">
+                <a href="#cases">Смотреть кейсы</a>
+              </Button>
+            </div>
           </div>
-
-          <Tabs defaultValue="all" className="w-full max-w-6xl mx-auto mb-8" onValueChange={setSelectedSeason}>
-            <TabsList className="flex flex-wrap justify-center gap-2 w-full max-w-4xl mx-auto bg-gray-800 mb-12 p-2 min-h-fit">
-              <TabsTrigger value="all" className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900">Все</TabsTrigger>
-              {availableSeasons.map(season => (
-                <TabsTrigger 
-                  key={season} 
-                  value={season.toString()} 
-                  className="data-[state=active]:bg-green-400 data-[state=active]:text-gray-900"
-                >
-                  Сезон {season}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            <TabsContent value={selectedSeason} className="mt-0">
-              {loading ? (
-                <div className="flex justify-center items-center py-20">
-                  <div className="text-green-400 text-xl">Загрузка эпизодов...</div>
-                </div>
-              ) : filteredEpisodes.length === 0 ? (
-                <div className="text-center py-20 text-gray-400">
-                  <p className="text-xl">Эпизоды не найдены</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                  {filteredEpisodes.map((episode, index) => (
-                  <Card 
-                    key={episode.id} 
-                    className="bg-gray-800 border-gray-700 hover:border-green-400 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-400/20 group animate-scale-in overflow-hidden cursor-pointer"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                    onClick={() => navigate(`/episode/${generateSlug(episode.id, episode.title)}`)}
-                  >
-                    <div className="relative overflow-hidden aspect-video">
-                      <OptimizedImage 
-                        src={episode.image} 
-                        alt={`${episode.title} - сезон ${episode.season} эпизод ${episode.episode}`}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        priority={index < 3}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
-                      <Badge className="absolute top-3 left-3 bg-green-400 text-gray-900 border-0 font-semibold">
-                        {episode.season} сезон {episode.episode} серия
-                      </Badge>
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
-                        <Button className="bg-green-400 text-gray-900 hover:bg-green-300 font-bold">
-                          <Icon name="Play" className="mr-2" size={20} />
-                          Смотреть
-                        </Button>
-                      </div>
-                    </div>
-
-                    <CardHeader>
-                      <CardTitle className="text-white group-hover:text-green-400 transition-colors">
-                        {episode.title}
-                      </CardTitle>
-                      <CardDescription className="flex items-center justify-between text-gray-300">
-                        <span className="flex items-center gap-1">
-                          <Icon name="Calendar" size={14} />
-                          {episode.airDate || 'TBA'}
-                        </span>
-                        <span className="flex items-center gap-1 text-green-400">
-                          <Icon name="Film" size={14} />
-                          S{episode.season}E{episode.episode}
-                        </span>
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
         </div>
       </section>
 
-      <section id="blog" className="py-24 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-        <div className="container px-4">
-          <div className="text-center mb-12 animate-fade-in">
-            <Badge className="mb-4 bg-cyan-400/20 text-cyan-400 border-cyan-400">Блог</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Блог о Rick and Morty: Статьи и теории</h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Глубокий разбор сериала, теории фанатов и интересные факты
-            </p>
+      <section id="cases" className="py-20 px-4 bg-secondary">
+        <div className="container mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">КЕЙСЫ</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            <div className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 cursor-pointer">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="https://cdn.poehali.dev/files/e8995be7-4bf8-47fe-a47d-eb26d35c2270.png" 
+                  alt="Недвижимость" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-xl font-bold mb-2">Недвижимость премиум-класса</h3>
+                <div className="flex gap-4 text-sm">
+                  <div>
+                    <div className="text-primary font-bold">↑250%</div>
+                    <div className="text-white/70">Продажи</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">-40%</div>
+                    <div className="text-white/70">CPL</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">₽15к</div>
+                    <div className="text-white/70">Бюджет</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 cursor-pointer">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/8d2021e5-a8f4-492a-8348-d2716ef6e34e.jpg" 
+                  alt="Автобизнес" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-xl font-bold mb-2">Автосалон luxury-сегмента</h3>
+                <div className="flex gap-4 text-sm">
+                  <div>
+                    <div className="text-primary font-bold">↑180%</div>
+                    <div className="text-white/70">Заявки</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">-35%</div>
+                    <div className="text-white/70">CPL</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">₽25к</div>
+                    <div className="text-white/70">Бюджет</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 cursor-pointer">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/c4d3ff03-47dd-4934-9174-5ad07722cbe5.jpg" 
+                  alt="Ресторан" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-xl font-bold mb-2">Сеть ресторанов</h3>
+                <div className="flex gap-4 text-sm">
+                  <div>
+                    <div className="text-primary font-bold">↑320%</div>
+                    <div className="text-white/70">Трафик</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">-50%</div>
+                    <div className="text-white/70">CPL</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">₽10к</div>
+                    <div className="text-white/70">Бюджет</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 cursor-pointer">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="https://cdn.poehali.dev/projects/f9f23ac4-7352-47dd-a4bb-81301617dd90/files/d52da39e-632e-4e2f-908b-11a31ad81bf7.jpg" 
+                  alt="E-commerce" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-xl font-bold mb-2">Интернет-магазин мебели</h3>
+                <div className="flex gap-4 text-sm">
+                  <div>
+                    <div className="text-primary font-bold">↑200%</div>
+                    <div className="text-white/70">Продажи</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">-45%</div>
+                    <div className="text-white/70">CPL</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">₽20к</div>
+                    <div className="text-white/70">Бюджет</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="md:col-span-2 group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 cursor-pointer">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="https://cdn.poehali.dev/files/e8995be7-4bf8-47fe-a47d-eb26d35c2270.png" 
+                  alt="SaaS" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-xl font-bold mb-2">SaaS для B2B</h3>
+                <div className="flex gap-4 text-sm">
+                  <div>
+                    <div className="text-primary font-bold">↑400%</div>
+                    <div className="text-white/70">Регистрации</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">-60%</div>
+                    <div className="text-white/70">CPL</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold">₽30к</div>
+                    <div className="text-white/70">Бюджет</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
 
-          {blogLoading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="text-cyan-400 text-xl">Загрузка статей...</div>
+      <section id="contact" className="py-20 px-4">
+        <div className="container mx-auto max-w-2xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Оставьте заявку</h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <Input
+                type="tel"
+                placeholder="+7 (___) ___-__-__"
+                value={phone}
+                onChange={handlePhoneChange}
+                className="text-lg py-6 bg-card border-border text-foreground"
+                maxLength={18}
+              />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {blogPostsPreview.map((post, index) => (
-                <Card 
-                  key={post.id} 
-                  className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2 group animate-scale-in overflow-hidden flex flex-col cursor-pointer"
-                  style={{ animationDelay: `${index * 0.15}s` }}
-                  onClick={() => navigate(`/blog/${generateSlug(post.id, post.title)}`)}
-                >
-                  <div className="relative overflow-hidden aspect-video">
-                    <OptimizedImage 
-                      src={post.image} 
-                      alt={`${post.title} - статья в блоге Rick and Morty`}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      priority={index < 3}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
-                  </div>
-
-                  <CardHeader className="flex-grow">
-                    <div className="flex gap-2 mb-3">
-                      {post.tags && post.tags.map((tag, idx) => (
-                        <Badge key={idx} className="bg-cyan-400/20 text-cyan-400 border-cyan-400/50 text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  <CardTitle className="text-xl text-white group-hover:text-cyan-400 transition-colors mb-2">
-                    {post.title}
-                  </CardTitle>
-                  <CardDescription className="text-gray-300 leading-relaxed mb-4">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="mt-auto">
-                  <div className="flex items-center justify-between text-sm text-gray-300 mb-4">
-                    <div className="flex items-center gap-2">
-                      <Icon name="User" size={14} />
-                      <span>{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1">
-                        <Icon name="Calendar" size={14} />
-                        {post.date}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Icon name="Clock" size={14} />
-                        {post.readTime}
-                      </span>
-                    </div>
-                  </div>
-
-                  <Button 
-                    className="w-full bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold"
-                  >
-                    Читать полностью
-                    <Icon name="ArrowRight" className="ml-2" size={16} />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-            </div>
-          )}
-
-          <div className="text-center mt-12">
-            <Button 
-              size="lg" 
-              className="bg-cyan-400 text-gray-900 hover:bg-cyan-300 font-bold"
-              onClick={() => navigate('/blog')}
-            >
-              <Icon name="FileText" className="mr-2" size={20} />
-              Все статьи блога
+            <Button type="submit" size="lg" className="w-full text-lg py-6">
+              Отправить заявку
             </Button>
+          </form>
+        </div>
+      </section>
+
+      <section id="strategy" className="py-20 px-4 bg-secondary">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Наша стратегия работы</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-card border border-border p-6 hover:border-primary transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Icon name="Target" className="text-primary" size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Подбор источников трафика</h3>
+              <p className="text-foreground/70">Анализируем и выбираем наиболее эффективные каналы привлечения для вашей ниши</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 hover:border-primary transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Icon name="Search" className="text-primary" size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Анализ конкурентов</h3>
+              <p className="text-foreground/70">Изучаем стратегии конкурентов и выявляем возможности для вашего роста</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 hover:border-primary transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Icon name="Lightbulb" className="text-primary" size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Разработка креативов</h3>
+              <p className="text-foreground/70">Создаем эффективные объявления и офферы, которые конвертируют</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 hover:border-primary transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Icon name="TrendingUp" className="text-primary" size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Поиск сильных сторон</h3>
+              <p className="text-foreground/70">Находим и усиливаем конкурентные преимущества вашего бизнеса</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 hover:border-primary transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Icon name="FileText" className="text-primary" size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Подготовка медиапланов</h3>
+              <p className="text-foreground/70">Разрабатываем детальные планы с прогнозами результатов и бюджетов</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 hover:border-primary transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Icon name="Zap" className="text-primary" size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Эффективная стратегия</h3>
+              <p className="text-foreground/70">Создаем комплексную стратегию продвижения, нацеленную на результат</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <SeoContent />
+      <section id="results" className="py-20 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Результаты работы</h2>
+          <p className="text-center text-foreground/70 mb-16 text-lg">После запуска наших стратегий</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="relative inline-block mb-4">
+                <div className="w-32 h-32 rounded-full border-8 border-primary relative overflow-hidden">
+                  <div className="absolute inset-0 bg-primary" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 25%, 0 25%)' }}></div>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Icon name="TrendingUp" className="text-primary" size={40} />
+                </div>
+              </div>
+              <div className="text-5xl font-bold text-primary mb-2">↑320%</div>
+              <div className="text-xl font-semibold mb-2">Рост выручки</div>
+              <p className="text-foreground/70">В среднем у наших клиентов за первые 6 месяцев</p>
+            </div>
 
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="container px-4">
-          <div className="max-w-5xl mx-auto">
-            <FAQ items={[
-              {
-                question: 'Где смотреть Рик и Морти онлайн бесплатно в хорошем качестве?',
-                answer: 'На нашем сайте вы можете смотреть все серии Рик и Морти онлайн бесплатно в HD качестве с русской озвучкой. Доступны все сезоны без регистрации. Выберите нужный эпизод и начните просмотр прямо сейчас на любом устройстве.'
-              },
-              {
-                question: 'Сколько сезонов Рик и Морти вышло на данный момент?',
-                answer: 'На данный момент вышло 7 сезонов Rick and Morty. Канал Adult Swim продлил сериал ещё на 70 эпизодов, так что фанатов ждёт множество новых приключений Рика и Морти в мультивселенной!'
-              },
-              {
-                question: 'Можно ли смотреть Рик и Морти на телефоне или планшете?',
-                answer: 'Да! Наш сайт полностью адаптирован для мобильных устройств. Вы можете смотреть все серии Рик и Морти на телефоне, планшете или компьютере. Видеоплеер автоматически подстраивается под размер экрана для комфортного просмотра.'
-              },
-              {
-                question: 'Есть ли русская озвучка в эпизодах Rick and Morty?',
-                answer: 'Да, все эпизоды доступны с профессиональной русской озвучкой. Также доступна оригинальная английская озвучка для тех, кто хочет смотреть в оригинале или изучает английский язык.'
-              },
-              {
-                question: 'Нужна ли регистрация для просмотра эпизодов?',
-                answer: 'Нет, регистрация не требуется! Вы можете начать смотреть Рик и Морти онлайн прямо сейчас без создания аккаунта. Просто выберите эпизод и наслаждайтесь просмотром.'
-              },
-              {
-                question: 'Какая серия Рик и Морти самая популярная?',
-                answer: 'Среди самых популярных эпизодов: "Огурчик Рик" (S3E3), "Свадебные корки" (S2E6), "Межпространственный кабель" (S1E8). Каждый эпизод на нашем сайте имеет рейтинг и комментарии зрителей, где вы можете узнать мнение других фанатов.'
-              }
-            ]} />
-            <div className="text-center mb-12 mt-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Исследуй вселенную Rick and Morty
-              </h2>
-              <p className="text-xl text-gray-300">
-                Множество разделов ждут тебя в путешествии по мультивселенной
+            <div className="text-center">
+              <div className="relative inline-block mb-4">
+                <div className="w-32 h-32 rounded-full border-8 border-primary relative overflow-hidden">
+                  <div className="absolute inset-0 bg-primary" style={{ clipPath: 'polygon(0 50%, 100% 50%, 100% 100%, 0 100%)' }}></div>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Icon name="ArrowDown" className="text-primary" size={40} />
+                </div>
+              </div>
+              <div className="text-5xl font-bold text-primary mb-2">-45%</div>
+              <div className="text-xl font-semibold mb-2">Снижение CPL</div>
+              <p className="text-foreground/70">Оптимизация рекламных кампаний снижает стоимость лида</p>
+            </div>
+
+            <div className="text-center">
+              <div className="relative inline-block mb-4">
+                <div className="w-32 h-32 rounded-full border-8 border-primary relative overflow-hidden">
+                  <div className="absolute inset-0 bg-primary" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 40%, 0 40%)' }}></div>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Icon name="Target" className="text-primary" size={40} />
+                </div>
+              </div>
+              <div className="text-5xl font-bold text-primary mb-2">↑280%</div>
+              <div className="text-xl font-semibold mb-2">Увеличение конверсии</div>
+              <p className="text-foreground/70">Точная настройка воронки и креативов повышает отдачу</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stages" className="py-20 px-4 bg-secondary">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Этапы работы</h2>
+          
+          <div className="space-y-6">
+            <div className="flex gap-6 items-start">
+              <div className="flex-shrink-0 w-12 h-12 bg-primary text-black rounded-full flex items-center justify-center text-xl font-bold">
+                1
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2">Знакомство и анализ</h3>
+                <p className="text-foreground/70">Изучаем ваш бизнес, целевую аудиторию и текущую ситуацию на рынке</p>
+              </div>
+            </div>
+
+            <div className="flex gap-6 items-start">
+              <div className="flex-shrink-0 w-12 h-12 bg-primary text-black rounded-full flex items-center justify-center text-xl font-bold">
+                2
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2">Разработка стратегии</h3>
+                <p className="text-foreground/70">Создаем индивидуальный план продвижения с учетом ваших целей и бюджета</p>
+              </div>
+            </div>
+
+            <div className="flex gap-6 items-start">
+              <div className="flex-shrink-0 w-12 h-12 bg-primary text-black rounded-full flex items-center justify-center text-xl font-bold">
+                3
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2">Запуск кампаний</h3>
+                <p className="text-foreground/70">Настраиваем рекламные кампании и запускаем тестовый период</p>
+              </div>
+            </div>
+
+            <div className="flex gap-6 items-start">
+              <div className="flex-shrink-0 w-12 h-12 bg-primary text-black rounded-full flex items-center justify-center text-xl font-bold">
+                4
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2">Оптимизация</h3>
+                <p className="text-foreground/70">Анализируем результаты и улучшаем показатели для максимальной эффективности</p>
+              </div>
+            </div>
+
+            <div className="flex gap-6 items-start">
+              <div className="flex-shrink-0 w-12 h-12 bg-primary text-black rounded-full flex items-center justify-center text-xl font-bold">
+                5
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2">Масштабирование</h3>
+                <p className="text-foreground/70">Увеличиваем бюджеты и расширяем успешные стратегии для роста бизнеса</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" className="py-20 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Тарифы</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-card border border-border p-8 hover:border-primary transition-all">
+              <h3 className="text-2xl font-bold mb-4">Старт</h3>
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-primary mb-2">от 50 000₽</div>
+                <div className="text-foreground/60">в месяц</div>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Настройка 1-2 рекламных каналов</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Базовая аналитика и отчеты</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Разработка креативов</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Ежемесячная оптимизация</span>
+                </li>
+              </ul>
+              <Button className="w-full" variant="outline" asChild>
+                <a href="#contact">Выбрать тариф</a>
+              </Button>
+            </div>
+
+            <div className="bg-card border-2 border-primary p-8 relative transform md:scale-105 shadow-2xl">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-black px-4 py-1 rounded-full text-sm font-bold">
+                Популярный
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Профи</h3>
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-primary mb-2">от 120 000₽</div>
+                <div className="text-foreground/60">в месяц</div>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Настройка 3-5 рекламных каналов</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Продвинутая аналитика и CRM</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>A/B тестирование креативов</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Еженедельная оптимизация</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Персональный менеджер</span>
+                </li>
+              </ul>
+              <Button className="w-full" asChild>
+                <a href="#contact">Выбрать тариф</a>
+              </Button>
+            </div>
+
+            <div className="bg-card border border-border p-8 hover:border-primary transition-all">
+              <h3 className="text-2xl font-bold mb-4">Максимум</h3>
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-primary mb-2">от 250 000₽</div>
+                <div className="text-foreground/60">в месяц</div>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Все доступные каналы трафика</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Полный маркетинг-аудит</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Выделенная команда</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>24/7 поддержка и оптимизация</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Icon name="Check" className="text-primary mt-1 flex-shrink-0" size={20} />
+                  <span>Индивидуальная стратегия роста</span>
+                </li>
+              </ul>
+              <Button className="w-full" variant="outline" asChild>
+                <a href="#contact">Выбрать тариф</a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" className="py-20 px-4 bg-secondary">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Отзывы клиентов</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-card border border-border p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Icon key={i} name="Star" className="text-primary fill-primary" size={20} />
+                ))}
+              </div>
+              <p className="text-foreground/80 mb-4">
+                "Работа с 0101.studio превзошла все ожидания. За 3 месяца удалось снизить стоимость лида на 40% и увеличить продажи в 2.5 раза. Команда профессионалов!"
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                  <span className="text-primary font-bold">АС</span>
+                </div>
+                <div>
+                  <div className="font-bold">Алексей Смирнов</div>
+                  <div className="text-sm text-foreground/60">Директор агентства недвижимости</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Icon key={i} name="Star" className="text-primary fill-primary" size={20} />
+                ))}
+              </div>
+              <p className="text-foreground/80 mb-4">
+                "Наконец-то нашли агентство, которое работает на результат! Четкая стратегия, прозрачная аналитика и главное - реальный рост конверсий. Рекомендую!"
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                  <span className="text-primary font-bold">МК</span>
+                </div>
+                <div>
+                  <div className="font-bold">Мария Козлова</div>
+                  <div className="text-sm text-foreground/60">Владелец онлайн-магазина</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Icon key={i} name="Star" className="text-primary fill-primary" size={20} />
+                ))}
+              </div>
+              <p className="text-foreground/80 mb-4">
+                "Отличная команда! Помогли выстроить эффективную воронку продаж с нуля. Особенно порадовала оперативность и внимание к деталям."
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                  <span className="text-primary font-bold">ДП</span>
+                </div>
+                <div>
+                  <div className="font-bold">Дмитрий Петров</div>
+                  <div className="text-sm text-foreground/60">CEO SaaS-стартапа</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Icon key={i} name="Star" className="text-primary fill-primary" size={20} />
+                ))}
+              </div>
+              <p className="text-foreground/80 mb-4">
+                "Сотрудничаем уже год. За это время трафик вырос в 4 раза, а стоимость привлечения клиента упала в 2 раза. Продолжаем масштабироваться!"
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                  <span className="text-primary font-bold">ЕВ</span>
+                </div>
+                <div>
+                  <div className="font-bold">Елена Васильева</div>
+                  <div className="text-sm text-foreground/60">Сеть ресторанов</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-2xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Свяжитесь с нами</h2>
+        </div>
+      </section>
+
+      <footer className="bg-secondary py-12 px-4 border-t border-border">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div className="md:col-span-2">
+              <div className="text-2xl font-bold mb-4">
+                0101<span className="text-primary">.studio</span>
+              </div>
+              <p className="text-foreground/70 mb-4">
+                Маркетинговое агентство полного цикла. Создаем эффективные стратегии продвижения для роста вашего бизнеса.
               </p>
             </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card 
-                className="bg-gray-800/80 border-cyan-500/30 p-6 hover:border-cyan-400 transition-all hover:scale-105 cursor-pointer group"
-                onClick={() => navigate('/episodes')}
-              >
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon name="Play" size={32} className="text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-cyan-400 group-hover:text-cyan-300">Эпизоды</h3>
-                  <p className="text-gray-400 text-sm">Полный каталог всех серий с описаниями</p>
-                </div>
-              </Card>
-
-              <Card 
-                className="bg-gray-800/80 border-purple-500/30 p-6 hover:border-purple-400 transition-all hover:scale-105 cursor-pointer group"
-                onClick={() => navigate('/theories')}
-              >
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon name="Lightbulb" size={32} className="text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-purple-400 group-hover:text-purple-300">Теории</h3>
-                  <p className="text-gray-400 text-sm">Разгадывай тайны сериала вместе с фанатами</p>
-                </div>
-              </Card>
-
-              <Card 
-                className="bg-gray-800/80 border-green-500/30 p-6 hover:border-green-400 transition-all hover:scale-105 cursor-pointer group"
-                onClick={() => navigate('/characters')}
-              >
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon name="Users" size={32} className="text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-green-400 group-hover:text-green-300">Персонажи</h3>
-                  <p className="text-gray-400 text-sm">Узнай больше о героях мультивселенной</p>
-                </div>
-              </Card>
-
-              <Card 
-                className="bg-gray-800/80 border-yellow-500/30 p-6 hover:border-yellow-400 transition-all hover:scale-105 cursor-pointer group"
-                onClick={() => navigate('/universes')}
-              >
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon name="Globe" size={32} className="text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-yellow-400 group-hover:text-yellow-300">Вселенные</h3>
-                  <p className="text-gray-400 text-sm">Исследуй параллельные миры и измерения</p>
-                </div>
-              </Card>
+            
+            <div>
+              <h4 className="font-bold mb-4">Услуги</h4>
+              <ul className="space-y-2 text-foreground/70">
+                <li><a href="#strategy" className="hover:text-primary transition-colors">Стратегия</a></li>
+                <li><a href="#cases" className="hover:text-primary transition-colors">Кейсы</a></li>
+                <li><a href="#pricing" className="hover:text-primary transition-colors">Тарифы</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-bold mb-4">Контакты</h4>
+              <ul className="space-y-2 text-foreground/70">
+                <li className="flex items-center gap-2">
+                  <Icon name="Mail" size={16} />
+                  <a href="mailto:hello@0101.studio" className="hover:text-primary transition-colors">hello@0101.studio</a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Icon name="Phone" size={16} />
+                  <a href="tel:+79999999999" className="hover:text-primary transition-colors">+7 (999) 999-99-99</a>
+                </li>
+              </ul>
             </div>
           </div>
+          
+          <div className="border-t border-border pt-8 text-center text-foreground/60">
+            <p>© 2024 0101.studio — Все права защищены</p>
+          </div>
         </div>
-      </section>
-
-      <Footer />
+      </footer>
     </div>
   );
 };
