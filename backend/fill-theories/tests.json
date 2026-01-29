@@ -1,0 +1,15 @@
+{
+  "tests": [
+    {
+      "name": "Fill theories database",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "theories_inserted": 38
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

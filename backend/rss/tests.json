@@ -1,0 +1,75 @@
+{
+  "tests": [
+    {
+      "name": "Get RSS feed",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedHeaders": {
+        "Content-Type": "application/rss+xml; charset=UTF-8"
+      },
+      "bodyMatcher": "contains",
+      "expectedBody": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    },
+    {
+      "name": "RSS feed contains rss tag",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "contains",
+      "expectedBody": "<rss version=\"2.0\""
+    },
+    {
+      "name": "RSS feed contains channel title",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "contains",
+      "expectedBody": "<title>Рик и Морти фан-сайт - Блог</title>"
+    },
+    {
+      "name": "RSS feed contains channel link",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "contains",
+      "expectedBody": "<link>https://oros-mastery-site.poehali.app/blog</link>"
+    },
+    {
+      "name": "RSS feed contains language",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "contains",
+      "expectedBody": "<language>ru</language>"
+    },
+    {
+      "name": "RSS feed contains items",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "contains",
+      "expectedBody": "<item>"
+    },
+    {
+      "name": "Handle OPTIONS for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS"
+      }
+    },
+    {
+      "name": "Reject POST method",
+      "method": "POST",
+      "path": "/",
+      "expectedStatus": 405,
+      "expectedBody": {
+        "error": "Method not allowed"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
